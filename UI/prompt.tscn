@@ -1,0 +1,51 @@
+[gd_scene load_steps=5 format=3 uid="uid://qhe57e24toic"]
+
+[ext_resource type="Script" uid="uid://cw1ue110yheo1" path="res://UI/Prompt.cs" id="2_8ch5a"]
+
+[sub_resource type="Animation" id="Animation_jo1y3"]
+resource_name = "flash"
+length = 1.0000033
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [0, 1]
+}
+
+[sub_resource type="Animation" id="Animation_8ch5a"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_8ch5a"]
+_data = {
+&"RESET": SubResource("Animation_8ch5a"),
+&"flash": SubResource("Animation_jo1y3")
+}
+
+[node name="Prompt" type="Sprite2D" node_paths=PackedStringArray("_animPlayer")]
+vframes = 2
+script = ExtResource("2_8ch5a")
+_animPlayer = NodePath("AnimationPlayer")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_8ch5a")
+}

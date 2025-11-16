@@ -1,0 +1,53 @@
+[gd_scene load_steps=5 format=3 uid="uid://dkv3yol4sh756"]
+
+[ext_resource type="Texture2D" uid="uid://xcineshn34oc" path="res://UI/Textbox.png" id="1_2fwl4"]
+[ext_resource type="Script" uid="uid://bgkwk6a1wbnbl" path="res://UI/TextBox.cs" id="2_dajm1"]
+[ext_resource type="PackedScene" uid="uid://qhe57e24toic" path="res://UI/prompt.tscn" id="3_e6gg6"]
+[ext_resource type="Texture2D" uid="uid://b1ui4h2tbwdya" path="res://UI/Arrow.png" id="4_hat8c"]
+
+[node name="UI" type="CanvasLayer"]
+
+[node name="TextBox" type="TextureRect" parent="." node_paths=PackedStringArray("_label", "_prompt", "_timer")]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -445.0
+offset_top = 109.0
+offset_right = 445.0
+offset_bottom = 266.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_2fwl4")
+expand_mode = 2
+script = ExtResource("2_dajm1")
+_label = NodePath("RichTextLabel")
+_prompt = NodePath("Prompt")
+_timer = NodePath("../TextBoxTimer")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="TextBox"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -412.0
+offset_top = -53.5
+offset_right = 412.0
+offset_bottom = 46.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/normal_font_size = 23
+theme_override_font_sizes/bold_font_size = 23
+theme_override_font_sizes/bold_italics_font_size = 23
+theme_override_font_sizes/italics_font_size = 23
+theme_override_font_sizes/mono_font_size = 23
+
+[node name="Prompt" parent="TextBox" instance=ExtResource("3_e6gg6")]
+position = Vector2(839, 123)
+scale = Vector2(3, 3)
+texture = ExtResource("4_hat8c")
+
+[node name="TextBoxTimer" type="Timer" parent="."]

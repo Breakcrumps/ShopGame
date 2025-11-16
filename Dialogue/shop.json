@@ -1,0 +1,11 @@
+{
+  "Shelf": [
+    {
+      "What": "A familiar shelf. What now?",
+      "Choices": [
+        "Yes.",
+        "No."
+      ]
+    }
+  ]
+}

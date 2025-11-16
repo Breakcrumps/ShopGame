@@ -1,0 +1,38 @@
+[gd_scene load_steps=7 format=3 uid="uid://cqm4kfelmm1mc"]
+
+[ext_resource type="PackedScene" uid="uid://qhe57e24toic" path="res://UI/prompt.tscn" id="1_3r3s5"]
+[ext_resource type="Texture2D" uid="uid://2qhp1hgq3yi3" path="res://World/Shelf.png" id="1_xcrs6"]
+[ext_resource type="Script" uid="uid://ckslj8bl4uju6" path="res://World/DialogueInitArea.cs" id="2_rx6at"]
+[ext_resource type="Texture2D" uid="uid://b5xqcpovlnvc3" path="res://UI/E.png" id="4_ag8pi"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xcrs6"]
+size = Vector2(23, 6)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rx6at"]
+size = Vector2(23, 8)
+
+[node name="Shelf" type="StaticBody2D"]
+collision_layer = 4
+collision_mask = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+y_sort_enabled = true
+texture = ExtResource("1_xcrs6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0.5, 10)
+shape = SubResource("RectangleShape2D_xcrs6")
+
+[node name="DialogueInitArea" type="Area2D" parent="." node_paths=PackedStringArray("_parent", "_prompt")]
+collision_layer = 4
+script = ExtResource("2_rx6at")
+_parent = NodePath("..")
+_prompt = NodePath("../Prompt")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DialogueInitArea"]
+position = Vector2(0.5, 17)
+shape = SubResource("RectangleShape2D_rx6at")
+
+[node name="Prompt" parent="." instance=ExtResource("1_3r3s5")]
+position = Vector2(0, -18)
+texture = ExtResource("4_ag8pi")
