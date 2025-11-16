@@ -11,10 +11,15 @@ namespace ShopGame.UI;
 [GlobalClass]
 internal sealed partial class TextBox : TextureRect
 {
-  [Export] private float _secBetweenChars = .05f;
+  [Export] private float _secBetweenChars = .03f;
   [Export] private RichTextLabel? _label;
-  [Export] private Prompt? _prompt;
+  [Export] private Prompt? _proceedPrompt;
+  [Export] private Prompt? _questionPrompt;
   [Export] private Timer? _timer;
+
+  [ExportGroup("ChoiceBoxes")]
+  [Export] private ChoiceBox? _lowestChoiceBox;
+  [Export] private ChoiceBox? _highestChoiceBox;
 
   private List<Replica> _currentDialogue = [];
   private int _currentLineIndex;
@@ -42,12 +47,28 @@ internal sealed partial class TextBox : TextureRect
     if (_label!.VisibleCharacters < _label.GetTotalCharacterCount())
     {
       _label.VisibleCharacters++;
+      return;
+    }
+
+    _timer?.Stop();
+
+    if (_currentDialogue[_currentLineIndex].Choices is not List<string> choices)
+    {
+      _proceedPrompt?.Activate();
+      return;
+    }
+
+    if (choices.Count == 1)
+    {
+      _lowestChoiceBox?.Display(choices[0]);
     }
     else
     {
-      _timer?.Stop();
-      _prompt?.Activate();
+      _highestChoiceBox?.Display(choices[0]);
+      _lowestChoiceBox?.Display(choices[1]);
     }
+
+    _questionPrompt?.Activate();
   }
 
   internal void Activate(string filename, string dialogueName)
@@ -105,19 +126,17 @@ internal sealed partial class TextBox : TextureRect
 
     _label!.VisibleCharacters = 0;
     
-    if (_currentDialogue[_currentLineIndex].Choices is List<string> choices)
-    {
-      _timer?.Start();
-      _label.Text = string.Join(' ', choices);
-    }
-    else if (_currentLineIndex == _currentDialogue.Count - 1)
+    if (_currentLineIndex == _currentDialogue.Count - 1)
     {
       Visible = false;
       _label.Text = "";
       GlobalInstances.Player!.CanMove = true;
       _awaitingInput = false;
-      _prompt?.Deactivate();
+      _proceedPrompt?.Deactivate();
+      _questionPrompt?.Deactivate();
       _currentLineIndex = 0;
+      _lowestChoiceBox?.Disable();
+      _highestChoiceBox?.Disable();
     }
     else
     {
