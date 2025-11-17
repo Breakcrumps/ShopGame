@@ -1,2 +1,2 @@
-- [ ] Proper choice branching.
+- [x] Proper choice branching.
 - [ ] Rich text.

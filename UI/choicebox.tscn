@@ -1,0 +1,31 @@
+[gd_scene load_steps=4 format=3 uid="uid://bkmehti7hu67t"]
+
+[ext_resource type="Texture2D" uid="uid://cicmpst6061d5" path="res://UI/Choice.png" id="1_w8q0g"]
+[ext_resource type="Script" uid="uid://cryv02ys37lpy" path="res://UI/ChoiceBox.cs" id="2_86dtf"]
+[ext_resource type="Texture2D" uid="uid://cguishiaab5vp" path="res://UI/ChoiceHover.png" id="2_382ev"]
+
+[node name="ChoiceLow" type="TextureButton" node_paths=PackedStringArray("_choiceLabel")]
+offset_left = 783.0
+offset_top = 376.0
+offset_right = 997.0
+offset_bottom = 430.0
+texture_normal = ExtResource("1_w8q0g")
+texture_hover = ExtResource("2_382ev")
+stretch_mode = 4
+script = ExtResource("2_86dtf")
+_choiceLabel = NodePath("Label")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -98.0
+offset_top = -19.0
+offset_right = 98.0
+offset_bottom = 19.0
+grow_horizontal = 2
+grow_vertical = 2
+vertical_alignment = 1

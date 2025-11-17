@@ -1,11 +1,15 @@
 {
   "Shelf": [
+    { "What": "Ass." },
     {
       "What": "A familiar shelf. What now?",
       "Choices": [
-        "Yes.",
-        "No."
+        { "What": "Yes.", "Destination": "Yes" },
+        { "What": "No." }
       ]
     }
+  ],
+  "Yes": [
+    { "What": "Pretend like a menu popped up, please..." }
   ]
 }

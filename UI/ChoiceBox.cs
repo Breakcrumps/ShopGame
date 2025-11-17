@@ -4,7 +4,7 @@ using ShopGame.Static;
 namespace ShopGame.UI;
 
 [GlobalClass]
-internal sealed partial class ChoiceBox : TextureRect
+internal sealed partial class ChoiceBox : TextureButton
 {
   [Export] private Label? _choiceLabel;
   
