@@ -15,7 +15,7 @@
 offset_top = 318.0
 offset_bottom = 372.0
 
-[node name="TextBox" type="TextureRect" parent="." node_paths=PackedStringArray("_label", "_proceedPrompt", "_questionPrompt", "_timer", "_lowestChoiceBox", "_highestChoiceBox")]
+[node name="TextBox" type="TextureRect" parent="." node_paths=PackedStringArray("_label", "_proceedPrompt", "_questionPrompt", "_timer", "_waitEscapeTimer", "_lowestChoiceBox", "_highestChoiceBox")]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -34,6 +34,7 @@ _label = NodePath("RichTextLabel")
 _proceedPrompt = NodePath("ProceedPrompt")
 _questionPrompt = NodePath("QuestionPrompt")
 _timer = NodePath("../TextBoxTimer")
+_waitEscapeTimer = NodePath("../WaitEscapeTimer")
 _lowestChoiceBox = NodePath("../ChoiceLow")
 _highestChoiceBox = NodePath("../ChoiceHigh")
 
@@ -67,3 +68,5 @@ scale = Vector2(3, 3)
 texture = ExtResource("7_c7tqi")
 
 [node name="TextBoxTimer" type="Timer" parent="."]
+
+[node name="WaitEscapeTimer" type="Timer" parent="."]

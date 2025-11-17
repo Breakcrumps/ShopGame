@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
@@ -14,9 +13,14 @@ internal sealed partial class TextBox : TextureRect
 {
   [Export] private float _secBetweenChars = .03f;
   [Export] private RichTextLabel? _label;
+
+  [ExportGroup("Prompts")]
   [Export] private Prompt? _proceedPrompt;
   [Export] private Prompt? _questionPrompt;
+
+  [ExportGroup("Timers")]
   [Export] private Timer? _timer;
+  [Export] private Timer? _waitEscapeTimer;
 
   [ExportGroup("ChoiceBoxes")]
   [Export] private ChoiceBox? _lowestChoiceBox;
@@ -29,8 +33,11 @@ internal sealed partial class TextBox : TextureRect
   private readonly List<(string Name, int LineIndex)> _dialogueSnapshots = [];
   private int _currentLineIndex;
 
-  private bool _awaitingInput;
   private bool _inDialogue;
+  private bool _awaitingInput;
+  private bool _inWait;
+
+  private readonly JsonSerializerOptions _dialogueDeserOpt = new() { IncludeFields = true };
 
   public override void _Ready()
   {
@@ -41,11 +48,13 @@ internal sealed partial class TextBox : TextureRect
     
     GlobalInstances.TextBox = this;
 
-    if (!_timer.IsValid())
+    if (!_timer.IsValid() || !_waitEscapeTimer.IsValid())
       return;
 
     _timer!.WaitTime = _secBetweenChars;
     _timer.Timeout += AddVisibleCharacter;
+
+    _waitEscapeTimer!.Timeout += EndWait;
 
     _lowestChoiceBox!.Pressed += () => Choose(_choiceDestinations.Lowest);
     _highestChoiceBox!.Pressed += () => Choose(_choiceDestinations.Highest);
@@ -59,7 +68,7 @@ internal sealed partial class TextBox : TextureRect
     if (option is null)
     {
       _currentLineIndex++;
-      LoadLine();
+      LoadLine(_currentLineIndex);
       return;
     }
     
@@ -68,7 +77,7 @@ internal sealed partial class TextBox : TextureRect
     _currentDialogue = _dialogueToReplicas[option];
     _currentLineIndex = 0;
     _awaitingInput = true;
-    LoadLine();
+    LoadLine(_currentLineIndex);
 
     ReadDialogueFromFile(_currentDialogueName);
   }
@@ -80,6 +89,25 @@ internal sealed partial class TextBox : TextureRect
 
     if (_label!.VisibleCharacters < _label.GetTotalCharacterCount())
     {
+      if (_currentDialogue[_currentLineIndex].Waits.TryGetValue(_label.VisibleCharacters, out float waitTime))
+      {
+        if (!_waitEscapeTimer.IsValid())
+          return;
+
+        _timer?.Stop();
+        
+        if (waitTime == -1)
+        {
+          _inWait = true;
+          return;
+        }
+
+        _waitEscapeTimer!.WaitTime = waitTime;
+        _waitEscapeTimer.Start();
+        _inWait = true;
+        return;
+      }
+      
       _label.VisibleCharacters++;
       return;
     }
@@ -121,10 +149,7 @@ internal sealed partial class TextBox : TextureRect
 
     ReadNewDialogueFile(filename, dialogueName);
 
-    Visible = true;
-    _label!.Text = _currentDialogue[0].What;
-    _label.VisibleCharacters = 0;
-    _timer?.Start();
+    LoadLine(index: 0);
     player.CanMove = false;
     _awaitingInput = true;
     _inDialogue = true;
@@ -144,36 +169,43 @@ internal sealed partial class TextBox : TextureRect
     if (!GlobalInstances.Player.IsValid())
       return;
 
+    if (_inWait)
+    {
+      _waitEscapeTimer?.Stop();
+      EndWait();
+      return;
+    }
+
     if (!_timer!.IsStopped())
     {
       _label!.VisibleCharacters = _label.GetTotalCharacterCount();
       AcceptEvent();
       return;
     }
-    
-    if (++_currentLineIndex == _currentDialogue.Count)
+
+    if (++_currentLineIndex != _currentDialogue.Count)
     {
-      if (_dialogueSnapshots.Count == 0)
-      {
-        EndDialogue();
-      }
-      else
-      {
-        ReadDialogueFromFile(_dialogueSnapshots[^1].Name);
-        _currentLineIndex = _dialogueSnapshots[^1].LineIndex + 1;
-        _dialogueSnapshots.RemoveAt(_dialogueSnapshots.Count - 1);
-        LoadLine();
-      }
+      LoadLine(_currentLineIndex);
+      AcceptEvent();
+      return;
+    }
+
+    if (_dialogueSnapshots.Count == 0)
+    {
+      EndDialogue();
     }
     else
     {
-      LoadLine();
+      ReadDialogueFromFile(_dialogueSnapshots[^1].Name);
+      _currentLineIndex = _dialogueSnapshots[^1].LineIndex + 1;
+      _dialogueSnapshots.RemoveAt(_dialogueSnapshots.Count - 1);
+      LoadLine(_currentLineIndex);
     }
 
     AcceptEvent();
   }
 
-  private void LoadLine()
+  private void LoadLine(int index)
   {
     if (!_label.IsValid())
       return;
@@ -181,21 +213,23 @@ internal sealed partial class TextBox : TextureRect
     if (!_lowestChoiceBox.IsValid() || !_highestChoiceBox.IsValid())
       return;
 
-    if (_currentLineIndex >= _currentDialogue.Count)
+    if (index >= _currentDialogue.Count)
     {
       EndDialogue();
       return;
     }
 
+    Visible = true;
+    _awaitingInput = true;
     _timer?.Start();
-    _label!.Text = _currentDialogue[_currentLineIndex].What;
+    _currentDialogue[index].ComputeLineAndWaits();
+    _label!.Text = _currentDialogue[index].Line;
     _label.VisibleCharacters = 0;
     _proceedPrompt?.Deactivate();
     _questionPrompt?.Deactivate();
     _lowestChoiceBox!.Visible = false;
     _highestChoiceBox!.Visible = false;
   }
-
 
   private void EndDialogue()
   {
@@ -214,10 +248,24 @@ internal sealed partial class TextBox : TextureRect
     _choiceDestinations.Highest = null;
   }
 
+  private void EndWait()
+  {
+    if (!_timer.IsValid() || !_label.IsValid())
+        return;
+
+    _timer!.Start();
+    _label!.VisibleCharacters++;
+    _inWait = false;
+  }
+
   private void ReadNewDialogueFile(string filename, string dialogueName)
   {
     string jsonFile = File.ReadAllText($"Dialogue/{filename}.json");
-    _dialogueToReplicas = JsonSerializer.Deserialize<Dictionary<string, List<Replica>>>(jsonFile)!;
+
+    _dialogueToReplicas = JsonSerializer.Deserialize<Dictionary<string, List<Replica>>>(
+      jsonFile,
+      options: _dialogueDeserOpt
+    ) ?? [];
 
     ReadDialogueFromFile(dialogueName);
   }

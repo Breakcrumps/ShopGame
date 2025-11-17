@@ -2,7 +2,14 @@
   "Shelf": [
     { "What": "Ass." },
     {
-      "What": "A familiar shelf. What now?",
+      "What": "A familiar shelf.[w=.2] What now?",
+      "Choices": [
+        { "What": "Yes.", "Destination": "Yes" },
+        { "What": "No." }
+      ]
+    },
+    {
+      "What": "But the fight continues...",
       "Choices": [
         { "What": "Yes.", "Destination": "Yes" },
         { "What": "No." }
