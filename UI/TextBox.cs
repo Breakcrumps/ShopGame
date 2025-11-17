@@ -234,6 +234,7 @@ internal sealed partial class TextBox : TextureRect
   private void EndDialogue()
   {
     Visible = false;
+    _timer?.Stop();
     _label!.Text = "";
     _label.VisibleCharacters = 0;
     GlobalInstances.Player!.CanMove = true;
@@ -246,6 +247,8 @@ internal sealed partial class TextBox : TextureRect
     _highestChoiceBox?.Disable();
     _choiceDestinations.Lowest = null;
     _choiceDestinations.Highest = null;
+    _dialogueToReplicas = [];
+    _currentDialogue = [];
   }
 
   private void EndWait()
