@@ -26,12 +26,12 @@ internal sealed partial class TextBox : TextureRect
   [Export] private ChoiceBox? _lowestChoiceBox;
   [Export] private ChoiceBox? _highestChoiceBox;
 
-  private Dictionary<string, List<Replica>> _dialogueToReplicas = [];
-  private List<Replica> _currentDialogue = [];
+  private Dictionary<string, List<Replica>> _dialogueFile = [];
+  private List<Replica> _currentReplicas = [];
   private string _currentDialogueName = "";
   private (string? Lowest, string? Highest) _choiceDestinations;
   private readonly List<(string Name, int LineIndex)> _dialogueSnapshots = [];
-  private int _currentLineIndex;
+  private int _currentReplicaIndex;
 
   private bool _inDialogue;
   private bool _awaitingInput;
@@ -67,17 +67,17 @@ internal sealed partial class TextBox : TextureRect
     
     if (option is null)
     {
-      _currentLineIndex++;
-      LoadLine(_currentLineIndex);
+      _currentReplicaIndex++;
+      LoadLine(_currentReplicaIndex);
       return;
     }
     
-    _dialogueSnapshots.Add((_currentDialogueName, _currentLineIndex));
+    _dialogueSnapshots.Add((_currentDialogueName, _currentReplicaIndex));
     _currentDialogueName = option;
-    _currentDialogue = _dialogueToReplicas[option];
-    _currentLineIndex = 0;
+    _currentReplicas = _dialogueFile[option];
+    _currentReplicaIndex = 0;
     _awaitingInput = true;
-    LoadLine(_currentLineIndex);
+    LoadLine(_currentReplicaIndex);
 
     ReadDialogueFromFile(_currentDialogueName);
   }
@@ -89,7 +89,7 @@ internal sealed partial class TextBox : TextureRect
 
     if (_label!.VisibleCharacters < _label.GetTotalCharacterCount())
     {
-      if (_currentDialogue[_currentLineIndex].Waits.TryGetValue(_label.VisibleCharacters, out float waitTime))
+      if (_currentReplicas[_currentReplicaIndex].Waits.TryGetValue(_label.VisibleCharacters, out float waitTime))
       {
         if (!_waitEscapeTimer.IsValid())
           return;
@@ -114,7 +114,7 @@ internal sealed partial class TextBox : TextureRect
 
     _timer?.Stop();
 
-    if (_currentDialogue[_currentLineIndex].Choices is not List<Choice> choices)
+    if (_currentReplicas[_currentReplicaIndex].Choices is not List<Choice> choices)
     {
       _proceedPrompt?.Activate();
       return;
@@ -183,9 +183,9 @@ internal sealed partial class TextBox : TextureRect
       return;
     }
 
-    if (++_currentLineIndex != _currentDialogue.Count)
+    if (++_currentReplicaIndex != _currentReplicas.Count)
     {
-      LoadLine(_currentLineIndex);
+      LoadLine(_currentReplicaIndex);
       AcceptEvent();
       return;
     }
@@ -197,9 +197,9 @@ internal sealed partial class TextBox : TextureRect
     else
     {
       ReadDialogueFromFile(_dialogueSnapshots[^1].Name);
-      _currentLineIndex = _dialogueSnapshots[^1].LineIndex + 1;
+      _currentReplicaIndex = _dialogueSnapshots[^1].LineIndex + 1;
       _dialogueSnapshots.RemoveAt(_dialogueSnapshots.Count - 1);
-      LoadLine(_currentLineIndex);
+      LoadLine(_currentReplicaIndex);
     }
 
     AcceptEvent();
@@ -213,7 +213,7 @@ internal sealed partial class TextBox : TextureRect
     if (!_lowestChoiceBox.IsValid() || !_highestChoiceBox.IsValid())
       return;
 
-    if (index >= _currentDialogue.Count)
+    if (index >= _currentReplicas.Count)
     {
       EndDialogue();
       return;
@@ -222,8 +222,8 @@ internal sealed partial class TextBox : TextureRect
     Visible = true;
     _awaitingInput = true;
     _timer?.Start();
-    _currentDialogue[index].ComputeLineAndWaits();
-    _label!.Text = _currentDialogue[index].Line;
+    _currentReplicas[index].ComputeLineAndWaits();
+    _label!.Text = _currentReplicas[index].Line;
     _label.VisibleCharacters = 0;
     _proceedPrompt?.Deactivate();
     _questionPrompt?.Deactivate();
@@ -242,13 +242,13 @@ internal sealed partial class TextBox : TextureRect
     _inDialogue = false;
     _proceedPrompt?.Deactivate();
     _questionPrompt?.Deactivate();
-    _currentLineIndex = 0;
+    _currentReplicaIndex = 0;
     _lowestChoiceBox?.Disable();
     _highestChoiceBox?.Disable();
     _choiceDestinations.Lowest = null;
     _choiceDestinations.Highest = null;
-    _dialogueToReplicas = [];
-    _currentDialogue = [];
+    _dialogueFile = [];
+    _currentReplicas = [];
   }
 
   private void EndWait()
@@ -265,7 +265,7 @@ internal sealed partial class TextBox : TextureRect
   {
     string jsonFile = File.ReadAllText($"Dialogue/{filename}.json");
 
-    _dialogueToReplicas = JsonSerializer.Deserialize<Dictionary<string, List<Replica>>>(
+    _dialogueFile = JsonSerializer.Deserialize<Dictionary<string, List<Replica>>>(
       jsonFile,
       options: _dialogueDeserOpt
     ) ?? [];
@@ -275,13 +275,13 @@ internal sealed partial class TextBox : TextureRect
 
   private void ReadDialogueFromFile(string dialogueName)
   {
-    if (!_dialogueToReplicas.TryGetValue(dialogueName, out List<Replica>? replicas))
+    if (!_dialogueFile.TryGetValue(dialogueName, out List<Replica>? replicas))
       return;
 
     if (replicas is null)
       return;
 
-    _currentDialogue = replicas;
+    _currentReplicas = replicas;
     _currentDialogueName = dialogueName;
   }
 }

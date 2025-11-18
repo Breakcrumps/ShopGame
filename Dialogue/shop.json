@@ -1,5 +1,5 @@
 {
-  "Shelf": [
+  "Shelf1": [
     { "What": "Ass." },
     {
       "What": "A familiar shelf.[w=.2] What now?",
@@ -15,6 +15,9 @@
         { "What": "No." }
       ]
     }
+  ],
+  "Shelf2": [
+    { "What": "You've already exhausted your precious chance to interact with the shelf. Sorry!" }
   ],
   "Yes": [
     { "What": "Pretend like a menu popped up, please..." }

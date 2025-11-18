@@ -26,6 +26,7 @@ shape = SubResource("RectangleShape2D_xcrs6")
 [node name="DialogueInitArea" type="Area2D" parent="." node_paths=PackedStringArray("_parent", "_prompt")]
 collision_layer = 4
 script = ExtResource("2_rx6at")
+_consequentVariants = 2
 _parent = NodePath("..")
 _prompt = NodePath("../Prompt")
 
