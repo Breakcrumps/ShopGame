@@ -1,25 +1,20 @@
 {
   "Shelf1": [
-    { "What": "Ass." },
-    {
+    { 
       "What": "A familiar shelf.[w=.2] What now?",
       "Choices": [
-        { "What": "Yes.", "Destination": "Yes" },
-        { "What": "No." }
-      ]
-    },
-    {
-      "What": "But the fight continues...",
-      "Choices": [
-        { "What": "Yes.", "Destination": "Yes" },
-        { "What": "No." }
+        { "What": "See to produce.", "Action": "OpenShelf", "Destination": "ShelfContinue", "NoSnapshot": true },
+        { "What": "Nothing." }
       ]
     }
   ],
-  "Shelf2": [
-    { "What": "You've already exhausted your precious chance to interact with the shelf. Sorry!" }
-  ],
-  "Yes": [
-    { "What": "Pretend like a menu popped up, please..." }
+  "ShelfContinue": [
+    {
+      "What": "Anything else?",
+      "Choices": [
+        { "What": "See to produce.", "Action": "OpenShelf", "Destination": "ShelfContinue", "NoSnapshot": true },
+        { "What": "Nothing." }
+      ]
+    }
   ]
 }

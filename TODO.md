@@ -1,3 +1,3 @@
 - [x] Proper choice branching.
 - [x] Rich text. REDACTED: Wait time for now, but it's the most major addition.
-- [ ] Dialogue actions.
+- [x] Dialogue actions.

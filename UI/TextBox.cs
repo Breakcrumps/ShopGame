@@ -29,7 +29,7 @@ internal sealed partial class TextBox : TextureRect
   private Dictionary<string, List<Replica>> _dialogueFile = [];
   private List<Replica> _currentReplicas = [];
   private string _currentDialogueName = "";
-  private (string? Lowest, string? Highest) _choiceDestinations;
+  private (Choice? Lowest, Choice? Highest) _choiceDestinations;
   private readonly List<(string Name, int LineIndex)> _dialogueSnapshots = [];
   private int _currentReplicaIndex;
 
@@ -54,27 +54,33 @@ internal sealed partial class TextBox : TextureRect
     _timer!.WaitTime = _secBetweenChars;
     _timer.Timeout += AddVisibleCharacter;
 
-    _waitEscapeTimer!.Timeout += EndWait;
+    _waitEscapeTimer!.OneShot = true;
+    _waitEscapeTimer.Timeout += EndWait;
 
     _lowestChoiceBox!.Pressed += () => Choose(_choiceDestinations.Lowest);
     _highestChoiceBox!.Pressed += () => Choose(_choiceDestinations.Highest);
   }
 
-  private void Choose(string? option)
+  private void Choose(Choice? option)
   {
     if (_label is null)
       return;
     
-    if (option is null)
+    if (option is null || option.Destination is null)
     {
       _currentReplicaIndex++;
       LoadLine(_currentReplicaIndex);
       return;
     }
     
-    _dialogueSnapshots.Add((_currentDialogueName, _currentReplicaIndex));
-    _currentDialogueName = option;
-    _currentReplicas = _dialogueFile[option];
+    if (!option.NoSnapshot)
+      _dialogueSnapshots.Add((_currentDialogueName, _currentReplicaIndex));
+
+    if (option.Action is not null)
+      DialogueActions.Actions[option.Action]();
+
+    _currentDialogueName = option.Destination;
+    _currentReplicas = _dialogueFile[option.Destination];
     _currentReplicaIndex = 0;
     _awaitingInput = true;
     LoadLine(_currentReplicaIndex);
@@ -123,13 +129,13 @@ internal sealed partial class TextBox : TextureRect
     if (choices.Count == 1)
     {
       _lowestChoiceBox?.Display(choices[0].What);
-      _choiceDestinations.Lowest = choices[0].Destination;
+      _choiceDestinations.Lowest = choices[0];
     }
     else
     {
       _highestChoiceBox?.Display(choices[0].What);
       _lowestChoiceBox?.Display(choices[1].What);
-      _choiceDestinations = (choices[1].Destination, choices[0].Destination);
+      _choiceDestinations = (choices[1], choices[0]);
     }
 
     _questionPrompt?.Activate();
@@ -191,16 +197,9 @@ internal sealed partial class TextBox : TextureRect
     }
 
     if (_dialogueSnapshots.Count == 0)
-    {
       EndDialogue();
-    }
     else
-    {
-      ReadDialogueFromFile(_dialogueSnapshots[^1].Name);
-      _currentReplicaIndex = _dialogueSnapshots[^1].LineIndex + 1;
-      _dialogueSnapshots.RemoveAt(_dialogueSnapshots.Count - 1);
-      LoadLine(_currentReplicaIndex);
-    }
+      ReadSnapshot();
 
     AcceptEvent();
   }
@@ -215,7 +214,10 @@ internal sealed partial class TextBox : TextureRect
 
     if (index >= _currentReplicas.Count)
     {
-      EndDialogue();
+      if (_dialogueSnapshots.Count != 0)
+        ReadSnapshot();
+      else
+        EndDialogue();
       return;
     }
 
@@ -229,6 +231,14 @@ internal sealed partial class TextBox : TextureRect
     _questionPrompt?.Deactivate();
     _lowestChoiceBox!.Visible = false;
     _highestChoiceBox!.Visible = false;
+  }
+
+  private void ReadSnapshot()
+  {
+    ReadDialogueFromFile(_dialogueSnapshots[^1].Name);
+    _currentReplicaIndex = _dialogueSnapshots[^1].LineIndex + 1;
+    _dialogueSnapshots.RemoveAt(_dialogueSnapshots.Count - 1);
+    LoadLine(_currentReplicaIndex);
   }
 
   private void EndDialogue()
