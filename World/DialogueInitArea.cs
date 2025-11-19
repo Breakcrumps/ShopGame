@@ -49,7 +49,7 @@ internal sealed partial class DialogueInitArea : Area2D
     if (!_awaitInput)
       return;
 
-    if (!@event.IsActionPressed("interact"))
+    if (!@event.IsActionPressed("Interact"))
       return;
 
     if (!_parent.IsValid() || !_sceneRoot.IsValid())

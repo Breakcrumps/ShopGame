@@ -21,7 +21,7 @@ internal sealed partial class Player : CharacterBody2D
     if (!CanMove)
       return;
     
-    Vector2 inputVector = Input.GetVector("left", "right", "up", "down");
+    Vector2 inputVector = Input.GetVector("Left", "Right", "Up", "Down");
 
     if (inputVector == Vector2.Zero)
     {

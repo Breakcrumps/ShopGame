@@ -1,0 +1,22 @@
+[gd_scene load_steps=5 format=3 uid="uid://8etiti5kt6jr"]
+
+[ext_resource type="Script" uid="uid://cvr1k5og40i3m" path="res://UI/ShelfViewport.cs" id="1_s04mg"]
+[ext_resource type="Script" uid="uid://dy24x80mxpd2" path="res://UI/ShelfCamera.cs" id="1_tbltd"]
+[ext_resource type="PackedScene" uid="uid://cy6kkftomrapq" path="res://Import/Scenes/shelf_3d.tscn" id="2_tbltd"]
+[ext_resource type="PackedScene" uid="uid://dyveja25ufoj" path="res://UI/shelf_areas.tscn" id="4_8otmn"]
+
+[node name="ShelfViewport" type="SubViewport" node_paths=PackedStringArray("ShelfCamera")]
+physics_object_picking = true
+size = Vector2i(990, 540)
+script = ExtResource("1_s04mg")
+ShelfCamera = NodePath("ShelfCamera")
+
+[node name="ShelfCamera" type="Camera3D" parent="." node_paths=PackedStringArray("_shelfAreas")]
+transform = Transform3D(1, 0, 0, 0, 0.99210596, 0.1254025, 0, -0.1254025, 0.99210596, 0, 0, 0)
+script = ExtResource("1_tbltd")
+_shelfAreas = NodePath("../ShelfAreas")
+
+[node name="Shelf3D" parent="." instance=ExtResource("2_tbltd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.3265235, -1.4263723)
+
+[node name="ShelfAreas" parent="." instance=ExtResource("4_8otmn")]

@@ -1,0 +1,13 @@
+[gd_scene load_steps=4 format=3 uid="uid://cy6kkftomrapq"]
+
+[ext_resource type="PackedScene" uid="uid://cjcrcepga2y6m" path="res://Import/Shelf3D.glb" id="1_i1cql"]
+[ext_resource type="Shader" uid="uid://t14agq161a7m" path="res://Shaders/axis_coloring.gdshader" id="2_qoteg"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wtgmu"]
+render_priority = 0
+shader = ExtResource("2_qoteg")
+
+[node name="Shelf3D" instance=ExtResource("1_i1cql")]
+
+[node name="Cube" parent="." index="0"]
+surface_material_override/0 = SubResource("ShaderMaterial_wtgmu")

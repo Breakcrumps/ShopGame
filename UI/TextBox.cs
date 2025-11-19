@@ -66,7 +66,17 @@ internal sealed partial class TextBox : TextureRect
     if (_label is null)
       return;
     
-    if (option is null || option.Destination is null)
+    if (option is null)
+    {
+      _currentReplicaIndex++;
+      LoadLine(_currentReplicaIndex);
+      return;
+    }
+    
+    if (option.Action is not null)
+      DialogueActions.Actions[option.Action]();
+
+    if (option.Destination is null)
     {
       _currentReplicaIndex++;
       LoadLine(_currentReplicaIndex);
@@ -75,9 +85,6 @@ internal sealed partial class TextBox : TextureRect
     
     if (!option.NoSnapshot)
       _dialogueSnapshots.Add((_currentDialogueName, _currentReplicaIndex));
-
-    if (option.Action is not null)
-      DialogueActions.Actions[option.Action]();
 
     _currentDialogueName = option.Destination;
     _currentReplicas = _dialogueFile[option.Destination];
@@ -166,7 +173,7 @@ internal sealed partial class TextBox : TextureRect
     if (!_awaitingInput)
       return;
 
-    if (!@event.IsActionPressed("interact"))
+    if (!@event.IsActionPressed("Interact"))
       return;
 
     if (!_timer.IsValid() || !_label.IsValid())
