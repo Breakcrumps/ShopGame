@@ -1,0 +1,50 @@
+[gd_scene load_steps=5 format=3 uid="uid://bkg3b3k6pllpo"]
+
+[ext_resource type="Script" uid="uid://dy24x80mxpd2" path="res://UI/ShelfCamera.cs" id="1_kclsx"]
+
+[sub_resource type="Animation" id="Animation_kclsx"]
+resource_name = "Turn"
+length = 0.13333668
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.13333334),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(-0.12573352, 0, 0), Vector3(-1.5707964, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_2ap2a"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-0.12573352, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_moh77"]
+_data = {
+&"RESET": SubResource("Animation_2ap2a"),
+&"Turn": SubResource("Animation_kclsx")
+}
+
+[node name="ShelfCamera" type="Camera3D" node_paths=PackedStringArray("_animPlayer")]
+transform = Transform3D(1, 0, 0, 0, 0.99210596, 0.1254025, 0, -0.1254025, 0.99210596, 0, 0, 0)
+script = ExtResource("1_kclsx")
+_animPlayer = NodePath("AnimationPlayer")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_moh77")
+}

@@ -6,6 +6,6 @@ namespace ShopGame.Static;
 internal static class DialogueActions
 {
   internal static readonly Dictionary<string, Action> Actions = new() {
-    ["OpenShelf"] = () => GlobalInstances.ShelfViewportContainer?.Activate()
+    ["OpenShelf"] = static () => GlobalInstances.ShelfViewportContainer?.Activate()
   };
 }

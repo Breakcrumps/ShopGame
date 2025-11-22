@@ -24,11 +24,12 @@ internal sealed partial class ShelfViewportContainer : SubViewportContainer
     Visible = true;
     _ui!.ProcessMode = ProcessModeEnum.Disabled;
     ProcessMode = ProcessModeEnum.Always;
+    Input.MouseMode = Input.MouseModeEnum.Hidden;
 
     if (!_shelfViewport.IsValid())
       return;
     
-    _shelfViewport!.ShelfCamera?.ResetRotation();
+    _shelfViewport!.ShelfCamera?.Reset();
   }
 
   internal void Deactivate()
@@ -39,6 +40,7 @@ internal sealed partial class ShelfViewportContainer : SubViewportContainer
     Visible = false;
     _ui!.ProcessMode = ProcessModeEnum.Always;
     ProcessMode = ProcessModeEnum.Disabled;
+    Input.MouseMode = Input.MouseModeEnum.Visible;
   }
 
   public override void _Input(InputEvent @event)

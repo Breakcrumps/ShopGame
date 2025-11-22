@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ShopGame.Types;
 
-internal sealed record Replica
+internal sealed class Replica
 {
   public string Who { get; init; } = "";
   public string What { private get; init; } = "";
