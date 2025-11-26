@@ -27,7 +27,7 @@ internal sealed partial class DialogueInitArea : Area2D
 
     BodyEntered += body =>
     {
-      if (body is not Player)
+      if (body is not Girl)
       return;
 
       _prompt?.Activate();
@@ -36,7 +36,7 @@ internal sealed partial class DialogueInitArea : Area2D
 
     BodyExited += body =>
     {
-      if (body is not Player)
+      if (body is not Girl)
       return;
 
       _prompt?.Deactivate();

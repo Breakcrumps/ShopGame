@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Godot;
 using ShopGame.Static;
@@ -8,11 +7,12 @@ namespace ShopGame.UI;
 [GlobalClass]
 internal sealed partial class ShelfCamera : Camera3D
 {
+  [Export] private HandSprite? _handSprite;
   [Export] private ShelfAreas? _shelfAreas;
   [Export] private AnimationPlayer? _animPlayer;
   [Export] private RayCast3D? _raycast;
 
-  private PhysicsBody3D? _focusedItem;
+  private BoxItem? _focusedItem;
   
   internal Vector3 InitRotation;
 
@@ -107,11 +107,23 @@ internal sealed partial class ShelfCamera : Camera3D
 
   public override void _PhysicsProcess(double delta)
   {
-    if (!Input.IsActionPressed("Grab"))
-      return;
-    
     if (!_focusedItem.IsValid())
       return;
+
+    if (_handSprite!.InShelfZone)
+      _focusedItem!.Scale = .8f * Vector3.One;
+    
+    if (!Input.IsActionPressed("Grab"))
+    {
+      if (!_handSprite.IsValid())
+        return;
+
+      if (_handSprite!.InShelfZone)
+        return;
+
+      _focusedItem!.ReturnToInitPos = true;
+      return;
+    }
 
     _focusedItem!.GlobalPosition = ToGlobal(TranslatedCursorDirection());
   }
@@ -128,12 +140,21 @@ internal sealed partial class ShelfCamera : Camera3D
 
     _raycast!.TargetPosition = localDirection * 3f;
 
+    if (!Input.IsActionPressed("Grab"))
+    {
+      _focusedItem = null;
+      return;
+    }
+
+    if (_focusedItem.IsValid())
+      return;
+
     if (!_raycast.IsColliding())
       return;
 
     GodotObject collider = _raycast.GetCollider();
 
-    if (collider.IfValid() is not RigidBody3D item)
+    if (collider.IfValid() is not BoxItem item)
       return;
 
     _focusedItem = item;

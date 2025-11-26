@@ -9,9 +9,7 @@
 [ext_resource type="Script" uid="uid://kd5eijmjvmls" path="res://UI/HandSprite.cs" id="6_st1ky"]
 [ext_resource type="PackedScene" uid="uid://b3a4nvhhb4ltv" path="res://Import/Scenes/box_3d.tscn" id="7_3j1cj"]
 [ext_resource type="Texture2D" uid="uid://na4daahefewo" path="res://UI/Mayak.png" id="8_nmdvl"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_3j1cj"]
-size = Vector3(0.3, 0.3, 0.3)
+[ext_resource type="PackedScene" uid="uid://cb1styb71jdcq" path="res://UI/box_item.tscn" id="9_v1g1g"]
 
 [node name="ShelfViewport" type="SubViewport" node_paths=PackedStringArray("ShelfCamera")]
 canvas_item_default_texture_filter = 0
@@ -20,7 +18,8 @@ size = Vector2i(990, 540)
 script = ExtResource("1_s04mg")
 ShelfCamera = NodePath("ShelfCamera")
 
-[node name="ShelfCamera" parent="." node_paths=PackedStringArray("_shelfAreas", "_raycast") instance=ExtResource("2_8otmn")]
+[node name="ShelfCamera" parent="." node_paths=PackedStringArray("_handSprite", "_shelfAreas", "_raycast") instance=ExtResource("2_8otmn")]
+_handSprite = NodePath("../HandSprite")
 _shelfAreas = NodePath("../ShelfAreas")
 _raycast = NodePath("RayCast3D")
 
@@ -49,27 +48,10 @@ _shelfAreas = NodePath("../ShelfAreas")
 [node name="Box3D" parent="." instance=ExtResource("7_3j1cj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.814604, 0)
 
-[node name="RigidBody3D" type="RigidBody3D" parent="."]
+[node name="BoxItem" parent="." instance=ExtResource("9_v1g1g")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.2788997, 0)
-collision_mask = 0
-gravity_scale = 0.0
+_itemTexture = ExtResource("8_nmdvl")
 
-[node name="Sprite3D" type="Sprite3D" parent="RigidBody3D"]
-billboard = 1
-texture_filter = 2
-texture = ExtResource("8_nmdvl")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D"]
-shape = SubResource("BoxShape3D_3j1cj")
-
-[node name="RigidBody3D2" type="RigidBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.2788997, -0.34584028)
-gravity_scale = 0.0
-
-[node name="Sprite3D" type="Sprite3D" parent="RigidBody3D2"]
-billboard = 1
-texture_filter = 2
-texture = ExtResource("8_nmdvl")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D2"]
-shape = SubResource("BoxShape3D_3j1cj")
+[node name="BoxItem2" parent="." instance=ExtResource("9_v1g1g")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.284, -1.279, 0)
+_itemTexture = ExtResource("8_nmdvl")

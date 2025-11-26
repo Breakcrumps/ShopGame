@@ -4,7 +4,7 @@ using ShopGame.Static;
 namespace ShopGame.Characters;
 
 [GlobalClass]
-internal sealed partial class Player : CharacterBody2D
+internal sealed partial class Girl : CharacterBody2D
 {
   [Export] private float _speed = 200f;
   [Export] private int _framesToAccelerate = 5;

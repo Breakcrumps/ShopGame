@@ -157,7 +157,7 @@ internal sealed partial class TextBox : TextureRect
     if (!_label.IsValid())
       return;
 
-    if (GlobalInstances.Player.IfValid() is not Player player)
+    if (GlobalInstances.Player.IfValid() is not Girl player)
       return;
 
     ReadNewDialogueFile(filename, dialogueName);

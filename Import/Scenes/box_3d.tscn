@@ -1,11 +1,13 @@
 [gd_scene load_steps=4 format=3 uid="uid://b3a4nvhhb4ltv"]
 
 [ext_resource type="PackedScene" uid="uid://mwndd86ywg6s" path="res://Import/Box3D.glb" id="1_njuxy"]
-[ext_resource type="Shader" uid="uid://t14agq161a7m" path="res://Shaders/axis_coloring.gdshader" id="2_is6n4"]
+[ext_resource type="Shader" uid="uid://cfvykvcxlac07" path="res://Shaders/axis_shaded.gdshader" id="2_is6n4"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_fkbc8"]
 render_priority = 0
 shader = ExtResource("2_is6n4")
+shader_parameter/albedo = Color(0.68861604, 0.58083487, 0.51720935, 1)
+shader_parameter/k_per_axis = Vector3(0.3, 1, 0.5)
 
 [node name="Box3D" instance=ExtResource("1_njuxy")]
 

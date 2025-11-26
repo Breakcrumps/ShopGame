@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://btlv6fqtyeprk"]
+
+[ext_resource type="Script" uid="uid://f2otcrggcuc6" path="res://UI/TransitionButton.cs" id="1_m33sc"]
+[ext_resource type="PackedScene" uid="uid://co3c2nkr5h3pb" path="res://World/shop.tscn" id="2_fv6my"]
+
+[node name="WorldMap" type="CanvasLayer"]
+
+[node name="TransitionButton" type="Button" parent="."]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 92.0
+offset_top = -189.0
+offset_right = 139.0
+offset_bottom = -158.0
+grow_vertical = 0
+text = "Shop"
+script = ExtResource("1_m33sc")
+_transitionTo = ExtResource("2_fv6my")

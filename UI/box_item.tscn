@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://cb1styb71jdcq"]
+
+[ext_resource type="Script" uid="uid://dcw202prl2uf7" path="res://UI/BoxItem.cs" id="1_4l3e4"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_3j1cj"]
+size = Vector3(0.3, 0.3, 0.3)
+
+[node name="BoxItem" type="CharacterBody3D" node_paths=PackedStringArray("_spriteNode")]
+collision_mask = 0
+script = ExtResource("1_4l3e4")
+_spriteNode = NodePath("Sprite3D")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+billboard = 1
+texture_filter = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_3j1cj")

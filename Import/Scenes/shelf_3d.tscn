@@ -1,11 +1,13 @@
 [gd_scene load_steps=4 format=3 uid="uid://cy6kkftomrapq"]
 
 [ext_resource type="PackedScene" uid="uid://cjcrcepga2y6m" path="res://Import/Shelf3D.glb" id="1_i1cql"]
-[ext_resource type="Shader" uid="uid://t14agq161a7m" path="res://Shaders/axis_coloring.gdshader" id="2_qoteg"]
+[ext_resource type="Shader" uid="uid://cfvykvcxlac07" path="res://Shaders/axis_shaded.gdshader" id="2_i1cql"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wtgmu"]
 render_priority = 0
-shader = ExtResource("2_qoteg")
+shader = ExtResource("2_i1cql")
+shader_parameter/albedo = Color(0.45, 0.36, 0.33, 1)
+shader_parameter/k_per_axis = Vector3(0.3, 1, 0.5)
 
 [node name="Shelf3D" instance=ExtResource("1_i1cql")]
 
