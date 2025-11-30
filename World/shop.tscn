@@ -1,8 +1,13 @@
-[gd_scene load_steps=4 format=3 uid="uid://co3c2nkr5h3pb"]
+[gd_scene load_steps=8 format=3 uid="uid://co3c2nkr5h3pb"]
 
 [ext_resource type="PackedScene" uid="uid://ckcnudde4mu2m" path="res://Characters/girl.tscn" id="1_gqsku"]
 [ext_resource type="PackedScene" uid="uid://cqm4kfelmm1mc" path="res://World/shelf.tscn" id="2_2nxxu"]
 [ext_resource type="PackedScene" uid="uid://dkv3yol4sh756" path="res://UI/ui.tscn" id="3_dcrsj"]
+[ext_resource type="Script" uid="uid://dda6prs2w18x4" path="res://UI/TransitionArea.cs" id="4_s7atx"]
+[ext_resource type="PackedScene" uid="uid://qhe57e24toic" path="res://UI/prompt.tscn" id="5_fi1uk"]
+[ext_resource type="Texture2D" uid="uid://b5xqcpovlnvc3" path="res://UI/E.png" id="6_ghprd"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_s7atx"]
 
 [node name="Shop" type="Node2D"]
 y_sort_enabled = true
@@ -16,3 +21,16 @@ position = Vector2(42, -22)
 zoom = Vector2(4, 4)
 
 [node name="UI" parent="." instance=ExtResource("3_dcrsj")]
+
+[node name="TransitionArea" type="Area2D" parent="." node_paths=PackedStringArray("_prompt")]
+position = Vector2(129, -16)
+script = ExtResource("4_s7atx")
+_destinationPath = "res://UI/world_map.tscn"
+_prompt = NodePath("Prompt")
+metadata/_custom_type_script = "uid://dda6prs2w18x4"
+
+[node name="Prompt" parent="TransitionArea" instance=ExtResource("5_fi1uk")]
+texture = ExtResource("6_ghprd")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TransitionArea"]
+shape = SubResource("RectangleShape2D_s7atx")
