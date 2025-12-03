@@ -16,3 +16,13 @@ grow_vertical = 0
 text = "Shop"
 script = ExtResource("1_m33sc")
 _destinationPath = "res://World/shop.tscn"
+
+[node name="TransitionButton2" type="Button" parent="."]
+offset_left = 92.0
+offset_top = 500.0
+offset_right = 137.0
+offset_bottom = 531.0
+text = "Field"
+script = ExtResource("1_m33sc")
+_destinationPath = "res://World/field.tscn"
+metadata/_custom_type_script = "uid://f2otcrggcuc6"

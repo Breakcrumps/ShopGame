@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://b6vujm0w71pvy"]
+
+[ext_resource type="Texture2D" uid="uid://i71o4hcvb216" path="res://Characters/Girl.png" id="1_1d0ls"]
+[ext_resource type="Script" uid="uid://bm0l1pueevdwb" path="res://Characters/FieldGirl.cs" id="1_56oqm"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_56oqm"]
+size = Vector2(20, 29)
+
+[node name="FieldGirl" type="CharacterBody2D"]
+script = ExtResource("1_56oqm")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -0.5)
+shape = SubResource("RectangleShape2D_56oqm")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_1d0ls")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(0, -40)
+zoom = Vector2(2.5, 2.5)

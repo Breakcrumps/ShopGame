@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://wo1ufhq6ot5e"]
+
+[ext_resource type="PackedScene" uid="uid://b6vujm0w71pvy" path="res://Characters/field_girl.tscn" id="1_j7efd"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4x6vp"]
+size = Vector2(1000, 20)
+
+[node name="Field" type="Node2D"]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2(0, 10)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+shape = SubResource("RectangleShape2D_4x6vp")
+
+[node name="FieldGirl" parent="." instance=ExtResource("1_j7efd")]
+position = Vector2(0, -44)
