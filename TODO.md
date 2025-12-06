@@ -1,4 +1,5 @@
 - [x] Proper choice branching.
 - [x] Rich text. REDACTED: Wait time for now, but it's the most major addition.
 - [x] Dialogue actions.
-- [ ] Finish the shelf mechanic by introducing cells to put items into.
+- [x] Finish the shelf mechanic by introducing cells to put items into.
+- [ ] Funking rename all the shit in UI and organise the folder. Gross.

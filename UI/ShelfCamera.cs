@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using Godot;
 using ShopGame.Static;
+using ShopGame.World;
 
 namespace ShopGame.UI;
 
@@ -8,6 +10,7 @@ namespace ShopGame.UI;
 internal sealed partial class ShelfCamera : Camera3D
 {
   [Export] private HandSprite? _handSprite;
+  [Export] private ShelfPosGroup? _shelfPosGroup;
   [Export] private ShelfAreas? _shelfAreas;
   [Export] private AnimationPlayer? _animPlayer;
   [Export] private RayCast3D? _raycast;
@@ -24,11 +27,8 @@ internal sealed partial class ShelfCamera : Camera3D
     [TurnOrientation.Down] = null
   };
 
-  private readonly Dictionary<TurnOrientation, HandZone?> _handZones = new()
-  {
-    [TurnOrientation.Up] = null,
-    [TurnOrientation.Down] = null
-  };
+  private HandZone? _boxZone;
+  private readonly List<ShelfZone> _shelfZones = [];
   
   public override void _Ready()
   {
@@ -58,10 +58,14 @@ internal sealed partial class ShelfCamera : Camera3D
       if (child is not HandZone handZone)
         return;
 
-      _handZones[handZone.TurnOrientation] = handZone;
+      if (handZone is not ShelfZone shelfZone)
+      {
+        _boxZone = handZone;
+        _boxZone.MouseFilter = Control.MouseFilterEnum.Ignore;
+        return;
+      }
 
-      if (handZone.TurnOrientation != _turnOrientation)
-        handZone.MouseFilter = Control.MouseFilterEnum.Ignore;
+      _shelfZones.Add(shelfZone);
     }
   }
 
@@ -91,10 +95,19 @@ internal sealed partial class ShelfCamera : Camera3D
 
   private void UpdateHandZones()
   {
-    if (_handZones[_turnOrientation] is HandZone currentZone)
-      currentZone.MouseFilter = Control.MouseFilterEnum.Stop;
-    if (_handZones[1 - _turnOrientation] is HandZone pastZone)
-      pastZone.MouseFilter = Control.MouseFilterEnum.Ignore;
+    if (!_boxZone.IsValid())
+      return;
+    
+    if (_turnOrientation == TurnOrientation.Up)
+    {
+      _boxZone!.MouseFilter = Control.MouseFilterEnum.Ignore;
+      _shelfZones.ForEach(x => x.MouseFilter = Control.MouseFilterEnum.Stop);
+    }
+    else
+    {
+      _boxZone!.MouseFilter = Control.MouseFilterEnum.Stop;
+      _shelfZones.ForEach(x => x.MouseFilter = Control.MouseFilterEnum.Ignore);
+    }
   }
 
   internal void Reset()
@@ -110,25 +123,41 @@ internal sealed partial class ShelfCamera : Camera3D
     if (!_focusedItem.IsValid())
       return;
 
-    if (_handSprite!.InShelfZone)
+    if (_handSprite!.FocusedShelfPos.Row != -1)
       _focusedItem!.Scale = .8f * Vector3.One;
     
-    if (!Input.IsActionPressed("Grab"))
+    if (Input.IsActionPressed("Grab"))
     {
-      if (!_handSprite.IsValid())
-        return;
+      _focusedItem!.GlobalPosition = ToGlobal(TranslatedCursorDirection());
+      return;
+    }
 
-      if (_handSprite!.InShelfZone)
-        return;
+    HandleRelease();
+    _focusedItem = null;
+  }
 
+  private void HandleRelease()
+  {
+    if (!_handSprite.IsValid())
+      return;
+
+    if (_handSprite!.FocusedShelfPos is not { Pos: not -1 } shelfPos)
+    {
       _focusedItem!.ReturnToInitPos = true;
       return;
     }
 
-    _focusedItem!.GlobalPosition = ToGlobal(TranslatedCursorDirection());
+    if (!_shelfPosGroup.IsValid())
+      return;
+    
+    int hash = ShelfPosGroup.HashRowPos(shelfPos.Row, shelfPos.Pos);
+    _shelfPosGroup!.ShelfPosDict[hash].PutItem(_focusedItem!);
   }
 
   public override void _Input(InputEvent @event)
+    => HandleToyCapture(@event);
+
+  private void HandleToyCapture(InputEvent @event)
   {
     if (@event is not InputEventMouseMotion)
       return;
@@ -141,10 +170,7 @@ internal sealed partial class ShelfCamera : Camera3D
     _raycast!.TargetPosition = localDirection * 3f;
 
     if (!Input.IsActionPressed("Grab"))
-    {
-      _focusedItem = null;
       return;
-    }
 
     if (_focusedItem.IsValid())
       return;

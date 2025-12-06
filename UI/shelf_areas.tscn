@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://dyveja25ufoj"]
+[gd_scene load_steps=5 format=3 uid="uid://dyveja25ufoj"]
 
 [ext_resource type="Script" uid="uid://cflegjrn15w17" path="res://UI/ShelfTurnArea.cs" id="1_idruj"]
 [ext_resource type="Script" uid="uid://bkryqn02hwdw5" path="res://UI/ShelfAreas.cs" id="1_n4vui"]
 [ext_resource type="Script" uid="uid://t43jxmoch103" path="res://UI/HandZone.cs" id="2_ou1se"]
+[ext_resource type="Script" uid="uid://b140ifx65k20x" path="res://UI/ShelfZone.cs" id="3_dukt4"]
 
 [node name="ShelfAreas" type="CanvasLayer" node_paths=PackedStringArray("ZoneGroup", "TurnAreaGroup")]
 script = ExtResource("1_n4vui")
@@ -33,7 +34,7 @@ grow_vertical = 2
 script = ExtResource("2_ou1se")
 TurnOrientation = 1
 
-[node name="ShelfZone" type="Control" parent="ZoneGroup"]
+[node name="HandZone" type="Control" parent="ZoneGroup"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -42,13 +43,63 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -175.0
 offset_top = -89.0
+offset_right = -87.5
+offset_bottom = -64.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_dukt4")
+metadata/_custom_type_script = "uid://t43jxmoch103"
+
+[node name="HandZone2" type="Control" parent="ZoneGroup"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -87.5
+offset_top = -89.0
+offset_bottom = -64.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_dukt4")
+Pos = 1
+metadata/_custom_type_script = "uid://t43jxmoch103"
+
+[node name="HandZone3" type="Control" parent="ZoneGroup"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_top = -89.0
+offset_right = 87.5
+offset_bottom = -64.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_dukt4")
+Pos = 2
+metadata/_custom_type_script = "uid://t43jxmoch103"
+
+[node name="HandZone4" type="Control" parent="ZoneGroup"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 87.5
+offset_top = -89.0
 offset_right = 175.0
 offset_bottom = -64.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("2_ou1se")
+script = ExtResource("3_dukt4")
+Pos = 3
+metadata/_custom_type_script = "uid://t43jxmoch103"
 
-[node name="ShelfZone2" type="Control" parent="ZoneGroup"]
+[node name="ShelfZone3" type="Control" parent="ZoneGroup"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -57,11 +108,61 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -175.0
 offset_top = 101.0
-offset_right = 175.0
-offset_bottom = 201.0
+offset_right = -87.5
+offset_bottom = 151.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("2_ou1se")
+script = ExtResource("3_dukt4")
+Row = 1
+
+[node name="ShelfZone4" type="Control" parent="ZoneGroup"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -87.5
+offset_top = 101.0
+offset_bottom = 151.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_dukt4")
+Row = 1
+Pos = 1
+
+[node name="ShelfZone5" type="Control" parent="ZoneGroup"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_top = 101.0
+offset_right = 87.5
+offset_bottom = 151.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_dukt4")
+Row = 1
+Pos = 2
+
+[node name="ShelfZone6" type="Control" parent="ZoneGroup"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 87.5
+offset_top = 101.0
+offset_right = 175.0
+offset_bottom = 151.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_dukt4")
+Row = 1
+Pos = 3
 
 [node name="TurnAreaGroup" type="Control" parent="."]
 layout_mode = 3

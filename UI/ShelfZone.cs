@@ -1,0 +1,29 @@
+using Godot;
+using ShopGame.Static;
+using ShopGame.Types;
+using ShopGame.UI;
+
+[GlobalClass]
+internal sealed partial class ShelfZone : HandZone
+{
+  [Export] internal int Row { get; private set; }
+  [Export] internal int Pos { get; private set; }
+
+  private protected override void HandleMouseEntered()
+  {
+    if (GlobalInstances.HandSprite.IfValid() is not HandSprite handSprite)
+      return;
+
+    base.HandleMouseEntered();
+    handSprite.FocusedShelfPos = new ShelfPos(Row, Pos);
+  }
+
+  private protected override void HandleMouseExited()
+  {
+    if (GlobalInstances.HandSprite.IfValid() is not HandSprite handSprite)
+      return;
+
+    base.HandleMouseExited();
+    handSprite.FocusedShelfPos = new ShelfPos(-1, -1);
+  }
+}

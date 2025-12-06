@@ -9,4 +9,6 @@ internal static class GlobalInstances
   internal static ShelfViewportContainer? ShelfViewportContainer { get; set; }
 
   internal static Girl? Player { get; set; }
+
+  internal static HandSprite? HandSprite { get; set; }
 }
