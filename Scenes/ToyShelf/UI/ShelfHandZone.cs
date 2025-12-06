@@ -4,7 +4,7 @@ using ShopGame.Types;
 using ShopGame.UI;
 
 [GlobalClass]
-internal sealed partial class ShelfZone : HandZone
+internal sealed partial class ShelfHandZone : HandZone
 {
   [Export] internal int Row { get; private set; }
   [Export] internal int Pos { get; private set; }

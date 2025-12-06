@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b5xqcpovlnvc3"
-path="res://.godot/imported/E.png-bca33615654db94995bc850e0fff360e.ctex"
+uid="uid://cicmpst6061d5"
+path="res://.godot/imported/Choice.png-a33914d400e9497a9efc189fd185d672.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://UI/E.png"
-dest_files=["res://.godot/imported/E.png-bca33615654db94995bc850e0fff360e.ctex"]
+source_file="res://UI/Textbox/Choice.png"
+dest_files=["res://.godot/imported/Choice.png-a33914d400e9497a9efc189fd185d672.ctex"]
 
 [params]
 

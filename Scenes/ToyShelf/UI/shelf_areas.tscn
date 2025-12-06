@@ -1,9 +1,9 @@
 [gd_scene load_steps=5 format=3 uid="uid://dyveja25ufoj"]
 
-[ext_resource type="Script" uid="uid://cflegjrn15w17" path="res://UI/ShelfTurnArea.cs" id="1_idruj"]
-[ext_resource type="Script" uid="uid://bkryqn02hwdw5" path="res://UI/ShelfAreas.cs" id="1_n4vui"]
-[ext_resource type="Script" uid="uid://t43jxmoch103" path="res://UI/HandZone.cs" id="2_ou1se"]
-[ext_resource type="Script" uid="uid://b140ifx65k20x" path="res://UI/ShelfZone.cs" id="3_dukt4"]
+[ext_resource type="Script" uid="uid://cflegjrn15w17" path="res://Scenes/ToyShelf/UI/ShelfTurnArea.cs" id="1_idruj"]
+[ext_resource type="Script" uid="uid://bkryqn02hwdw5" path="res://Scenes/ToyShelf/UI/ShelfScreenAreas.cs" id="1_n4vui"]
+[ext_resource type="Script" uid="uid://t43jxmoch103" path="res://Scenes/ToyShelf/UI/HandZone.cs" id="2_ou1se"]
+[ext_resource type="Script" uid="uid://b140ifx65k20x" path="res://Scenes/ToyShelf/UI/ShelfHandZone.cs" id="3_dukt4"]
 
 [node name="ShelfAreas" type="CanvasLayer" node_paths=PackedStringArray("ZoneGroup", "TurnAreaGroup")]
 script = ExtResource("1_n4vui")

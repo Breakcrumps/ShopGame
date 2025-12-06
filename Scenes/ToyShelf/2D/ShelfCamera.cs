@@ -11,7 +11,7 @@ internal sealed partial class ShelfCamera : Camera3D
 {
   [Export] private HandSprite? _handSprite;
   [Export] private ShelfPosGroup? _shelfPosGroup;
-  [Export] private ShelfAreas? _shelfAreas;
+  [Export] private ShelfScreenAreas? _shelfAreas;
   [Export] private AnimationPlayer? _animPlayer;
   [Export] private RayCast3D? _raycast;
 
@@ -28,7 +28,7 @@ internal sealed partial class ShelfCamera : Camera3D
   };
 
   private HandZone? _boxZone;
-  private readonly List<ShelfZone> _shelfZones = [];
+  private readonly List<ShelfHandZone> _shelfZones = [];
   
   public override void _Ready()
   {
@@ -58,7 +58,7 @@ internal sealed partial class ShelfCamera : Camera3D
       if (child is not HandZone handZone)
         return;
 
-      if (handZone is not ShelfZone shelfZone)
+      if (handZone is not ShelfHandZone shelfZone)
       {
         _boxZone = handZone;
         _boxZone.MouseFilter = Control.MouseFilterEnum.Ignore;

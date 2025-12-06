@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ns6vo3v6u7qk"
-path="res://.godot/imported/Hand.png-ccca20225cbcead99991d3f8f4837b20.ctex"
+uid="uid://xcineshn34oc"
+path="res://.godot/imported/Textbox.png-5f2339564c1d71c1151d5bb6b7b88326.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://UI/Hand.png"
-dest_files=["res://.godot/imported/Hand.png-ccca20225cbcead99991d3f8f4837b20.ctex"]
+source_file="res://UI/Textbox/Textbox.png"
+dest_files=["res://.godot/imported/Textbox.png-5f2339564c1d71c1151d5bb6b7b88326.ctex"]
 
 [params]
 

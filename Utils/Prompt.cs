@@ -13,7 +13,7 @@ internal sealed partial class Prompt : Sprite2D
   internal void Activate()
   {
     Visible = true;
-    _animPlayer?.Play("flash");
+    _animPlayer?.Play("Flash");
   }
   
   internal void Deactivate()

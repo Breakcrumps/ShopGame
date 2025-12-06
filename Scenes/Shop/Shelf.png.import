@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cicmpst6061d5"
-path="res://.godot/imported/Choice.png-f91389de1b325ae015e74c01acbd2148.ctex"
+uid="uid://2qhp1hgq3yi3"
+path="res://.godot/imported/Shelf.png-06e69f960f41b226c17bb35a66b12f6e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://UI/Choice.png"
-dest_files=["res://.godot/imported/Choice.png-f91389de1b325ae015e74c01acbd2148.ctex"]
+source_file="res://Scenes/Shop/Shelf.png"
+dest_files=["res://.godot/imported/Shelf.png-06e69f960f41b226c17bb35a66b12f6e.ctex"]
 
 [params]
 

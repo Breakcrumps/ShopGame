@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://2qhp1hgq3yi3"
-path="res://.godot/imported/Shelf.png-3f962a475288af070b73c5a8f92fbf4e.ctex"
+uid="uid://b1ui4h2tbwdya"
+path="res://.godot/imported/Arrow.png-de45aa3fc774fbd5daa08bd130befef6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://World/Shelf.png"
-dest_files=["res://.godot/imported/Shelf.png-3f962a475288af070b73c5a8f92fbf4e.ctex"]
+source_file="res://UI/Textbox/Arrow.png"
+dest_files=["res://.godot/imported/Arrow.png-de45aa3fc774fbd5daa08bd130befef6.ctex"]
 
 [params]
 

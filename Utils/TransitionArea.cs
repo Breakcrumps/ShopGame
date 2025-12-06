@@ -21,6 +21,7 @@ internal sealed partial class TransitionArea : Area2D
       _enabled = true;
       _prompt?.Activate();
     };
+
     BodyExited += node =>
     {
       if (node is not Girl)

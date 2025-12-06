@@ -19,8 +19,8 @@ internal sealed partial class TextBox : TextureRect
   [Export] private Prompt? _questionPrompt;
 
   [ExportGroup("Timers")]
-  [Export] private Timer? _timer;
-  [Export] private Timer? _waitEscapeTimer;
+  [Export] private Timer? _nextCharTimer;
+  [Export] private Timer? _waitTimer;
 
   [ExportGroup("ChoiceBoxes")]
   [Export] private ChoiceBox? _lowestChoiceBox;
@@ -37,7 +37,7 @@ internal sealed partial class TextBox : TextureRect
   private bool _awaitingInput;
   private bool _inWait;
 
-  private readonly JsonSerializerOptions _dialogueDeserOpt = new() { IncludeFields = true };
+  private static readonly JsonSerializerOptions _dialogueDeserOpt = new() { IncludeFields = true };
 
   public override void _Ready()
   {
@@ -48,14 +48,14 @@ internal sealed partial class TextBox : TextureRect
     
     GlobalInstances.TextBox = this;
 
-    if (!_timer.IsValid() || !_waitEscapeTimer.IsValid())
+    if (!_nextCharTimer.IsValid() || !_waitTimer.IsValid())
       return;
 
-    _timer!.WaitTime = _secBetweenChars;
-    _timer.Timeout += AddVisibleCharacter;
+    _nextCharTimer!.WaitTime = _secBetweenChars;
+    _nextCharTimer.Timeout += AddVisibleCharacter;
 
-    _waitEscapeTimer!.OneShot = true;
-    _waitEscapeTimer.Timeout += EndWait;
+    _waitTimer!.OneShot = true;
+    _waitTimer.Timeout += EndWait;
 
     _lowestChoiceBox!.Pressed += () => Choose(_choiceDestinations.Lowest);
     _highestChoiceBox!.Pressed += () => Choose(_choiceDestinations.Highest);
@@ -63,9 +63,6 @@ internal sealed partial class TextBox : TextureRect
 
   private void Choose(Choice? option)
   {
-    if (_label is null)
-      return;
-    
     if (option is null)
     {
       _currentReplicaIndex++;
@@ -102,30 +99,30 @@ internal sealed partial class TextBox : TextureRect
 
     if (_label!.VisibleCharacters < _label.GetTotalCharacterCount())
     {
-      if (_currentReplicas[_currentReplicaIndex].Waits.TryGetValue(_label.VisibleCharacters, out float waitTime))
+      if (!_currentReplicas[_currentReplicaIndex].Waits.TryGetValue(_label.VisibleCharacters, out float waitTime))
       {
-        if (!_waitEscapeTimer.IsValid())
-          return;
+        _label.VisibleCharacters++;
+        return; 
+      }
+      
+      if (!_waitTimer.IsValid())
+        return;
 
-        _timer?.Stop();
-        
-        if (waitTime == -1)
-        {
-          _inWait = true;
-          return;
-        }
-
-        _waitEscapeTimer!.WaitTime = waitTime;
-        _waitEscapeTimer.Start();
+      _nextCharTimer?.Stop();
+      
+      if (waitTime == -1)
+      {
         _inWait = true;
         return;
       }
-      
-      _label.VisibleCharacters++;
+
+      _waitTimer!.WaitTime = waitTime;
+      _waitTimer.Start();
+      _inWait = true;
       return;
     }
 
-    _timer?.Stop();
+    _nextCharTimer?.Stop();
 
     if (_currentReplicas[_currentReplicaIndex].Choices is not List<Choice> choices)
     {
@@ -176,7 +173,7 @@ internal sealed partial class TextBox : TextureRect
     if (!@event.IsActionPressed("Interact"))
       return;
 
-    if (!_timer.IsValid() || !_label.IsValid())
+    if (!_nextCharTimer.IsValid() || !_label.IsValid())
       return;
 
     if (!GlobalInstances.Player.IsValid())
@@ -184,12 +181,12 @@ internal sealed partial class TextBox : TextureRect
 
     if (_inWait)
     {
-      _waitEscapeTimer?.Stop();
+      _waitTimer?.Stop();
       EndWait();
       return;
     }
 
-    if (!_timer!.IsStopped())
+    if (!_nextCharTimer!.IsStopped())
     {
       _label!.VisibleCharacters = _label.GetTotalCharacterCount();
       AcceptEvent();
@@ -230,7 +227,7 @@ internal sealed partial class TextBox : TextureRect
 
     Visible = true;
     _awaitingInput = true;
-    _timer?.Start();
+    _nextCharTimer?.Start();
     _currentReplicas[index].ComputeLineAndWaits();
     _label!.Text = _currentReplicas[index].Line;
     _label.VisibleCharacters = 0;
@@ -251,7 +248,7 @@ internal sealed partial class TextBox : TextureRect
   private void EndDialogue()
   {
     Visible = false;
-    _timer?.Stop();
+    _nextCharTimer?.Stop();
     _label!.Text = "";
     _label.VisibleCharacters = 0;
     GlobalInstances.Player!.CanMove = true;
@@ -270,10 +267,10 @@ internal sealed partial class TextBox : TextureRect
 
   private void EndWait()
   {
-    if (!_timer.IsValid() || !_label.IsValid())
+    if (!_nextCharTimer.IsValid() || !_label.IsValid())
         return;
 
-    _timer!.Start();
+    _nextCharTimer!.Start();
     _label!.VisibleCharacters++;
     _inWait = false;
   }

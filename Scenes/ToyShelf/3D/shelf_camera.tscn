@@ -1,6 +1,21 @@
 [gd_scene load_steps=5 format=3 uid="uid://bkg3b3k6pllpo"]
 
-[ext_resource type="Script" uid="uid://dy24x80mxpd2" path="res://UI/ShelfCamera.cs" id="1_kclsx"]
+[ext_resource type="Script" uid="uid://dy24x80mxpd2" path="res://Scenes/ToyShelf/2D/ShelfCamera.cs" id="1_kclsx"]
+
+[sub_resource type="Animation" id="Animation_2ap2a"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-0.12573352, 0, 0)]
+}
 
 [sub_resource type="Animation" id="Animation_kclsx"]
 resource_name = "Turn"
@@ -16,21 +31,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Vector3(-0.12573352, 0, 0), Vector3(-1.5707964, 0, 0)]
-}
-
-[sub_resource type="Animation" id="Animation_2ap2a"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:rotation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(-0.12573352, 0, 0)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_moh77"]
