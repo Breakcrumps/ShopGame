@@ -12,6 +12,7 @@ _spriteNode = NodePath("Sprite3D")
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
 billboard = 1
+double_sided = false
 texture_filter = 2
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]

@@ -10,8 +10,8 @@
 [ext_resource type="PackedScene" uid="uid://b3a4nvhhb4ltv" path="res://Import/Scenes/box_3d.tscn" id="7_3j1cj"]
 [ext_resource type="Texture2D" uid="uid://na4daahefewo" path="res://Scenes/ToyShelf/Toys/Mayak.png" id="8_nmdvl"]
 [ext_resource type="PackedScene" uid="uid://cb1styb71jdcq" path="res://Scenes/ToyShelf/Toys/box_item.tscn" id="9_v1g1g"]
-[ext_resource type="Script" uid="uid://ireyen577mjv" path="res://Scenes/ToyShelf/3D/ShelfPosNode.cs" id="11_gfoad"]
 [ext_resource type="Script" uid="uid://cxfa5wmde1c3p" path="res://Scenes/ToyShelf/3D/ShelfPosGroup.cs" id="11_hbbyo"]
+[ext_resource type="PackedScene" uid="uid://dedbgjikotjfn" path="res://Scenes/ToyShelf/3D/shelf_pos.tscn" id="12_c7x6o"]
 
 [node name="ShelfViewport" type="SubViewport" node_paths=PackedStringArray("ShelfCamera")]
 canvas_item_default_texture_filter = 0
@@ -61,44 +61,36 @@ _itemTexture = ExtResource("8_nmdvl")
 [node name="ShelfPosGroup" type="Node3D" parent="."]
 script = ExtResource("11_hbbyo")
 
-[node name="ShelfPos" type="Node3D" parent="ShelfPosGroup"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.42, 0.063, -1.255)
-script = ExtResource("11_gfoad")
+[node name="ShelfPos" parent="ShelfPosGroup" instance=ExtResource("12_c7x6o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.42, 0.12385482, -1.255)
 
-[node name="ShelfPos2" type="Node3D" parent="ShelfPosGroup"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.14, 0.063, -1.255)
-script = ExtResource("11_gfoad")
+[node name="ShelfPos2" parent="ShelfPosGroup" instance=ExtResource("12_c7x6o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.14, 0.12385482, -1.255)
 Pos = 1
 
-[node name="ShelfPos3" type="Node3D" parent="ShelfPosGroup"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.14, 0.063, -1.255)
-script = ExtResource("11_gfoad")
+[node name="ShelfPos3" parent="ShelfPosGroup" instance=ExtResource("12_c7x6o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.14, 0.12385482, -1.255)
 Pos = 2
 
-[node name="ShelfPos4" type="Node3D" parent="ShelfPosGroup"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.42, 0.063, -1.255)
-script = ExtResource("11_gfoad")
+[node name="ShelfPos4" parent="ShelfPosGroup" instance=ExtResource("12_c7x6o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.42, 0.12385482, -1.255)
 Pos = 3
 
-[node name="ShelfPos5" type="Node3D" parent="ShelfPosGroup"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.42, -0.595, -1.255)
-script = ExtResource("11_gfoad")
+[node name="ShelfPos5" parent="ShelfPosGroup" instance=ExtResource("12_c7x6o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.42, -0.53414524, -1.255)
 Row = 1
 
-[node name="ShelfPos6" type="Node3D" parent="ShelfPosGroup"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.14, -0.595, -1.255)
-script = ExtResource("11_gfoad")
+[node name="ShelfPos6" parent="ShelfPosGroup" instance=ExtResource("12_c7x6o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.14, -0.53414524, -1.255)
 Row = 1
 Pos = 1
 
-[node name="ShelfPos7" type="Node3D" parent="ShelfPosGroup"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.14, -0.595, -1.255)
-script = ExtResource("11_gfoad")
+[node name="ShelfPos7" parent="ShelfPosGroup" instance=ExtResource("12_c7x6o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.14, -0.53414524, -1.255)
 Row = 1
 Pos = 2
 
-[node name="ShelfPos8" type="Node3D" parent="ShelfPosGroup"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.42, -0.595, -1.255)
-script = ExtResource("11_gfoad")
+[node name="ShelfPos8" parent="ShelfPosGroup" instance=ExtResource("12_c7x6o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.42, -0.53414524, -1.255)
 Row = 1
 Pos = 3

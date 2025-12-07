@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Godot;
+using ShopGame.Types;
 
 namespace ShopGame.World;
 
@@ -10,6 +11,12 @@ internal sealed partial class ShelfPosGroup : Node3D
 
    internal static int HashRowPos(int row, int pos)
     => row >= pos ? row * row + row + pos : row + pos * pos;
+
+   internal static int HashRowPos(ShelfPos shelfPos) => (
+    shelfPos.Row >= shelfPos.Pos
+    ? shelfPos.Row * shelfPos.Row + shelfPos.Row + shelfPos.Pos
+    : shelfPos.Row + shelfPos.Pos * shelfPos.Pos
+   );
   
   public override void _Ready()
   {

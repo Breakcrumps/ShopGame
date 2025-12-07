@@ -1,12 +1,12 @@
 [gd_scene load_steps=5 format=3 uid="uid://dyveja25ufoj"]
 
-[ext_resource type="Script" uid="uid://cflegjrn15w17" path="res://Scenes/ToyShelf/UI/ShelfTurnArea.cs" id="1_idruj"]
-[ext_resource type="Script" uid="uid://bkryqn02hwdw5" path="res://Scenes/ToyShelf/UI/ShelfScreenAreas.cs" id="1_n4vui"]
-[ext_resource type="Script" uid="uid://t43jxmoch103" path="res://Scenes/ToyShelf/UI/HandZone.cs" id="2_ou1se"]
-[ext_resource type="Script" uid="uid://b140ifx65k20x" path="res://Scenes/ToyShelf/UI/ShelfHandZone.cs" id="3_dukt4"]
+[ext_resource type="Script" uid="uid://bkryqn02hwdw5" path="res://Scenes/ToyShelf/UI/ShelfScreenAreas.cs" id="1_v2si4"]
+[ext_resource type="Script" uid="uid://t43jxmoch103" path="res://Scenes/ToyShelf/UI/HandZone.cs" id="2_3lbfo"]
+[ext_resource type="Script" uid="uid://b140ifx65k20x" path="res://Scenes/ToyShelf/UI/ShelfHandZone.cs" id="3_wdwiq"]
+[ext_resource type="Script" uid="uid://cflegjrn15w17" path="res://Scenes/ToyShelf/UI/ShelfTurnArea.cs" id="4_4i75t"]
 
 [node name="ShelfAreas" type="CanvasLayer" node_paths=PackedStringArray("ZoneGroup", "TurnAreaGroup")]
-script = ExtResource("1_n4vui")
+script = ExtResource("1_v2si4")
 ZoneGroup = NodePath("ZoneGroup")
 TurnAreaGroup = NodePath("TurnAreaGroup")
 
@@ -31,7 +31,7 @@ offset_right = 175.0
 offset_bottom = 175.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("2_ou1se")
+script = ExtResource("2_3lbfo")
 TurnOrientation = 1
 
 [node name="HandZone" type="Control" parent="ZoneGroup"]
@@ -44,10 +44,10 @@ anchor_bottom = 0.5
 offset_left = -175.0
 offset_top = -89.0
 offset_right = -87.5
-offset_bottom = -64.0
+offset_bottom = -39.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("3_dukt4")
+script = ExtResource("3_wdwiq")
 metadata/_custom_type_script = "uid://t43jxmoch103"
 
 [node name="HandZone2" type="Control" parent="ZoneGroup"]
@@ -59,10 +59,10 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -87.5
 offset_top = -89.0
-offset_bottom = -64.0
+offset_bottom = -39.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("3_dukt4")
+script = ExtResource("3_wdwiq")
 Pos = 1
 metadata/_custom_type_script = "uid://t43jxmoch103"
 
@@ -75,10 +75,10 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 offset_top = -89.0
 offset_right = 87.5
-offset_bottom = -64.0
+offset_bottom = -39.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("3_dukt4")
+script = ExtResource("3_wdwiq")
 Pos = 2
 metadata/_custom_type_script = "uid://t43jxmoch103"
 
@@ -92,10 +92,10 @@ anchor_bottom = 0.5
 offset_left = 87.5
 offset_top = -89.0
 offset_right = 175.0
-offset_bottom = -64.0
+offset_bottom = -39.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("3_dukt4")
+script = ExtResource("3_wdwiq")
 Pos = 3
 metadata/_custom_type_script = "uid://t43jxmoch103"
 
@@ -112,7 +112,7 @@ offset_right = -87.5
 offset_bottom = 151.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("3_dukt4")
+script = ExtResource("3_wdwiq")
 Row = 1
 
 [node name="ShelfZone4" type="Control" parent="ZoneGroup"]
@@ -127,7 +127,7 @@ offset_top = 101.0
 offset_bottom = 151.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("3_dukt4")
+script = ExtResource("3_wdwiq")
 Row = 1
 Pos = 1
 
@@ -143,7 +143,7 @@ offset_right = 87.5
 offset_bottom = 151.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("3_dukt4")
+script = ExtResource("3_wdwiq")
 Row = 1
 Pos = 2
 
@@ -160,7 +160,7 @@ offset_right = 175.0
 offset_bottom = 151.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("3_dukt4")
+script = ExtResource("3_wdwiq")
 Row = 1
 Pos = 3
 
@@ -179,7 +179,7 @@ anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 100.0
 grow_horizontal = 2
-script = ExtResource("1_idruj")
+script = ExtResource("4_4i75t")
 
 [node name="ShelfTurnAreaDown" type="Control" parent="TurnAreaGroup"]
 layout_mode = 1
@@ -190,5 +190,5 @@ anchor_bottom = 1.0
 offset_top = -100.0
 grow_horizontal = 2
 grow_vertical = 0
-script = ExtResource("1_idruj")
+script = ExtResource("4_4i75t")
 FlickDirection = 1

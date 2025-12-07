@@ -50,7 +50,7 @@ internal sealed class Replica
     string numStr = What[(startIndex + 3)..endIndex];
 
     if (!float.TryParse(numStr, out float waitTime))
-      throw new ArgumentException("Couldn't handle time-specified wait!");
+      return 0;
 
     Waits.Add(startIndex - shift, waitTime);
     shift += endIndex - startIndex + 1;

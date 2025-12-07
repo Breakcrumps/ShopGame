@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://na4daahefewo"
-path="res://.godot/imported/Mayak.png-6812241b83fc054d4e7d5865f9781b12.ctex"
+uid="uid://d3qi045peowm3"
+path="res://.godot/imported/PosHover.png-5a6056ea5a2bb18e95c75143c8b5751d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Scenes/ToyShelf/Toys/Mayak.png"
-dest_files=["res://.godot/imported/Mayak.png-6812241b83fc054d4e7d5865f9781b12.ctex"]
+source_file="res://Scenes/ToyShelf/3D/PosHover.png"
+dest_files=["res://.godot/imported/PosHover.png-5a6056ea5a2bb18e95c75143c8b5751d.ctex"]
 
 [params]
 

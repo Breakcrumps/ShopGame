@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Godot;
 using ShopGame.Static;
@@ -16,6 +15,7 @@ internal sealed partial class ShelfCamera : Camera3D
   [Export] private RayCast3D? _raycast;
 
   private BoxItem? _focusedItem;
+  private ShelfPosNode? _focusedPosNode;
   
   internal Vector3 InitRotation;
 
@@ -120,7 +120,7 @@ internal sealed partial class ShelfCamera : Camera3D
 
   public override void _PhysicsProcess(double delta)
   {
-    if (!_focusedItem.IsValid())
+    if (!_focusedItem.IsValid() || !_handSprite.IsValid())
       return;
 
     if (_handSprite!.FocusedShelfPos.Row != -1)
@@ -128,6 +128,22 @@ internal sealed partial class ShelfCamera : Camera3D
     
     if (Input.IsActionPressed("Grab"))
     {
+      if (
+        _focusedPosNode.IsValid()
+        && !_focusedPosNode!.PosEqualsTo(_handSprite.FocusedShelfPos)
+      )
+      {
+        _focusedPosNode.StopHover();
+        _focusedPosNode = null;
+      }
+      
+      if (_handSprite.FocusedShelfPos is { Row: not -1 } shelfPos)
+      {
+        int hash = ShelfPosGroup.HashRowPos(shelfPos);
+        _shelfPosGroup?.ShelfPosDict[hash].StartHover();
+        _focusedPosNode = _shelfPosGroup?.ShelfPosDict[hash];
+      }
+      
       _focusedItem!.GlobalPosition = ToGlobal(TranslatedCursorDirection());
       return;
     }
@@ -138,6 +154,9 @@ internal sealed partial class ShelfCamera : Camera3D
 
   private void HandleRelease()
   {
+    _focusedPosNode?.StopHover();
+    _focusedPosNode = null;
+    
     if (!_handSprite.IsValid())
       return;
 
@@ -150,7 +169,7 @@ internal sealed partial class ShelfCamera : Camera3D
     if (!_shelfPosGroup.IsValid())
       return;
     
-    int hash = ShelfPosGroup.HashRowPos(shelfPos.Row, shelfPos.Pos);
+    int hash = ShelfPosGroup.HashRowPos(shelfPos);
     _shelfPosGroup!.ShelfPosDict[hash].PutItem(_focusedItem!);
   }
 
