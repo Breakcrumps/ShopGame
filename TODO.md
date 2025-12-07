@@ -3,3 +3,4 @@
 - [x] Dialogue actions.
 - [x] Finish the shelf mechanic by introducing cells to put items into.
 - [x] Funking rename all the shit in UI and organise the folder. Gross.
+- [ ] The shelf 3D menu must remember a given shelf's configuration and display box items as they are in the inventory.
