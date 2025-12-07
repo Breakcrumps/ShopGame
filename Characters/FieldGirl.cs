@@ -1,6 +1,6 @@
 using Godot;
 
-namespace ShopGame.UI;
+namespace ShopGame.Characters;
 
 [GlobalClass]
 internal sealed partial class FieldGirl : CharacterBody2D

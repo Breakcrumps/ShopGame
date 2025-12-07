@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://bkg3b3k6pllpo"]
 
-[ext_resource type="Script" uid="uid://dy24x80mxpd2" path="res://Scenes/ToyShelf/2D/ShelfCamera.cs" id="1_kclsx"]
+[ext_resource type="Script" uid="uid://dy24x80mxpd2" path="res://Scenes/ToyShelf/In2D/ShelfCamera.cs" id="1_kclsx"]
 
 [sub_resource type="Animation" id="Animation_2ap2a"]
 length = 0.001

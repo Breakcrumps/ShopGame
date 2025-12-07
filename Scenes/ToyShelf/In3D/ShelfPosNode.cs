@@ -1,9 +1,9 @@
 using Godot;
+using ShopGame.Scenes.ToyShelf.Toys;
 using ShopGame.Static;
 using ShopGame.Types;
-using ShopGame.UI;
 
-namespace ShopGame.World;
+namespace ShopGame.Scenes.ToyShelf.In3D;
 
 [GlobalClass]
 internal sealed partial class ShelfPosNode : Node3D
@@ -14,7 +14,7 @@ internal sealed partial class ShelfPosNode : Node3D
   [Export] private AnimationPlayer? _animPlayer;
   [Export] private Sprite3D? _hoverSprite;
   
-  private BoxItem? _heldItem;
+  internal BoxItem? HeldItem { get; private set; }
 
   public override void _Ready()
   {
@@ -44,10 +44,10 @@ internal sealed partial class ShelfPosNode : Node3D
 
   internal void PutItem(BoxItem newItem)
   {
-    if (_heldItem.IsValid())
-      _heldItem!.ReturnToInitPos = true;
+    if (HeldItem.IsValid())
+      HeldItem!.ReturnToInitPos = true;
 
-    _heldItem = newItem;
+    HeldItem = newItem;
     newItem.GlobalPosition = GlobalPosition;
     newItem.Scale = .8f * Vector3.One;
   }

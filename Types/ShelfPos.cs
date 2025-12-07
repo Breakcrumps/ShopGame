@@ -10,4 +10,13 @@ internal readonly struct ShelfPos
     Row = row;
     Pos = pos;
   }
+
+  internal static int HashRowPos(int row, int pos)
+    => row >= pos ? row * row + row + pos : row + pos * pos;
+
+  internal static int HashRowPos(ShelfPos shelfPos) => (
+    shelfPos.Row >= shelfPos.Pos
+    ? shelfPos.Row * shelfPos.Row + shelfPos.Row + shelfPos.Pos
+    : shelfPos.Row + shelfPos.Pos * shelfPos.Pos
+  );
 }

@@ -1,6 +1,8 @@
 using Godot;
+using ShopGame.Scenes.ToyShelf.In2D;
 using ShopGame.Static;
-using ShopGame.UI;
+
+namespace ShopGame.Scenes.ToyShelf.UI;
 
 [GlobalClass]
 internal partial class HandZone : Control

@@ -1,5 +1,7 @@
 using ShopGame.Characters;
-using ShopGame.UI;
+using ShopGame.Scenes.ToyShelf;
+using ShopGame.Scenes.ToyShelf.In2D;
+using ShopGame.UI.Textbox;
 
 namespace ShopGame.Static;
 

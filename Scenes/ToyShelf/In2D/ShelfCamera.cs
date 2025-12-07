@@ -1,9 +1,12 @@
 using System.Collections.Generic;
 using Godot;
+using ShopGame.Scenes.ToyShelf.In3D;
+using ShopGame.Scenes.ToyShelf.Toys;
+using ShopGame.Scenes.ToyShelf.UI;
 using ShopGame.Static;
-using ShopGame.World;
+using ShopGame.Types;
 
-namespace ShopGame.UI;
+namespace ShopGame.Scenes.ToyShelf.In2D;
 
 [GlobalClass]
 internal sealed partial class ShelfCamera : Camera3D
@@ -139,7 +142,7 @@ internal sealed partial class ShelfCamera : Camera3D
       
       if (_handSprite.FocusedShelfPos is { Row: not -1 } shelfPos)
       {
-        int hash = ShelfPosGroup.HashRowPos(shelfPos);
+        int hash = ShelfPos.HashRowPos(shelfPos);
         _shelfPosGroup?.ShelfPosDict[hash].StartHover();
         _focusedPosNode = _shelfPosGroup?.ShelfPosDict[hash];
       }
@@ -169,7 +172,7 @@ internal sealed partial class ShelfCamera : Camera3D
     if (!_shelfPosGroup.IsValid())
       return;
     
-    int hash = ShelfPosGroup.HashRowPos(shelfPos);
+    int hash = ShelfPos.HashRowPos(shelfPos);
     _shelfPosGroup!.ShelfPosDict[hash].PutItem(_focusedItem!);
   }
 

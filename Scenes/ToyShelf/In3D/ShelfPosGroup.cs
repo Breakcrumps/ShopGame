@@ -1,0 +1,64 @@
+using System.Collections.Generic;
+using Godot;
+using ShopGame.Scenes.ToyShelf.Toys;
+using ShopGame.Static;
+using ShopGame.Types;
+
+namespace ShopGame.Scenes.ToyShelf.In3D;
+
+[GlobalClass]
+internal sealed partial class ShelfPosGroup : Node3D
+{
+  [Export] private PackedScene? _boxItemPrefab;
+  [Export] private ShelfViewport? _shelfViewport;
+  
+  internal Dictionary<int, ShelfPosNode> ShelfPosDict = [];
+  
+  public override void _Ready()
+  {
+    foreach (Node node in GetChildren())
+    {
+      if (node is not ShelfPosNode shelfPos)
+        continue;
+
+      ShelfPosDict.Add(ShelfPos.HashRowPos(shelfPos.Row, shelfPos.Pos), shelfPos);
+    }
+  }
+
+  internal void StockItems(Dictionary<int, BoxItemType> boxItems)
+  {
+    if (!_shelfViewport.IsValid())
+      return;
+
+    if (_boxItemPrefab is null)
+      return;
+    
+    foreach (var (posHash, itemType) in boxItems)
+    {
+      if (!ShelfPosDict.ContainsKey(posHash))
+        continue;
+
+      BoxItem itemToStock = _boxItemPrefab.Instantiate<BoxItem>();
+      itemToStock.LoadTexture(itemType);
+
+      _shelfViewport!.AddChild(itemToStock);
+
+      ShelfPosDict[posHash].PutItem(itemToStock);
+    }
+  }
+
+  internal Dictionary<int, BoxItemType> GetItems()
+  {
+    Dictionary<int, BoxItemType> boxItems = [];
+
+    foreach (var (posHash, posNode) in ShelfPosDict)
+    {
+      if (posNode.HeldItem is not BoxItem boxItem)
+        continue;
+      
+      boxItems.Add(posHash, boxItem.ItemType);
+    }
+
+    return boxItems;
+  }
+}

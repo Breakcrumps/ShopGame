@@ -1,7 +1,7 @@
 using Godot;
 using ShopGame.Static;
 
-namespace ShopGame.UI;
+namespace ShopGame.UI.Textbox;
 
 [GlobalClass]
 internal sealed partial class ChoiceBox : TextureButton

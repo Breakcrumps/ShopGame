@@ -2,7 +2,7 @@ using Godot;
 using ShopGame.Static;
 using ShopGame.Types;
 
-namespace ShopGame.UI;
+namespace ShopGame.Scenes.ToyShelf.In2D;
 
 [GlobalClass]
 internal sealed partial class HandSprite : Sprite2D

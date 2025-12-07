@@ -1,7 +1,7 @@
 using Godot;
 using ShopGame.Characters;
 
-namespace ShopGame.UI;
+namespace ShopGame.Utils;
 
 [GlobalClass]
 internal sealed partial class TransitionArea : Area2D

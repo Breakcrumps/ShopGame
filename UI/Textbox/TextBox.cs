@@ -5,8 +5,9 @@ using Godot;
 using ShopGame.Characters;
 using ShopGame.Static;
 using ShopGame.Types;
+using ShopGame.Utils;
 
-namespace ShopGame.UI;
+namespace ShopGame.UI.Textbox;
 
 [GlobalClass]
 internal sealed partial class TextBox : TextureRect
@@ -25,6 +26,8 @@ internal sealed partial class TextBox : TextureRect
   [ExportGroup("ChoiceBoxes")]
   [Export] private ChoiceBox? _lowestChoiceBox;
   [Export] private ChoiceBox? _highestChoiceBox;
+
+  private IActionHandler? _activatorNode;
 
   private Dictionary<string, List<Replica>> _dialogueFile = [];
   private List<Replica> _currentReplicas = [];
@@ -70,8 +73,13 @@ internal sealed partial class TextBox : TextureRect
       return;
     }
     
-    if (option.Action is not null)
-      DialogueActions.Actions[option.Action]();
+    if (option.Action is ChoiceAction choiceAction)
+    {
+      if (choiceAction.FromObject)
+        _activatorNode?.HandleAction(choiceAction.Name);
+      else
+        DialogueActions.Actions[choiceAction.Name]();
+    }
 
     if (option.Destination is null)
     {
@@ -146,7 +154,7 @@ internal sealed partial class TextBox : TextureRect
     _awaitingInput = false;
   }
 
-  internal void Activate(string filename, string dialogueName)
+  internal void Activate(string filename, IActionHandler activator, int variant)
   {
     if (_inDialogue)
       return;
@@ -157,7 +165,8 @@ internal sealed partial class TextBox : TextureRect
     if (GlobalInstances.Player.IfValid() is not Girl player)
       return;
 
-    ReadNewDialogueFile(filename, dialogueName);
+    _activatorNode = activator;
+    ReadNewDialogueFile(filename, $"{activator.Name} {variant}");
 
     LoadLine(index: 0);
     player.CanMove = false;

@@ -1,7 +1,9 @@
+using System.Collections.Generic;
 using Godot;
 using ShopGame.Static;
+using ShopGame.Types;
 
-namespace ShopGame.UI;
+namespace ShopGame.Scenes.ToyShelf;
 
 [GlobalClass]
 internal sealed partial class ShelfViewportContainer : SubViewportContainer
@@ -16,7 +18,7 @@ internal sealed partial class ShelfViewportContainer : SubViewportContainer
     ProcessMode = ProcessModeEnum.Disabled;
   }
 
-  internal void Activate()
+  internal void Activate(Dictionary<int, BoxItemType> boxItems)
   {
     if (!_ui.IsValid())
       return;
@@ -30,6 +32,7 @@ internal sealed partial class ShelfViewportContainer : SubViewportContainer
       return;
     
     _shelfViewport!.ShelfCamera?.Reset();
+    _shelfViewport.ShelfPosGroup?.StockItems(boxItems);
   }
 
   internal void Deactivate()

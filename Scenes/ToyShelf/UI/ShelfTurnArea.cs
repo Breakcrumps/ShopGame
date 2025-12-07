@@ -1,7 +1,7 @@
 using System;
 using Godot;
 
-namespace ShopGame.UI;
+namespace ShopGame.Scenes.ToyShelf.UI;
 
 [GlobalClass]
 internal sealed partial class ShelfTurnArea : Control

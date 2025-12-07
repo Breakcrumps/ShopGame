@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://dedbgjikotjfn"]
 
-[ext_resource type="Script" uid="uid://ireyen577mjv" path="res://Scenes/ToyShelf/3D/ShelfPosNode.cs" id="1_278ip"]
-[ext_resource type="Texture2D" uid="uid://d3qi045peowm3" path="res://Scenes/ToyShelf/3D/PosHover.png" id="2_oto3t"]
+[ext_resource type="Script" uid="uid://ireyen577mjv" path="res://Scenes/ToyShelf/In3D/ShelfPosNode.cs" id="1_278ip"]
+[ext_resource type="Texture2D" uid="uid://d3qi045peowm3" path="res://Scenes/ToyShelf/In3D/PosHover.png" id="2_oto3t"]
 
 [sub_resource type="Animation" id="Animation_oto3t"]
 resource_name = "Hover"

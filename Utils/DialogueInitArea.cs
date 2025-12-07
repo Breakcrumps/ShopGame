@@ -2,8 +2,9 @@ using Godot;
 using ShopGame.Characters;
 using ShopGame.Static;
 using ShopGame.UI;
+using ShopGame.UI.Textbox;
 
-namespace ShopGame.World;
+namespace ShopGame.Utils;
 
 [GlobalClass]
 internal sealed partial class DialogueInitArea : Area2D
@@ -11,7 +12,7 @@ internal sealed partial class DialogueInitArea : Area2D
   [Export] private int _consequentVariants = 1;
   
   private Node2D? _sceneRoot;
-  [Export] private Node2D? _parent;
+  [Export] private Node? _parent;
   [Export] private Prompt? _prompt;
 
   private int _currentVariant = 1;
@@ -52,13 +53,13 @@ internal sealed partial class DialogueInitArea : Area2D
     if (!@event.IsActionPressed("Interact"))
       return;
 
-    if (!_parent.IsValid() || !_sceneRoot.IsValid())
+    if (_parent is not IActionHandler actionHandler || !_sceneRoot.IsValid())
       return;
 
     if (GlobalInstances.TextBox.IfValid() is not TextBox textBox)
       return;
 
-    textBox.Activate(_sceneRoot!.Name, $"{_parent!.Name}{_currentVariant++}");
+    textBox.Activate(_sceneRoot!.Name, actionHandler, _currentVariant);
 
     if (_currentVariant > _consequentVariants)
       _currentVariant = _consequentVariants;

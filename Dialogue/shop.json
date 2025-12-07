@@ -1,9 +1,14 @@
 {
-  "Shelf1": [
+  "Shelf 1": [
     { 
       "What": "A familiar shelf.[w=.2] What now?",
       "Choices": [
-        { "What": "See to produce.", "Action": "OpenShelf", "Destination": "ShelfContinue", "NoSnapshot": true },
+        { 
+          "What": "See to produce.", 
+          "Action": { "FromObject": true, "Name": "OpenShelf" },
+          "Destination": "ShelfContinue",
+          "NoSnapshot": true
+        },
         { "What": "Nothing." }
       ]
     }
@@ -12,7 +17,12 @@
     {
       "What": "Anything else?",
       "Choices": [
-        { "What": "See to produce.", "Action": "OpenShelf", "Destination": "ShelfContinue", "NoSnapshot": true },
+        { 
+          "What": "See to produce.", 
+          "Action": { "FromObject": true, "Name": "OpenShelf" },
+          "Destination": "ShelfContinue",
+          "NoSnapshot": true
+        },
         { "What": "Nothing." }
       ]
     }
