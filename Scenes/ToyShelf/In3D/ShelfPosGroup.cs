@@ -9,8 +9,7 @@ namespace ShopGame.Scenes.ToyShelf.In3D;
 [GlobalClass]
 internal sealed partial class ShelfPosGroup : Node3D
 {
-  [Export] private PackedScene? _boxItemPrefab;
-  [Export] private ShelfViewport? _shelfViewport;
+  [Export] internal ShelfViewport? ShelfViewport { get; private set; }
   
   internal Dictionary<int, ShelfPosNode> ShelfPosDict { get; } = [];
   
@@ -27,10 +26,7 @@ internal sealed partial class ShelfPosGroup : Node3D
 
   internal void StockItems(Dictionary<int, BoxItemType> boxItems)
   {
-    if (!_shelfViewport.IsValid())
-      return;
-
-    if (_boxItemPrefab is null)
+    if (!ShelfViewport.IsValid())
       return;
 
     foreach (var (posHash, itemType) in boxItems)
@@ -38,11 +34,7 @@ internal sealed partial class ShelfPosGroup : Node3D
       if (!ShelfPosDict.ContainsKey(posHash))
         continue;
 
-      BoxItem itemToStock = _boxItemPrefab.Instantiate<BoxItem>();
-      itemToStock.LoadTexture(itemType);
-
-      _shelfViewport!.AddChild(itemToStock);
-
+      BoxItem itemToStock = ShelfViewport!.InstantiateItem(itemType);
       ShelfPosDict[posHash].PutItem(itemToStock);
     }
   }
@@ -66,7 +58,7 @@ internal sealed partial class ShelfPosGroup : Node3D
   {
     foreach (var (_, posNode) in ShelfPosDict)
     {
-      posNode.DiscardItem();
+      posNode.DestroyItem();
     }
   }
 }

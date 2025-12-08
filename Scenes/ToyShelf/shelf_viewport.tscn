@@ -17,6 +17,7 @@ canvas_item_default_texture_filter = 0
 physics_object_picking = true
 size = Vector2i(990, 540)
 script = ExtResource("1_s04mg")
+BoxItemPrefab = ExtResource("9_v1g1g")
 ShelfCamera = NodePath("ShelfCamera")
 ShelfPosGroup = NodePath("ShelfPosGroup")
 
@@ -50,10 +51,9 @@ script = ExtResource("6_st1ky")
 [node name="Box3D" parent="." instance=ExtResource("7_3j1cj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.814604, 0)
 
-[node name="ShelfPosGroup" type="Node3D" parent="." node_paths=PackedStringArray("_shelfViewport")]
+[node name="ShelfPosGroup" type="Node3D" parent="." node_paths=PackedStringArray("ShelfViewport")]
 script = ExtResource("11_hbbyo")
-_boxItemPrefab = ExtResource("9_v1g1g")
-_shelfViewport = NodePath("..")
+ShelfViewport = NodePath("..")
 
 [node name="ShelfPos" parent="ShelfPosGroup" instance=ExtResource("12_c7x6o")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.42, 0.12385482, -1.255)

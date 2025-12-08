@@ -6,11 +6,11 @@ namespace ShopGame.Static;
 
 internal static class Inventory
 {
-  private static readonly Dictionary<BoxItemType, int> _boxItemQuantity = new()
+  internal static Dictionary<BoxItemType, int> BoxItemQuantities { get; } = new()
   {
-    [BoxItemType.Mayak] = 0
+    [BoxItemType.Mayak] = 3
   };
 
-  internal static string BoxItemName(BoxItemType boxItemType)
+  internal static string GetBoxItemName(BoxItemType boxItemType)
     => Enum.GetName(boxItemType) ?? "Mayak";
 }

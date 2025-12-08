@@ -14,10 +14,14 @@ internal sealed partial class ShelfPosNode : Node3D
   [Export] private AnimationPlayer? _animPlayer;
   [Export] private Sprite3D? _hoverSprite;
   
-  internal BoxItem? HeldItem { get; private set; }
+  internal BoxItem? HeldItem { get; set; }
+
+  private ShelfPosGroup? _posGroup;
 
   public override void _Ready()
   {
+    _posGroup = GetParent<ShelfPosGroup>();
+    
     if (!_hoverSprite.IsValid())
       return;
     
@@ -44,15 +48,22 @@ internal sealed partial class ShelfPosNode : Node3D
 
   internal void PutItem(BoxItem newItem)
   {
+    if (!_posGroup!.ShelfViewport.IsValid())
+      return;
+    
     if (HeldItem.IsValid())
       HeldItem!.ReturnToInitPos = true;
 
-    HeldItem = newItem;
     newItem.GlobalPosition = GlobalPosition;
     newItem.Scale = .8f * Vector3.One;
+    newItem.AssociatedPosNode = this;
+
+    HeldItem = newItem;
+
+    _posGroup.ShelfViewport!.BoxItems.Remove(newItem);
   }
 
-  internal void DiscardItem()
+  internal void DestroyItem()
   {
     if (HeldItem is null)
       return;

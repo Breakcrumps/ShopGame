@@ -128,31 +128,31 @@ internal sealed partial class ShelfCamera : Camera3D
 
     if (_handSprite!.FocusedShelfPos.Row != -1)
       _focusedItem!.Scale = .8f * Vector3.One;
-    
-    if (Input.IsActionPressed("Grab"))
+
+    if (!Input.IsActionPressed("Grab"))
     {
-      if (
-        _focusedPosNode.IsValid()
-        && !_focusedPosNode!.PosEqualsTo(_handSprite.FocusedShelfPos)
-      )
-      {
-        _focusedPosNode.StopHover();
-        _focusedPosNode = null;
-      }
-      
-      if (_handSprite.FocusedShelfPos is { Row: not -1 } shelfPos)
-      {
-        int hash = ShelfPos.HashRowPos(shelfPos);
-        _shelfPosGroup?.ShelfPosDict[hash].StartHover();
-        _focusedPosNode = _shelfPosGroup?.ShelfPosDict[hash];
-      }
-      
-      _focusedItem!.GlobalPosition = ToGlobal(TranslatedCursorDirection());
+      HandleRelease();
+      _focusedItem = null;
       return;
     }
 
-    HandleRelease();
-    _focusedItem = null;
+    if (
+      _focusedPosNode.IsValid()
+      && !_focusedPosNode!.PosEqualsTo(_handSprite.FocusedShelfPos)
+    )
+    {
+      _focusedPosNode.StopHover();
+      _focusedPosNode = null;
+    }
+    
+    if (_handSprite.FocusedShelfPos is { Row: not -1 } shelfPos)
+    {
+      int hash = ShelfPos.HashRowPos(shelfPos);
+      _shelfPosGroup?.ShelfPosDict[hash].StartHover();
+      _focusedPosNode = _shelfPosGroup?.ShelfPosDict[hash];
+    }
+    
+    _focusedItem!.GlobalPosition = ToGlobal(TranslatedCursorDirection());
   }
 
   private void HandleRelease()
@@ -174,6 +174,7 @@ internal sealed partial class ShelfCamera : Camera3D
     
     int hash = ShelfPos.HashRowPos(shelfPos);
     _shelfPosGroup!.ShelfPosDict[hash].PutItem(_focusedItem!);
+    Inventory.BoxItemQuantities[_focusedItem!.ItemType]--;
   }
 
   public override void _Input(InputEvent @event)
@@ -205,6 +206,7 @@ internal sealed partial class ShelfCamera : Camera3D
     if (collider.IfValid() is not BoxItem item)
       return;
 
+    item.FreeIfOnShelf();
     _focusedItem = item;
   }
 
