@@ -9,9 +9,9 @@ internal sealed class Replica
   public string What { private get; init; } = "";
   internal string Line { get; private set; } = "";
 
-  public List<Choice>? Choices;
+  public List<Choice>? Choices { get; init; }
 
-  internal Dictionary<int, float> Waits = [];
+  internal Dictionary<int, float> Waits { get; } = [];
 
   internal void ComputeLineAndWaits()
   {

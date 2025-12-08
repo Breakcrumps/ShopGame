@@ -52,6 +52,15 @@ internal sealed partial class ShelfPosNode : Node3D
     newItem.Scale = .8f * Vector3.One;
   }
 
+  internal void DiscardItem()
+  {
+    if (HeldItem is null)
+      return;
+
+    HeldItem.QueueFree();
+    HeldItem = null;
+  }
+
   internal bool PosEqualsTo(ShelfPos shelfPos)
     => Row == shelfPos.Row && Pos == shelfPos.Pos;
 }

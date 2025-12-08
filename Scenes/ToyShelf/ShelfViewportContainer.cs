@@ -32,6 +32,7 @@ internal sealed partial class ShelfViewportContainer : SubViewportContainer
       return;
     
     _shelfViewport!.ShelfCamera?.Reset();
+    _shelfViewport.ShelfPosGroup?.DiscardItems();
     _shelfViewport.ShelfPosGroup?.StockItems(boxItems);
   }
 

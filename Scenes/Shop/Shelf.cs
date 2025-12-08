@@ -9,7 +9,12 @@ namespace ShopGame.Scenes.Shop;
 [GlobalClass]
 internal sealed partial class Shelf : StaticBody2D, IActionHandler
 {
-  internal Dictionary<int, BoxItemType> _itemsOnShelf = [];
+  private readonly Dictionary<int, BoxItemType> _itemsOnShelf = new()
+  {
+    [ShelfPos.HashRowPos(0, 0)] = BoxItemType.Mayak,
+    [ShelfPos.HashRowPos(0, 1)] = BoxItemType.Mayak,
+    [ShelfPos.HashRowPos(1, 0)] = BoxItemType.Mayak
+  };
 
   public void HandleAction(string actionName)
   {

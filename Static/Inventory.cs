@@ -6,7 +6,7 @@ namespace ShopGame.Static;
 
 internal static class Inventory
 {
-  internal static Dictionary<BoxItemType, int> _boxItemQuantity = new()
+  private static readonly Dictionary<BoxItemType, int> _boxItemQuantity = new()
   {
     [BoxItemType.Mayak] = 0
   };

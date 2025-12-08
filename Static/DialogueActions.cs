@@ -5,5 +5,5 @@ namespace ShopGame.Static;
 
 internal static class DialogueActions
 {
-  internal static readonly Dictionary<string, Action> Actions = [];
+  internal static Dictionary<string, Action> Actions { get; } = [];
 }

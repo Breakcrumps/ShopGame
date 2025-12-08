@@ -12,7 +12,7 @@ internal sealed partial class ShelfPosGroup : Node3D
   [Export] private PackedScene? _boxItemPrefab;
   [Export] private ShelfViewport? _shelfViewport;
   
-  internal Dictionary<int, ShelfPosNode> ShelfPosDict = [];
+  internal Dictionary<int, ShelfPosNode> ShelfPosDict { get; } = [];
   
   public override void _Ready()
   {
@@ -32,7 +32,7 @@ internal sealed partial class ShelfPosGroup : Node3D
 
     if (_boxItemPrefab is null)
       return;
-    
+
     foreach (var (posHash, itemType) in boxItems)
     {
       if (!ShelfPosDict.ContainsKey(posHash))
@@ -60,5 +60,13 @@ internal sealed partial class ShelfPosGroup : Node3D
     }
 
     return boxItems;
+  }
+
+  internal void DiscardItems()
+  {
+    foreach (var (_, posNode) in ShelfPosDict)
+    {
+      posNode.DiscardItem();
+    }
   }
 }
