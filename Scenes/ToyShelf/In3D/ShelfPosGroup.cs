@@ -24,7 +24,7 @@ internal sealed partial class ShelfPosGroup : Node3D
     }
   }
 
-  internal void StockItems(Dictionary<int, BoxItemType> boxItems)
+  internal void StockItems(Dictionary<int, ToyType> boxItems)
   {
     if (!ShelfViewport.IsValid())
       return;
@@ -34,21 +34,21 @@ internal sealed partial class ShelfPosGroup : Node3D
       if (!ShelfPosDict.ContainsKey(posHash))
         continue;
 
-      BoxItem itemToStock = ShelfViewport!.InstantiateItem(itemType);
+      Toy itemToStock = ShelfViewport!.InstantiateItem(itemType);
       ShelfPosDict[posHash].PutItem(itemToStock);
     }
   }
 
-  internal Dictionary<int, BoxItemType> GetItems()
+  internal Dictionary<int, ToyType> GetItems()
   {
-    Dictionary<int, BoxItemType> boxItems = [];
+    Dictionary<int, ToyType> boxItems = [];
 
     foreach (var (posHash, posNode) in ShelfPosDict)
     {
-      if (posNode.HeldItem is not BoxItem boxItem)
+      if (posNode.HeldItem is not Toy boxItem)
         continue;
       
-      boxItems.Add(posHash, boxItem.ItemType);
+      boxItems.Add(posHash, boxItem.ToyType);
     }
 
     return boxItems;

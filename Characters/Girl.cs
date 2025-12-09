@@ -13,7 +13,7 @@ internal sealed partial class Girl : CharacterBody2D
 
   private int _runTime;
 
-  public override void _Ready()
+  public override void _EnterTree()
     => GlobalInstances.Player = this;
 
   public override void _PhysicsProcess(double delta)

@@ -11,38 +11,38 @@ namespace ShopGame.Scenes.ToyShelf;
 [GlobalClass]
 internal sealed partial class ShelfViewport : SubViewport
 {
-  [Export] internal PackedScene? BoxItemPrefab { get; private set; }
+  [Export] internal PackedScene? ToyPrefab { get; private set; }
   [Export] internal ShelfCamera? ShelfCamera { get; private set; }
   [Export] internal ShelfPosGroup? ShelfPosGroup { get; private set; }
 
-  internal List<BoxItem> BoxItems { get; } = [];
+  internal List<Toy> Toys { get; } = [];
 
   internal void SpawnToysInBox()
   {
-    if (BoxItemPrefab is null)
+    if (ToyPrefab is null)
       return;
     
-    foreach (var (itemType, itemsOfType) in Inventory.BoxItemQuantities)
+    foreach (var (itemType, itemsOfType) in Inventory.Toys)
     {
       for (int i = 0; i < itemsOfType; i++)
       {
-        BoxItems.Add(InstantiateItem(itemType));
+        Toys.Add(InstantiateItem(itemType));
       }
     }
   }
 
   internal void DespawnToysInBox()
   {
-    for (int i = 0; i < BoxItems.Count; i++)
+    for (int i = 0; i < Toys.Count; i++)
     {
-      BoxItems[i].QueueFree();
-      BoxItems.RemoveAt(i);
+      Toys[i].QueueFree();
+      Toys.RemoveAt(i);
     }
   }
 
-  internal BoxItem InstantiateItem(BoxItemType itemType)
+  internal Toy InstantiateItem(ToyType itemType)
   {
-    BoxItem itemToStock = BoxItemPrefab!.Instantiate<BoxItem>();
+    Toy itemToStock = ToyPrefab!.Instantiate<Toy>();
 
     itemToStock.Initialise(itemType, this);
 

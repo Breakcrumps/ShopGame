@@ -17,7 +17,7 @@ internal sealed partial class ShelfCamera : Camera3D
   [Export] private AnimationPlayer? _animPlayer;
   [Export] private RayCast3D? _raycast;
 
-  private BoxItem? _focusedItem;
+  private Toy? _focusedItem;
   private ShelfPosNode? _focusedPosNode;
   
   internal Vector3 InitRotation;
@@ -115,6 +115,7 @@ internal sealed partial class ShelfCamera : Camera3D
 
   internal void Reset()
   {
+    _animPlayer?.Stop();
     GlobalRotation = InitRotation;
     _turnOrientation = TurnOrientation.Up;
     UpdateTurnAreas();
@@ -174,7 +175,7 @@ internal sealed partial class ShelfCamera : Camera3D
     
     int hash = ShelfPos.HashRowPos(shelfPos);
     _shelfPosGroup!.ShelfPosDict[hash].PutItem(_focusedItem!);
-    Inventory.BoxItemQuantities[_focusedItem!.ItemType]--;
+    Inventory.RemoveToy(_focusedItem!.ToyType);
   }
 
   public override void _Input(InputEvent @event)
@@ -203,7 +204,7 @@ internal sealed partial class ShelfCamera : Camera3D
 
     GodotObject collider = _raycast.GetCollider();
 
-    if (collider.IfValid() is not BoxItem item)
+    if (collider.IfValid() is not Toy item)
       return;
 
     item.FreeIfOnShelf();

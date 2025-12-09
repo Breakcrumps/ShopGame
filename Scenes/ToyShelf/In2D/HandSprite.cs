@@ -13,11 +13,11 @@ internal sealed partial class HandSprite : Sprite2D
 
   internal Vector2 InitScale { get; private set; }
 
+  public override void _EnterTree()
+    => GlobalInstances.HandSprite = this;
+
   public override void _Ready()
-  {
-    GlobalInstances.HandSprite = this;
-    InitScale = Scale;
-  }
+    => InitScale = Scale;
   
   public override void _Process(double delta)
   {

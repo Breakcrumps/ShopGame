@@ -1,13 +1,13 @@
 [gd_scene load_steps=3 format=3 uid="uid://cb1styb71jdcq"]
 
-[ext_resource type="Script" uid="uid://dcw202prl2uf7" path="res://Scenes/ToyShelf/Toys/BoxItem.cs" id="1_4l3e4"]
+[ext_resource type="Script" uid="uid://dcw202prl2uf7" path="res://Scenes/ToyShelf/Toys/Toy.cs" id="1_w2l6b"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_3j1cj"]
 size = Vector3(0.3, 0.3, 0.3)
 
-[node name="BoxItem" type="CharacterBody3D" node_paths=PackedStringArray("_spriteNode")]
+[node name="Toy" type="CharacterBody3D" node_paths=PackedStringArray("_spriteNode")]
 collision_mask = 0
-script = ExtResource("1_4l3e4")
+script = ExtResource("1_w2l6b")
 _spriteNode = NodePath("Sprite3D")
 
 [node name="Sprite3D" type="Sprite3D" parent="."]

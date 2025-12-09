@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://co3c2nkr5h3pb"]
+[gd_scene load_steps=10 format=3 uid="uid://co3c2nkr5h3pb"]
 
 [ext_resource type="PackedScene" uid="uid://ckcnudde4mu2m" path="res://Characters/girl.tscn" id="1_gqsku"]
 [ext_resource type="PackedScene" uid="uid://cqm4kfelmm1mc" path="res://Scenes/Shop/shelf.tscn" id="2_2nxxu"]
@@ -6,8 +6,11 @@
 [ext_resource type="Script" uid="uid://dda6prs2w18x4" path="res://Utils/TransitionArea.cs" id="4_s7atx"]
 [ext_resource type="PackedScene" uid="uid://qhe57e24toic" path="res://Utils/prompt.tscn" id="5_fi1uk"]
 [ext_resource type="Texture2D" uid="uid://b5xqcpovlnvc3" path="res://Utils/E.png" id="6_ghprd"]
+[ext_resource type="Script" uid="uid://ckslj8bl4uju6" path="res://Utils/DialogueInitArea.cs" id="7_fobo1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_s7atx"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fobo1"]
 
 [node name="Shop" type="Node2D"]
 y_sort_enabled = true
@@ -34,3 +37,18 @@ texture = ExtResource("6_ghprd")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TransitionArea"]
 shape = SubResource("RectangleShape2D_s7atx")
+
+[node name="Giver" type="Node2D" parent="."]
+position = Vector2(-100, 0)
+
+[node name="DialogueInitArea" type="Area2D" parent="Giver" node_paths=PackedStringArray("_parent", "_prompt")]
+script = ExtResource("7_fobo1")
+_parent = NodePath("..")
+_prompt = NodePath("../Prompt")
+metadata/_custom_type_script = "uid://ckslj8bl4uju6"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Giver/DialogueInitArea"]
+shape = SubResource("RectangleShape2D_fobo1")
+
+[node name="Prompt" parent="Giver" instance=ExtResource("5_fi1uk")]
+texture = ExtResource("6_ghprd")

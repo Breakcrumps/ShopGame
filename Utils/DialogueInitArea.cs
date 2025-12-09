@@ -1,30 +1,36 @@
 using Godot;
 using ShopGame.Characters;
 using ShopGame.Static;
-using ShopGame.UI;
 using ShopGame.UI.Textbox;
 
 namespace ShopGame.Utils;
 
 [GlobalClass]
 internal sealed partial class DialogueInitArea : Area2D
-{
-  [Export] private int _consequentVariants = 1;
-  
+{  
   private Node2D? _sceneRoot;
   [Export] private Node? _parent;
   [Export] private Prompt? _prompt;
 
+  private int _variantCount;
   private int _currentVariant = 1;
 
   private bool _awaitInput;
 
   public override void _Ready()
   {
-    if (GetTree().CurrentScene is not Node2D scene2D)
+    if (GetTree().CurrentScene.IfValid() is not Node2D scene2D)
+      return;
+
+    if (!GlobalInstances.TextBox.IsValid())
+      return;
+
+    if (!_parent.IsValid())
       return;
 
     _sceneRoot = scene2D;
+
+    _variantCount = GlobalInstances.TextBox!.CountVariants(scene2D, _parent!);
 
     BodyEntered += body =>
     {
@@ -53,15 +59,15 @@ internal sealed partial class DialogueInitArea : Area2D
     if (!@event.IsActionPressed("Interact"))
       return;
 
-    if (_parent is not IActionHandler actionHandler || !_sceneRoot.IsValid())
+    if (!_parent.IsValid() || !_sceneRoot.IsValid())
       return;
 
     if (GlobalInstances.TextBox.IfValid() is not TextBox textBox)
       return;
 
-    textBox.Activate(_sceneRoot!.Name, actionHandler, _currentVariant);
+    textBox.Activate(_sceneRoot!, _parent!, _currentVariant);
 
-    if (_currentVariant > _consequentVariants)
-      _currentVariant = _consequentVariants;
+    if (_currentVariant < _variantCount)
+      _currentVariant++;
   }
 }

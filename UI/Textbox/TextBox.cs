@@ -42,14 +42,15 @@ internal sealed partial class TextBox : TextureRect
 
   private static readonly JsonSerializerOptions _dialogueDeserOpt = new() { IncludeFields = true };
 
+  public override void _EnterTree()
+    => GlobalInstances.TextBox = this;
+
   public override void _Ready()
   {
     if (!_lowestChoiceBox.IsValid() || !_highestChoiceBox.IsValid())
       return;
     
     Visible = false;
-    
-    GlobalInstances.TextBox = this;
 
     if (!_nextCharTimer.IsValid() || !_waitTimer.IsValid())
       return;
@@ -154,7 +155,7 @@ internal sealed partial class TextBox : TextureRect
     _awaitingInput = false;
   }
 
-  internal void Activate(string filename, IActionHandler activator, int variant)
+  internal void Activate(Node2D scene, Node activator, int variant)
   {
     if (_inDialogue)
       return;
@@ -165,8 +166,11 @@ internal sealed partial class TextBox : TextureRect
     if (GlobalInstances.Player.IfValid() is not Girl player)
       return;
 
-    _activatorNode = activator;
-    ReadNewDialogueFile(filename, $"{activator.Name} {variant}");
+    if (activator is IActionHandler handler)
+      _activatorNode = handler;
+
+    ReadNewDialogueFile(scene.Name);
+    ReadDialogueFromFile($"{activator.Name} {variant}");
 
     LoadLine(index: 0);
     player.CanMove = false;
@@ -284,7 +288,7 @@ internal sealed partial class TextBox : TextureRect
     _inWait = false;
   }
 
-  private void ReadNewDialogueFile(string filename, string dialogueName)
+  private void ReadNewDialogueFile(string filename)
   {
     string jsonFile = File.ReadAllText($"Dialogue/{filename}.json");
 
@@ -292,19 +296,29 @@ internal sealed partial class TextBox : TextureRect
       jsonFile,
       options: _dialogueDeserOpt
     ) ?? [];
-
-    ReadDialogueFromFile(dialogueName);
   }
 
-  private void ReadDialogueFromFile(string dialogueName)
+  private bool ReadDialogueFromFile(string dialogueName)
   {
     if (!_dialogueFile.TryGetValue(dialogueName, out List<Replica>? replicas))
-      return;
+      return false;
 
     if (replicas is null)
-      return;
+      return false;
 
     _currentReplicas = replicas;
     _currentDialogueName = dialogueName;
+    return true;
+  }
+
+  internal int CountVariants(Node2D scene, Node activator)
+  {
+    ReadNewDialogueFile(scene.Name);
+
+    int variant = 1;
+    
+    for ( ; ReadDialogueFromFile($"{activator.Name} {variant}"); variant++);
+
+    return variant - 1;
   }
 }

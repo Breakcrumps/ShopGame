@@ -13,6 +13,15 @@
       ]
     }
   ],
+  "Giver 1": [
+    {
+      "What": "Take one mayak?",
+      "Choices": [
+        { "What": "Yes.", "Action": { "Name": "AddMayak" } },
+        { "What": "No." }
+      ]
+    }
+  ],
   "ShelfContinue": [
     {
       "What": "Anything else?",

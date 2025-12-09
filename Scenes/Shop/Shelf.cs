@@ -9,7 +9,7 @@ namespace ShopGame.Scenes.Shop;
 [GlobalClass]
 internal sealed partial class Shelf : StaticBody2D, IActionHandler
 {
-  internal Dictionary<int, BoxItemType> ItemsOnShelf { get; set; } = [];
+  internal Dictionary<int, ToyType> ItemsOnShelf { get; set; } = [];
 
   public void HandleAction(string actionName)
   {

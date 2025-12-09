@@ -11,11 +11,13 @@ internal sealed partial class ShelfViewportContainer : SubViewportContainer
   [Export] private CanvasLayer? _ui;
 
   private Shelf? _currentShelf;
+
+  public override void _EnterTree()
+    => GlobalInstances.ShelfViewportContainer = this;
   
   public override void _Ready()
   {
     Visible = false;
-    GlobalInstances.ShelfViewportContainer = this;
     ProcessMode = ProcessModeEnum.Disabled;
   }
 

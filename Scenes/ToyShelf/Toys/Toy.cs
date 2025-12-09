@@ -6,11 +6,11 @@ using ShopGame.Types;
 namespace ShopGame.Scenes.ToyShelf.Toys;
 
 [GlobalClass]
-internal sealed partial class BoxItem : CharacterBody3D
+internal sealed partial class Toy : CharacterBody3D
 {
   [Export] private Sprite3D? _spriteNode;
 
-  internal BoxItemType ItemType { get; private set; }
+  internal ToyType ToyType { get; private set; }
   internal ShelfPosNode? AssociatedPosNode { private get; set; }
 
   internal Vector3 InitPos { get; set; } = Vector3.Down;
@@ -33,7 +33,7 @@ internal sealed partial class BoxItem : CharacterBody3D
     GlobalPosition = GlobalPosition.Lerp(to: InitPos, 10f * (float)delta);
   }
 
-  internal void Initialise(BoxItemType boxItemType, ShelfViewport shelfViewport)
+  internal void Initialise(ToyType boxItemType, ShelfViewport shelfViewport)
   {
     if (!_spriteNode.IsValid())
       return;
@@ -41,7 +41,7 @@ internal sealed partial class BoxItem : CharacterBody3D
     shelfViewport.AddChild(this);
     GlobalPosition = InitPos;
     
-    ItemType = boxItemType;
+    ToyType = boxItemType;
     string itemName = Inventory.GetBoxItemName(boxItemType);
     _spriteNode!.Texture = ResourceLoader.Load<Texture2D>($"Scenes/ToyShelf/Toys/{itemName}.png");
 
@@ -59,9 +59,7 @@ internal sealed partial class BoxItem : CharacterBody3D
     AssociatedPosNode.HeldItem = null;
     AssociatedPosNode = null;
 
-    _shelfViewport!.BoxItems.Add(this);
-    Inventory.BoxItemQuantities[ItemType]++;
-
-    GD.Print(Inventory.BoxItemQuantities[ItemType]);
+    _shelfViewport!.Toys.Add(this);
+    Inventory.AddToy(ToyType);
   }
 }
