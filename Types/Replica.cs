@@ -30,7 +30,7 @@ internal sealed class Replica
         i += ParseWait(startIndex: i, ref shift);
     }
 
-    Line = $"{whatBuilder}";
+    Line = whatBuilder.ToString();
   }
 
   private int ParseWait(int startIndex, ref int shift)

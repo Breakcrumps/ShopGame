@@ -15,7 +15,7 @@ internal sealed partial class TransitionArea : Area2D
   {
     BodyEntered += node =>
     {
-      if (node is not Girl)
+      if (node is not Girl and not FieldGirl)
         return;
 
       _enabled = true;

@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://8etiti5kt6jr"]
+[gd_scene load_steps=17 format=3 uid="uid://8etiti5kt6jr"]
 
 [ext_resource type="Script" uid="uid://cvr1k5og40i3m" path="res://Scenes/ToyShelf/ShelfViewport.cs" id="1_s04mg"]
 [ext_resource type="PackedScene" uid="uid://bkg3b3k6pllpo" path="res://Scenes/ToyShelf/In3D/shelf_camera.tscn" id="2_8otmn"]
@@ -11,6 +11,25 @@
 [ext_resource type="PackedScene" uid="uid://cb1styb71jdcq" path="res://Scenes/ToyShelf/Toys/toy.tscn" id="9_v1g1g"]
 [ext_resource type="Script" uid="uid://cxfa5wmde1c3p" path="res://Scenes/ToyShelf/In3D/ShelfPosGroup.cs" id="11_hbbyo"]
 [ext_resource type="PackedScene" uid="uid://dedbgjikotjfn" path="res://Scenes/ToyShelf/In3D/shelf_pos.tscn" id="12_c7x6o"]
+[ext_resource type="Texture2D" uid="uid://dleae7vh7hrm6" path="res://Scenes/Shop/WoodenFloor.png" id="12_sftvo"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_c7x6o"]
+shading_mode = 0
+albedo_texture = ExtResource("12_sftvo")
+uv1_scale = Vector3(6, 6, 6)
+texture_filter = 0
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_c7cv5"]
+material = SubResource("StandardMaterial3D_c7x6o")
+size = Vector2(16, 16)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sftvo"]
+shading_mode = 0
+albedo_color = Color(0.30918854, 0.21962357, 0.1518656, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_sftvo"]
+material = SubResource("StandardMaterial3D_sftvo")
+size = Vector2(16, 16)
 
 [node name="ShelfViewport" type="SubViewport" node_paths=PackedStringArray("ShelfCamera", "ShelfPosGroup")]
 canvas_item_default_texture_filter = 0
@@ -88,3 +107,11 @@ Pos = 2
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.42, -0.53414524, -1.255)
 Row = 1
 Pos = 3
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.815, 0)
+mesh = SubResource("PlaneMesh_c7cv5")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, -1.8203439)
+mesh = SubResource("PlaneMesh_sftvo")

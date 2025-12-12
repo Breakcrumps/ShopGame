@@ -28,11 +28,12 @@ internal sealed partial class TextBox : TextureRect
   [Export] private ChoiceBox? _highestChoiceBox;
 
   private IActionHandler? _activatorNode;
+  private DialogueInitArea? _dialogueArea;
 
   private Dictionary<string, List<Replica>> _dialogueFile = [];
   private List<Replica> _currentReplicas = [];
   private string _currentDialogueName = "";
-  private (Choice? Lowest, Choice? Highest) _choiceDestinations;
+  private (Choice Lowest, Choice Highest) _choiceDestinations;
   private readonly List<(string Name, int LineIndex)> _dialogueSnapshots = [];
   private int _currentReplicaIndex;
 
@@ -47,6 +48,8 @@ internal sealed partial class TextBox : TextureRect
 
   public override void _Ready()
   {
+    ReadNewDialogueFile(GetTree().CurrentScene.Name);
+    
     if (!_lowestChoiceBox.IsValid() || !_highestChoiceBox.IsValid())
       return;
     
@@ -61,19 +64,12 @@ internal sealed partial class TextBox : TextureRect
     _waitTimer!.OneShot = true;
     _waitTimer.Timeout += EndWait;
 
-    _lowestChoiceBox!.Pressed += () => Choose(_choiceDestinations.Lowest);
-    _highestChoiceBox!.Pressed += () => Choose(_choiceDestinations.Highest);
+    _lowestChoiceBox!.Pressed += () => Choose(in _choiceDestinations.Lowest);
+    _highestChoiceBox!.Pressed += () => Choose(in _choiceDestinations.Highest);
   }
 
-  private void Choose(Choice? option)
+  private void Choose(in Choice option)
   {
-    if (option is null)
-    {
-      _currentReplicaIndex++;
-      LoadLine(_currentReplicaIndex);
-      return;
-    }
-    
     if (option.Action is ChoiceAction choiceAction)
     {
       if (choiceAction.FromObject)
@@ -155,7 +151,7 @@ internal sealed partial class TextBox : TextureRect
     _awaitingInput = false;
   }
 
-  internal void Activate(Node2D scene, Node activator, int variant)
+  internal void Activate(Node activator, DialogueInitArea dialogueArea, int variant)
   {
     if (_inDialogue)
       return;
@@ -163,13 +159,14 @@ internal sealed partial class TextBox : TextureRect
     if (!_label.IsValid())
       return;
 
-    if (GlobalInstances.Player.IfValid() is not Girl player)
+    if (GlobalInstances.Girl.IfValid() is not Girl player)
       return;
 
     if (activator is IActionHandler handler)
       _activatorNode = handler;
 
-    ReadNewDialogueFile(scene.Name);
+    _dialogueArea = dialogueArea;
+
     ReadDialogueFromFile($"{activator.Name} {variant}");
 
     LoadLine(index: 0);
@@ -189,7 +186,7 @@ internal sealed partial class TextBox : TextureRect
     if (!_nextCharTimer.IsValid() || !_label.IsValid())
       return;
 
-    if (!GlobalInstances.Player.IsValid())
+    if (!GlobalInstances.Girl.IsValid())
       return;
 
     if (_inWait)
@@ -241,7 +238,6 @@ internal sealed partial class TextBox : TextureRect
     Visible = true;
     _awaitingInput = true;
     _nextCharTimer?.Start();
-    _currentReplicas[index].ComputeLineAndWaits();
     _label!.Text = _currentReplicas[index].Line;
     _label.VisibleCharacters = 0;
     _proceedPrompt?.Deactivate();
@@ -264,7 +260,7 @@ internal sealed partial class TextBox : TextureRect
     _nextCharTimer?.Stop();
     _label!.Text = "";
     _label.VisibleCharacters = 0;
-    GlobalInstances.Player!.CanMove = true;
+    GlobalInstances.Girl!.CanMove = true;
     _awaitingInput = false;
     _inDialogue = false;
     _proceedPrompt?.Deactivate();
@@ -272,10 +268,11 @@ internal sealed partial class TextBox : TextureRect
     _currentReplicaIndex = 0;
     _lowestChoiceBox?.Disable();
     _highestChoiceBox?.Disable();
-    _choiceDestinations.Lowest = null;
-    _choiceDestinations.Highest = null;
-    _dialogueFile = [];
     _currentReplicas = [];
+    _activatorNode = null;
+    if (_dialogueArea.IsValid())
+      _dialogueArea!.AwaitInput = true;
+    _dialogueArea = null;
   }
 
   private void EndWait()
@@ -296,6 +293,14 @@ internal sealed partial class TextBox : TextureRect
       jsonFile,
       options: _dialogueDeserOpt
     ) ?? [];
+
+    foreach (var (_, replicas) in _dialogueFile)
+    {
+      foreach (Replica replica in replicas)
+      {
+        replica.ComputeLineAndWaits();
+      }
+    }
   }
 
   private bool ReadDialogueFromFile(string dialogueName)
@@ -311,10 +316,8 @@ internal sealed partial class TextBox : TextureRect
     return true;
   }
 
-  internal int CountVariants(Node2D scene, Node activator)
+  internal int CountVariants(Node activator)
   {
-    ReadNewDialogueFile(scene.Name);
-
     int variant = 1;
     
     for ( ; ReadDialogueFromFile($"{activator.Name} {variant}"); variant++);

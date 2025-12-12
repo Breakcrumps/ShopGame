@@ -1,9 +1,15 @@
-[gd_scene load_steps=3 format=3 uid="uid://wo1ufhq6ot5e"]
+[gd_scene load_steps=7 format=3 uid="uid://wo1ufhq6ot5e"]
 
 [ext_resource type="PackedScene" uid="uid://b6vujm0w71pvy" path="res://Characters/field_girl.tscn" id="1_j7efd"]
+[ext_resource type="Script" uid="uid://dda6prs2w18x4" path="res://Utils/TransitionArea.cs" id="2_s2mji"]
+[ext_resource type="PackedScene" uid="uid://qhe57e24toic" path="res://Utils/prompt.tscn" id="3_s1lr2"]
+[ext_resource type="Texture2D" uid="uid://b5xqcpovlnvc3" path="res://Utils/E.png" id="4_fir65"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4x6vp"]
 size = Vector2(1000, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_s2mji"]
+size = Vector2(40, 60)
 
 [node name="Field" type="Node2D"]
 
@@ -15,3 +21,16 @@ shape = SubResource("RectangleShape2D_4x6vp")
 
 [node name="FieldGirl" parent="." instance=ExtResource("1_j7efd")]
 position = Vector2(0, -44)
+
+[node name="TransitionArea" type="Area2D" parent="." node_paths=PackedStringArray("_prompt")]
+position = Vector2(-86, -30)
+script = ExtResource("2_s2mji")
+_destinationPath = "res://Scenes/world_map.tscn"
+_prompt = NodePath("Prompt")
+metadata/_custom_type_script = "uid://dda6prs2w18x4"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TransitionArea"]
+shape = SubResource("RectangleShape2D_s2mji")
+
+[node name="Prompt" parent="TransitionArea" instance=ExtResource("3_s1lr2")]
+texture = ExtResource("4_fir65")

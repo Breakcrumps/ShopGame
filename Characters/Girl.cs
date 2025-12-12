@@ -14,7 +14,7 @@ internal sealed partial class Girl : CharacterBody2D
   private int _runTime;
 
   public override void _EnterTree()
-    => GlobalInstances.Player = this;
+    => GlobalInstances.Girl = this;
 
   public override void _PhysicsProcess(double delta)
   {
@@ -32,7 +32,7 @@ internal sealed partial class Girl : CharacterBody2D
     if (_runTime < _framesToAccelerate)
       _runTime++;
 
-    Velocity = inputVector.Normalized() * _runTime / _framesToAccelerate * _speed;
+    Velocity = inputVector.Normalized() * ((float)_runTime / _framesToAccelerate * _speed);
 
     MoveAndSlide();
   }

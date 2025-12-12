@@ -7,7 +7,7 @@ namespace ShopGame.Scenes.ToyShelf.In2D;
 [GlobalClass]
 internal sealed partial class HandSprite : Sprite2D
 {
-  internal bool InZone { get; set; }
+  internal bool InZone { private get; set; }
 
   internal ShelfPos FocusedShelfPos { get; set; } = new(-1, -1);
 

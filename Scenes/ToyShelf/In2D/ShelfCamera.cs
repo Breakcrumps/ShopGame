@@ -17,10 +17,10 @@ internal sealed partial class ShelfCamera : Camera3D
   [Export] private AnimationPlayer? _animPlayer;
   [Export] private RayCast3D? _raycast;
 
-  private Toy? _focusedItem;
+  private Toy? _focusedToy;
   private ShelfPosNode? _focusedPosNode;
   
-  internal Vector3 InitRotation;
+  private Vector3 _initRotation;
 
   private TurnOrientation _turnOrientation;
 
@@ -35,7 +35,7 @@ internal sealed partial class ShelfCamera : Camera3D
   
   public override void _Ready()
   {
-    InitRotation = GlobalRotation;
+    _initRotation = GlobalRotation;
 
     if (!_shelfAreas.IsValid()
       || _shelfAreas!.TurnAreaGroup.IfValid() is not Control turnAreaGroup
@@ -116,7 +116,7 @@ internal sealed partial class ShelfCamera : Camera3D
   internal void Reset()
   {
     _animPlayer?.Stop();
-    GlobalRotation = InitRotation;
+    GlobalRotation = _initRotation;
     _turnOrientation = TurnOrientation.Up;
     UpdateTurnAreas();
     UpdateHandZones();
@@ -124,16 +124,16 @@ internal sealed partial class ShelfCamera : Camera3D
 
   public override void _PhysicsProcess(double delta)
   {
-    if (!_focusedItem.IsValid() || !_handSprite.IsValid())
+    if (!_focusedToy.IsValid() || !_handSprite.IsValid())
       return;
 
     if (_handSprite!.FocusedShelfPos.Row != -1)
-      _focusedItem!.Scale = .8f * Vector3.One;
+      _focusedToy!.Scale = .8f * Vector3.One;
 
     if (!Input.IsActionPressed("Grab"))
     {
       HandleRelease();
-      _focusedItem = null;
+      _focusedToy = null;
       return;
     }
 
@@ -153,7 +153,7 @@ internal sealed partial class ShelfCamera : Camera3D
       _focusedPosNode = _shelfPosGroup?.ShelfPosDict[hash];
     }
     
-    _focusedItem!.GlobalPosition = ToGlobal(TranslatedCursorDirection());
+    _focusedToy!.GlobalPosition = ToGlobal(TranslatedCursorDirection());
   }
 
   private void HandleRelease()
@@ -166,7 +166,7 @@ internal sealed partial class ShelfCamera : Camera3D
 
     if (_handSprite!.FocusedShelfPos is not { Pos: not -1 } shelfPos)
     {
-      _focusedItem!.ReturnToInitPos = true;
+      _focusedToy!.ReturnToInitPos = true;
       return;
     }
 
@@ -174,8 +174,8 @@ internal sealed partial class ShelfCamera : Camera3D
       return;
     
     int hash = ShelfPos.HashRowPos(shelfPos);
-    _shelfPosGroup!.ShelfPosDict[hash].PutItem(_focusedItem!);
-    Inventory.RemoveToy(_focusedItem!.ToyType);
+    _shelfPosGroup!.ShelfPosDict[hash].PutItem(_focusedToy!);
+    Inventory.RemoveToy(_focusedToy!.ToyType);
   }
 
   public override void _Input(InputEvent @event)
@@ -196,7 +196,7 @@ internal sealed partial class ShelfCamera : Camera3D
     if (!Input.IsActionPressed("Grab"))
       return;
 
-    if (_focusedItem.IsValid())
+    if (_focusedToy.IsValid())
       return;
 
     if (!_raycast.IsColliding())
@@ -208,7 +208,8 @@ internal sealed partial class ShelfCamera : Camera3D
       return;
 
     item.FreeIfOnShelf();
-    _focusedItem = item;
+
+    _focusedToy = item;
   }
 
   private Vector3 TranslatedCursorDirection()

@@ -1,12 +1,22 @@
-[gd_scene load_steps=10 format=3 uid="uid://co3c2nkr5h3pb"]
+[gd_scene load_steps=13 format=4 uid="uid://co3c2nkr5h3pb"]
 
 [ext_resource type="PackedScene" uid="uid://ckcnudde4mu2m" path="res://Characters/girl.tscn" id="1_gqsku"]
+[ext_resource type="Texture2D" uid="uid://dleae7vh7hrm6" path="res://Scenes/Shop/WoodenFloor.png" id="1_oqg8q"]
 [ext_resource type="PackedScene" uid="uid://cqm4kfelmm1mc" path="res://Scenes/Shop/shelf.tscn" id="2_2nxxu"]
 [ext_resource type="PackedScene" uid="uid://dkv3yol4sh756" path="res://UI/ui.tscn" id="3_dcrsj"]
 [ext_resource type="Script" uid="uid://dda6prs2w18x4" path="res://Utils/TransitionArea.cs" id="4_s7atx"]
 [ext_resource type="PackedScene" uid="uid://qhe57e24toic" path="res://Utils/prompt.tscn" id="5_fi1uk"]
 [ext_resource type="Texture2D" uid="uid://b5xqcpovlnvc3" path="res://Utils/E.png" id="6_ghprd"]
 [ext_resource type="Script" uid="uid://ckslj8bl4uju6" path="res://Utils/DialogueInitArea.cs" id="7_fobo1"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_kcc5r"]
+texture = ExtResource("1_oqg8q")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_xybqi"]
+tile_size = Vector2i(32, 32)
+sources/0 = SubResource("TileSetAtlasSource_kcc5r")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_s7atx"]
 
@@ -15,18 +25,24 @@
 [node name="Shop" type="Node2D"]
 y_sort_enabled = true
 
+[node name="TileMapLayer" type="TileMapLayer" parent="."]
+z_index = -1
+scale = Vector2(0.9, 0.9)
+tile_map_data = PackedByteArray("AAD7//3/AAAAAAAAAAD7//7/AAAAAAAAAAD7////AAAAAAAAAAD7/wAAAAAAAAAAAAD7/wEAAAAAAAAAAAD7/wIAAAAAAAAAAAD8//3/AAAAAAAAAAD8//7/AAAAAAAAAAD8////AAAAAAAAAAD8/wAAAAAAAAAAAAD8/wEAAAAAAAAAAAD8/wIAAAAAAAAAAAD9//3/AAAAAAAAAAD9//7/AAAAAAAAAAD9////AAAAAAAAAAD9/wAAAAAAAAAAAAD9/wEAAAAAAAAAAAD9/wIAAAAAAAAAAAD+//3/AAAAAAAAAAD+//7/AAAAAAAAAAD+////AAAAAAAAAAD+/wAAAAAAAAAAAAD+/wEAAAAAAAAAAAD+/wIAAAAAAAAAAAD///3/AAAAAAAAAAD///7/AAAAAAAAAAD/////AAAAAAAAAAD//wAAAAAAAAAAAAD//wEAAAAAAAAAAAD//wIAAAAAAAAAAAAAAP3/AAAAAAAAAAAAAP7/AAAAAAAAAAAAAP//AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAIAAAAAAAAAAAABAP3/AAAAAAAAAAABAP7/AAAAAAAAAAABAP//AAAAAAAAAAABAAAAAAAAAAAAAAABAAEAAAAAAAAAAAABAAIAAAAAAAAAAAACAP3/AAAAAAAAAAACAP7/AAAAAAAAAAACAP//AAAAAAAAAAACAAAAAAAAAAAAAAACAAEAAAAAAAAAAAACAAIAAAAAAAAAAAADAP3/AAAAAAAAAAADAP7/AAAAAAAAAAADAP//AAAAAAAAAAADAAAAAAAAAAAAAAADAAEAAAAAAAAAAAADAAIAAAAAAAAAAAAEAP3/AAAAAAAAAAAEAP7/AAAAAAAAAAAEAP//AAAAAAAAAAAEAAAAAAAAAAAAAAAEAAEAAAAAAAAAAAAEAAIAAAAAAAAAAAA=")
+tile_set = SubResource("TileSet_xybqi")
+
 [node name="Girl" parent="." instance=ExtResource("1_gqsku")]
 
 [node name="Shelf" parent="." instance=ExtResource("2_2nxxu")]
 position = Vector2(42, -22)
 
 [node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(4, 4)
+zoom = Vector2(5, 5)
 
 [node name="UI" parent="." instance=ExtResource("3_dcrsj")]
 
 [node name="TransitionArea" type="Area2D" parent="." node_paths=PackedStringArray("_prompt")]
-position = Vector2(129, -16)
+position = Vector2(86, -16)
 script = ExtResource("4_s7atx")
 _destinationPath = "res://Scenes/world_map.tscn"
 _prompt = NodePath("Prompt")
@@ -38,16 +54,14 @@ texture = ExtResource("6_ghprd")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TransitionArea"]
 shape = SubResource("RectangleShape2D_s7atx")
 
-[node name="Giver" type="Node2D" parent="."]
-position = Vector2(-100, 0)
-
-[node name="DialogueInitArea" type="Area2D" parent="Giver" node_paths=PackedStringArray("_parent", "_prompt")]
+[node name="Giver" type="Area2D" parent="." node_paths=PackedStringArray("_parent", "_prompt")]
+position = Vector2(-52, 0)
 script = ExtResource("7_fobo1")
-_parent = NodePath("..")
-_prompt = NodePath("../Prompt")
+_parent = NodePath(".")
+_prompt = NodePath("Prompt")
 metadata/_custom_type_script = "uid://ckslj8bl4uju6"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Giver/DialogueInitArea"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Giver"]
 shape = SubResource("RectangleShape2D_fobo1")
 
 [node name="Prompt" parent="Giver" instance=ExtResource("5_fi1uk")]

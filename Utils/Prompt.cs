@@ -21,4 +21,7 @@ internal sealed partial class Prompt : Sprite2D
     Visible = false;
     _animPlayer?.Stop();
   }
+
+  internal bool IsActive()
+    => _animPlayer?.IsPlaying() ?? false;
 }
