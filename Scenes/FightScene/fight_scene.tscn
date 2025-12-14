@@ -1,0 +1,42 @@
+[gd_scene load_steps=8 format=3 uid="uid://dra8v88lxoaul"]
+
+[ext_resource type="PackedScene" uid="uid://rl0jwir5g87e" path="res://Characters/FightGirl/fight_girl.tscn" id="1_1vpqj"]
+[ext_resource type="Script" uid="uid://b4v06cwqb12g8" path="res://Scenes/FightScene/FightCamera.cs" id="2_jah34"]
+[ext_resource type="Script" uid="uid://dda6prs2w18x4" path="res://Utils/TransitionArea.cs" id="3_xhhot"]
+[ext_resource type="PackedScene" uid="uid://qhe57e24toic" path="res://Utils/prompt.tscn" id="4_tyn1p"]
+[ext_resource type="Texture2D" uid="uid://b5xqcpovlnvc3" path="res://Utils/E.png" id="5_wjh70"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_omcat"]
+size = Vector2(1000, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tyn1p"]
+size = Vector2(40, 60)
+
+[node name="FightScene" type="Node2D"]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(0, 10)
+shape = SubResource("RectangleShape2D_omcat")
+
+[node name="FightGirl" parent="." instance=ExtResource("1_1vpqj")]
+
+[node name="FightCamera" type="Camera2D" parent="." node_paths=PackedStringArray("_fightGirl")]
+position = Vector2(0, -59)
+zoom = Vector2(3.5, 3.5)
+script = ExtResource("2_jah34")
+_fightGirl = NodePath("../FightGirl")
+
+[node name="TransitionArea" type="Area2D" parent="." node_paths=PackedStringArray("_prompt")]
+position = Vector2(-77, -30)
+script = ExtResource("3_xhhot")
+_destinationPath = "res://Scenes/world_map.tscn"
+_prompt = NodePath("Prompt")
+metadata/_custom_type_script = "uid://dda6prs2w18x4"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TransitionArea"]
+shape = SubResource("RectangleShape2D_tyn1p")
+
+[node name="Prompt" parent="TransitionArea" instance=ExtResource("4_tyn1p")]
+texture = ExtResource("5_wjh70")

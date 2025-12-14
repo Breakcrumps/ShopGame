@@ -26,3 +26,13 @@ text = "Field"
 script = ExtResource("1_m33sc")
 _destinationPath = "res://Scenes/field.tscn"
 metadata/_custom_type_script = "uid://f2otcrggcuc6"
+
+[node name="TransitionButton3" type="Button" parent="."]
+offset_left = 92.0
+offset_top = 542.0
+offset_right = 139.0
+offset_bottom = 573.0
+text = "Fight"
+script = ExtResource("1_m33sc")
+_destinationPath = "res://Scenes/FightScene/fight_scene.tscn"
+metadata/_custom_type_script = "uid://f2otcrggcuc6"

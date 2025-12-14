@@ -1,5 +1,6 @@
 using Godot;
 using ShopGame.Characters;
+using ShopGame.Characters.FightGirl;
 
 namespace ShopGame.Utils;
 
@@ -15,7 +16,7 @@ internal sealed partial class TransitionArea : Area2D
   {
     BodyEntered += node =>
     {
-      if (node is not Girl and not FieldGirl)
+      if (node is not (Girl or FieldGirl or FightGirl))
         return;
 
       _enabled = true;
@@ -24,7 +25,7 @@ internal sealed partial class TransitionArea : Area2D
 
     BodyExited += node =>
     {
-      if (node is not Girl)
+      if (node is not (Girl or FieldGirl or FightGirl))
         return;
 
       _enabled = false;
@@ -37,9 +38,12 @@ internal sealed partial class TransitionArea : Area2D
     if (!_enabled)
       return;
 
+    if (_destinationPath is null)
+      return;
+
     if (!@event.IsActionPressed("Interact"))
       return;
 
-    GetTree().CallDeferred("change_scene_to_file", _destinationPath!);
+    GetTree().CallDeferred("change_scene_to_file", _destinationPath);
   }
 }

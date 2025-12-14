@@ -17,7 +17,7 @@ internal sealed partial class ChoiceBox : TextureButton
       return;
     
     Visible = true;
-    _choiceLabel!.Text = choiceOption;
+    _choiceLabel.Text = choiceOption;
   }
 
   internal void Disable()
@@ -26,6 +26,6 @@ internal sealed partial class ChoiceBox : TextureButton
       return;
 
     Visible = false;
-    _choiceLabel!.Text = "";
+    _choiceLabel.Text = "";
   }
 }

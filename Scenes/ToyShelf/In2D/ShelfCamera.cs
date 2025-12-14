@@ -38,8 +38,8 @@ internal sealed partial class ShelfCamera : Camera3D
     _initRotation = GlobalRotation;
 
     if (!_shelfAreas.IsValid()
-      || _shelfAreas!.TurnAreaGroup.IfValid() is not Control turnAreaGroup
-      || _shelfAreas!.ZoneGroup.IfValid() is not Control handZoneGroup
+      || _shelfAreas.TurnAreaGroup.IfValid() is not Control turnAreaGroup
+      || _shelfAreas.ZoneGroup.IfValid() is not Control handZoneGroup
     )
       return;
     
@@ -103,12 +103,12 @@ internal sealed partial class ShelfCamera : Camera3D
     
     if (_turnOrientation == TurnOrientation.Up)
     {
-      _boxZone!.MouseFilter = Control.MouseFilterEnum.Ignore;
+      _boxZone.MouseFilter = Control.MouseFilterEnum.Ignore;
       _shelfZones.ForEach(x => x.MouseFilter = Control.MouseFilterEnum.Stop);
     }
     else
     {
-      _boxZone!.MouseFilter = Control.MouseFilterEnum.Stop;
+      _boxZone.MouseFilter = Control.MouseFilterEnum.Stop;
       _shelfZones.ForEach(x => x.MouseFilter = Control.MouseFilterEnum.Ignore);
     }
   }
@@ -127,8 +127,8 @@ internal sealed partial class ShelfCamera : Camera3D
     if (!_focusedToy.IsValid() || !_handSprite.IsValid())
       return;
 
-    if (_handSprite!.FocusedShelfPos.Row != -1)
-      _focusedToy!.Scale = .8f * Vector3.One;
+    if (_handSprite.FocusedShelfPos.Row != -1)
+      _focusedToy.Scale = .8f * Vector3.One;
 
     if (!Input.IsActionPressed("Grab"))
     {
@@ -139,7 +139,7 @@ internal sealed partial class ShelfCamera : Camera3D
 
     if (
       _focusedPosNode.IsValid()
-      && !_focusedPosNode!.PosEqualsTo(_handSprite.FocusedShelfPos)
+      && !_focusedPosNode.PosEqualsTo(_handSprite.FocusedShelfPos)
     )
     {
       _focusedPosNode.StopHover();
@@ -153,7 +153,7 @@ internal sealed partial class ShelfCamera : Camera3D
       _focusedPosNode = _shelfPosGroup?.ShelfPosDict[hash];
     }
     
-    _focusedToy!.GlobalPosition = ToGlobal(TranslatedCursorDirection());
+    _focusedToy.GlobalPosition = ToGlobal(TranslatedCursorDirection());
   }
 
   private void HandleRelease()
@@ -191,7 +191,7 @@ internal sealed partial class ShelfCamera : Camera3D
 
     Vector3 localDirection = TranslatedCursorDirection();
 
-    _raycast!.TargetPosition = localDirection * 3f;
+    _raycast.TargetPosition = localDirection * 3f;
 
     if (!Input.IsActionPressed("Grab"))
       return;

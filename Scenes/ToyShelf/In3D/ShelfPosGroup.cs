@@ -34,7 +34,7 @@ internal sealed partial class ShelfPosGroup : Node3D
       if (!ShelfPosDict.ContainsKey(posHash))
         continue;
 
-      Toy itemToStock = ShelfViewport!.InstantiateItem(itemType);
+      Toy itemToStock = ShelfViewport.InstantiateItem(itemType);
       ShelfPosDict[posHash].PutItem(itemToStock);
     }
   }

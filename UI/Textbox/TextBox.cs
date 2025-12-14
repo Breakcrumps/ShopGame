@@ -58,14 +58,14 @@ internal sealed partial class TextBox : TextureRect
     if (!_nextCharTimer.IsValid() || !_waitTimer.IsValid())
       return;
 
-    _nextCharTimer!.WaitTime = _secBetweenChars;
+    _nextCharTimer.WaitTime = _secBetweenChars;
     _nextCharTimer.Timeout += AddVisibleCharacter;
 
-    _waitTimer!.OneShot = true;
+    _waitTimer.OneShot = true;
     _waitTimer.Timeout += EndWait;
 
-    _lowestChoiceBox!.Pressed += () => Choose(in _choiceDestinations.Lowest);
-    _highestChoiceBox!.Pressed += () => Choose(in _choiceDestinations.Highest);
+    _lowestChoiceBox.Pressed += () => Choose(in _choiceDestinations.Lowest);
+    _highestChoiceBox.Pressed += () => Choose(in _choiceDestinations.Highest);
   }
 
   private void Choose(in Choice option)
@@ -102,7 +102,7 @@ internal sealed partial class TextBox : TextureRect
     if (!_label.IsValid())
       return;
 
-    if (_label!.VisibleCharacters < _label.GetTotalCharacterCount())
+    if (_label.VisibleCharacters < _label.GetTotalCharacterCount())
     {
       if (!_currentReplicas[_currentReplicaIndex].Waits.TryGetValue(_label.VisibleCharacters, out float waitTime))
       {
@@ -121,7 +121,7 @@ internal sealed partial class TextBox : TextureRect
         return;
       }
 
-      _waitTimer!.WaitTime = waitTime;
+      _waitTimer.WaitTime = waitTime;
       _waitTimer.Start();
       _inWait = true;
       return;
@@ -196,9 +196,9 @@ internal sealed partial class TextBox : TextureRect
       return;
     }
 
-    if (!_nextCharTimer!.IsStopped())
+    if (!_nextCharTimer.IsStopped())
     {
-      _label!.VisibleCharacters = _label.GetTotalCharacterCount();
+      _label.VisibleCharacters = _label.GetTotalCharacterCount();
       AcceptEvent();
       return;
     }
@@ -238,12 +238,12 @@ internal sealed partial class TextBox : TextureRect
     Visible = true;
     _awaitingInput = true;
     _nextCharTimer?.Start();
-    _label!.Text = _currentReplicas[index].Line;
+    _label.Text = _currentReplicas[index].Line;
     _label.VisibleCharacters = 0;
     _proceedPrompt?.Deactivate();
     _questionPrompt?.Deactivate();
-    _lowestChoiceBox!.Visible = false;
-    _highestChoiceBox!.Visible = false;
+    _lowestChoiceBox.Visible = false;
+    _highestChoiceBox.Visible = false;
   }
 
   private void ReadSnapshot()
@@ -280,8 +280,8 @@ internal sealed partial class TextBox : TextureRect
     if (!_nextCharTimer.IsValid() || !_label.IsValid())
         return;
 
-    _nextCharTimer!.Start();
-    _label!.VisibleCharacters++;
+    _nextCharTimer.Start();
+    _label.VisibleCharacters++;
     _inWait = false;
   }
 

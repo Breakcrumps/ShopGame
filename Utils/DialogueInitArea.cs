@@ -24,7 +24,7 @@ internal sealed partial class DialogueInitArea : Area2D
     if (!_parent.IsValid())
       return;
 
-    _variantCount = GlobalInstances.TextBox!.CountVariants(_parent!);
+    _variantCount = GlobalInstances.TextBox.CountVariants(_parent);
 
     BodyEntered += body =>
     {
@@ -72,7 +72,7 @@ internal sealed partial class DialogueInitArea : Area2D
       return;
 
     AwaitInput = false;
-    textBox.Activate(_parent!, this, _currentVariant);
+    textBox.Activate(_parent, this, _currentVariant);
 
     if (_currentVariant < _variantCount)
       _currentVariant++;

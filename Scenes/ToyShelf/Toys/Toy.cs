@@ -43,7 +43,7 @@ internal sealed partial class Toy : CharacterBody3D
     
     ToyType = boxItemType;
     string itemName = Inventory.GetBoxItemName(boxItemType);
-    _spriteNode!.Texture = ResourceLoader.Load<Texture2D>($"Scenes/ToyShelf/Toys/{itemName}.png");
+    _spriteNode.Texture = ResourceLoader.Load<Texture2D>($"Scenes/ToyShelf/Toys/{itemName}.png");
 
     _shelfViewport = shelfViewport;
   }
@@ -59,7 +59,7 @@ internal sealed partial class Toy : CharacterBody3D
     AssociatedPosNode.HeldItem = null;
     AssociatedPosNode = null;
 
-    _shelfViewport!.Toys.Add(this);
+    _shelfViewport.Toys.Add(this);
     Inventory.AddToy(ToyType);
   }
 }

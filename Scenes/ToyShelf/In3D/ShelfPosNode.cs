@@ -25,7 +25,7 @@ internal sealed partial class ShelfPosNode : Node3D
     if (!_hoverSprite.IsValid())
       return;
     
-    _hoverSprite!.Visible = false;
+    _hoverSprite.Visible = false;
   }
 
   internal void StartHover()
@@ -33,7 +33,7 @@ internal sealed partial class ShelfPosNode : Node3D
     if (!_hoverSprite.IsValid())
       return;
 
-    _hoverSprite!.Visible = true;
+    _hoverSprite.Visible = true;
     _animPlayer?.Play("Hover");
   }
 
@@ -42,7 +42,7 @@ internal sealed partial class ShelfPosNode : Node3D
     if (!_hoverSprite.IsValid())
       return;
     
-    _hoverSprite!.Visible = false;
+    _hoverSprite.Visible = false;
     _animPlayer?.Stop();
   }
 
