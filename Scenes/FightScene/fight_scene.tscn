@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://dra8v88lxoaul"]
+[gd_scene load_steps=11 format=3 uid="uid://dra8v88lxoaul"]
 
-[ext_resource type="PackedScene" uid="uid://rl0jwir5g87e" path="res://Characters/FightGirl/fight_girl.tscn" id="1_1vpqj"]
+[ext_resource type="PackedScene" uid="uid://rl0jwir5g87e" path="res://Characters/Fight/fight_girl.tscn" id="1_1vpqj"]
 [ext_resource type="Script" uid="uid://b4v06cwqb12g8" path="res://Scenes/FightScene/FightCamera.cs" id="2_jah34"]
 [ext_resource type="Script" uid="uid://dda6prs2w18x4" path="res://Utils/TransitionArea.cs" id="3_xhhot"]
 [ext_resource type="PackedScene" uid="uid://qhe57e24toic" path="res://Utils/prompt.tscn" id="4_tyn1p"]
 [ext_resource type="Texture2D" uid="uid://b5xqcpovlnvc3" path="res://Utils/E.png" id="5_wjh70"]
+[ext_resource type="PackedScene" uid="uid://dblc44p162scx" path="res://Characters/Fight/Enemies/bird.tscn" id="6_emreq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_omcat"]
 size = Vector2(1000, 20)
@@ -12,15 +13,21 @@ size = Vector2(1000, 20)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tyn1p"]
 size = Vector2(40, 60)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_emreq"]
+size = Vector2(20, 100)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mfnse"]
+size = Vector2(100, 50)
+
 [node name="FightScene" type="Node2D"]
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
+collision_layer = 4
+collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
 position = Vector2(0, 10)
 shape = SubResource("RectangleShape2D_omcat")
-
-[node name="FightGirl" parent="." instance=ExtResource("1_1vpqj")]
 
 [node name="FightCamera" type="Camera2D" parent="." node_paths=PackedStringArray("_fightGirl")]
 position = Vector2(0, -59)
@@ -40,3 +47,38 @@ shape = SubResource("RectangleShape2D_tyn1p")
 
 [node name="Prompt" parent="TransitionArea" instance=ExtResource("4_tyn1p")]
 texture = ExtResource("5_wjh70")
+
+[node name="TransitionArea2" type="Area2D" parent="." node_paths=PackedStringArray("_prompt")]
+position = Vector2(177, -30)
+script = ExtResource("3_xhhot")
+_destinationPath = "res://Scenes/world_map.tscn"
+_prompt = NodePath("Prompt")
+metadata/_custom_type_script = "uid://dda6prs2w18x4"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TransitionArea2"]
+shape = SubResource("RectangleShape2D_tyn1p")
+
+[node name="Prompt" parent="TransitionArea2" instance=ExtResource("4_tyn1p")]
+texture = ExtResource("5_wjh70")
+
+[node name="Wall" type="StaticBody2D" parent="."]
+collision_layer = 4
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Wall"]
+position = Vector2(93, -50)
+shape = SubResource("RectangleShape2D_emreq")
+
+[node name="Wall2" type="StaticBody2D" parent="."]
+position = Vector2(-144, -12)
+collision_layer = 4
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Wall2"]
+position = Vector2(-8, -13)
+shape = SubResource("RectangleShape2D_mfnse")
+
+[node name="FightGirl" parent="." instance=ExtResource("1_1vpqj")]
+
+[node name="Bird" parent="." instance=ExtResource("6_emreq")]
+position = Vector2(48, -56)

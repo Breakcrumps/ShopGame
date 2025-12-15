@@ -1,10 +1,13 @@
 using Godot;
+using ShopGame.Static;
+using ShopGame.Types;
 
-namespace ShopGame.Characters.FightGirl;
+namespace ShopGame.Characters.Fight;
 
 [GlobalClass]
 internal sealed partial class FightGirl : CharacterBody2D
 {
+  [Export] private int _health = 100;
   [Export] private float _speed = 200f;
   [Export] private float _g = 1100f;
 
@@ -13,10 +16,13 @@ internal sealed partial class FightGirl : CharacterBody2D
   [Export] private float _groundDecelRate = 30f;
   [Export] private float _airDecelRate = 20f;
   [Export] private float _turnDecelRate = 35f;
+  [Export] private float _pushbackTurnRate = 5f;
 
   [ExportGroup("Jump Params")]
   [Export] private float _jumpVelocity = 270f;
   [Export] private float _jumpCutoffFactor = .5f;
+  [Export] private float _coyoteTime = .15f;
+  [Export] private float _jumpBufferTime = .1f;
 
   [ExportGroup("Dash Params")]
   [Export] private float _dashStartSpeed = 390f;
@@ -27,10 +33,17 @@ internal sealed partial class FightGirl : CharacterBody2D
 
   [ExportGroup("Attack Params")]
   [Export] internal int AttackStrength { get; private set; } = 10;
-  [Export] internal float PushbackMagnitude { get; private set; } = 20f;
+  [Export] internal float PushbackMagnitude { get; private set; } = 50f;
+  [Export] private float _pushbackStagger = .5f;
+  [Export] private float _pogoStagger = .15f;
+  [Export] private float _selfPushbackMagnitude = 10f;
+  [Export] private float _pogoMagnitude = 300f;
+  [Export] internal float AttackDuration { get; private set; } = .15f;
 
   private bool _inJump;
   private bool _doubleJump = true;
+  private float _coyoteTimer;
+  private float _jumpBufferTimer;
 
   private enum Direction { Left = -1, Right = 1 }
   private Direction _facingDirection = Direction.Right;
@@ -40,15 +53,39 @@ internal sealed partial class FightGirl : CharacterBody2D
   private float _dashTimer;
   private Direction _dashDirection;
 
+  internal bool InAttack { get; set; }
+  private Vector2 _pushbackVelocity;
+  private float _pushbackTimer;
+
+  public override void _EnterTree()
+    => GlobalInstances.FightGirl = this;
+
   public override void _PhysicsProcess(double delta)
   {
+    HandleMovement((float)delta);
+
+    _pushbackTimer = Mathf.Max(_pushbackTimer - (float)delta, 0f);
+  }
+
+  private void HandleMovement(float deltaF)
+  {
+    if (!_pushbackVelocity.IsZeroApprox())
+    {
+      Velocity = _pushbackVelocity;
+      _pushbackVelocity = Vector2.Zero;
+      MoveAndSlide();
+      return;
+    }
+    
     float xAxis = Input.GetAxis("Left", "Right");
 
     if (!Mathf.IsEqualApprox(xAxis, 0f))
       _facingDirection = xAxis < 0 ? Direction.Left : Direction.Right;
 
     float weight = (
-      Mathf.IsEqualApprox(xAxis, 0f)
+      _pushbackTimer > 0f
+      ? _pushbackTurnRate
+      : Mathf.IsEqualApprox(xAxis, 0f)
       ? IsOnFloor() ? _groundDecelRate : _airDecelRate
       : Mathf.Sign(Velocity.X) != Mathf.Sign(xAxis)
       ? _turnDecelRate
@@ -58,16 +95,24 @@ internal sealed partial class FightGirl : CharacterBody2D
     float xVelocity = Mathf.Lerp(
       from: Velocity.X,
       to: xAxis * _speed,
-      weight: 1f - Mathf.Exp(-weight * (float)delta)
+      weight: 1f - Mathf.Exp(-weight * deltaF)
     );
     
     Vector2 nextVelocity = new(
       xVelocity,
-      IsOnFloor() ? 0f : Velocity.Y + _g * (float)delta
+      IsOnFloor() ? 0f : Velocity.Y + _g * deltaF
     );
 
+    _coyoteTimer = IsOnFloor() ? _coyoteTime : Mathf.Max(_coyoteTimer - deltaF, 0f);
+
+    _jumpBufferTimer = (
+      Input.IsActionJustPressed("Jump")
+      ? _jumpBufferTime
+      : Mathf.Max(_jumpBufferTimer - deltaF, 0f)
+    );
+    
     HandleJump(ref nextVelocity);
-    HandleDash(ref nextVelocity, (float)delta);
+    HandleDash(ref nextVelocity, deltaF);
 
     Velocity = nextVelocity;
     
@@ -82,17 +127,20 @@ internal sealed partial class FightGirl : CharacterBody2D
       _doubleJump = true;
     }
 
-    if (Input.IsActionJustPressed("Jump"))
+    if (_jumpBufferTimer > 0f)
     {
-      if (IsOnFloor())
+      if (_coyoteTimer > 0f)
       {
         nextVelocity.Y = -_jumpVelocity;
+        _coyoteTimer = 0f;
+        _jumpBufferTimer = 0f;
         _inJump = true;
       }
       else if (_doubleJump)
       {
         nextVelocity.Y = -_jumpVelocity;
         _doubleJump = false;
+        _jumpBufferTimer = 0f;
       }
     }
 
@@ -168,5 +216,20 @@ internal sealed partial class FightGirl : CharacterBody2D
         _dashCancelsGravity ? 0f : nextVelocity.Y
       );
     }
+  }
+
+  internal void HandlePushback(Vector2 pushbackDirection, bool pogo)
+  {
+    float magnitude = pogo ? _pogoMagnitude : _selfPushbackMagnitude;
+    _pushbackVelocity += pushbackDirection * magnitude;
+    _pushbackTimer = pogo ? _pogoStagger : _pushbackStagger;
+  }
+
+  internal void ProcessHit(Attack attack)
+  {
+    _health -= attack.Strength;
+
+    Vector2 pushbackDirection = GlobalPosition - attack.Attacker.GlobalPosition;
+    _pushbackVelocity = pushbackDirection.Normalized() * attack.PushbackMagnitude;
   }
 }
