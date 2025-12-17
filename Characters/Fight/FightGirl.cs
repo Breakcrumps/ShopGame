@@ -109,7 +109,7 @@ internal sealed partial class FightGirl : CharacterBody2D
     );
     
     Vector2 nextVelocity = new(
-      Velocity.X.ExpLerped(to: xAxis * _speed, rate: weight, deltaF),
+      Velocity.X.ExpLerped(to: xAxis * _speed, rate: weight, param: deltaF),
       IsOnFloor() ? 0f : Velocity.Y + _g * deltaF
     );
 

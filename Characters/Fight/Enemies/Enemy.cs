@@ -20,7 +20,7 @@ internal abstract partial class Enemy : CharacterBody2D
 
   private protected Vector2 PushbackVelocity { get; set; }
 
-  internal void ProcessHit(Attack attack)
+  internal virtual void ProcessHit(Attack attack)
   {
     if (!HurtArea.IsValid() || !HurtArea.Collider.IsValid())
       return;
