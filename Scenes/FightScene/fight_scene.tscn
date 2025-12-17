@@ -81,4 +81,4 @@ shape = SubResource("RectangleShape2D_mfnse")
 [node name="FightGirl" parent="." instance=ExtResource("1_1vpqj")]
 
 [node name="Bird" parent="." instance=ExtResource("6_emreq")]
-position = Vector2(48, -56)
+position = Vector2(-146, -77)

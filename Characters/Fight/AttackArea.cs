@@ -43,12 +43,10 @@ internal sealed partial class AttackArea : Area2D
       
       Vector2 pushbackDirection = _attackDirection switch
       {
-        AttackDirection.Up => Vector2.Down,
+        AttackDirection.Up => Vector2.Zero,
         AttackDirection.Down => Vector2.Up,
-        AttackDirection.Left => Vector2.Right,
-        AttackDirection.Right => Vector2.Left,
-        AttackDirection.UpLeft => -Vector2.One,
-        AttackDirection.UpRight => new Vector2(-1, 1),
+        AttackDirection.Left or AttackDirection.UpLeft => Vector2.Right,
+        AttackDirection.Right or AttackDirection.UpRight => Vector2.Left,
         AttackDirection.DownLeft => new Vector2(1, -1),
         AttackDirection.DownRight => Vector2.One,
         _ => Vector2.Zero

@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://rl0jwir5g87e"]
+[gd_scene load_steps=14 format=3 uid="uid://rl0jwir5g87e"]
 
 [ext_resource type="Texture2D" uid="uid://i71o4hcvb216" path="res://Characters/Girl.png" id="1_4sifx"]
 [ext_resource type="Script" uid="uid://xn6ion4l2dbm" path="res://Characters/Fight/FightGirl.cs" id="1_of7jx"]
@@ -23,9 +23,48 @@ size = Vector2(25, 24)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_h8owd"]
 size = Vector2(25, 20)
 
-[node name="FightGirl" type="CharacterBody2D"]
+[sub_resource type="Animation" id="Animation_ygcj0"]
+resource_name = "Blink"
+length = 0.40000334
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:self_modulate:a")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.16666667, 0.33333334),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [1.0, 0.0, 1.0]
+}
+
+[sub_resource type="Animation" id="Animation_kj77p"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:self_modulate:a")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_yh24v"]
+_data = {
+&"Blink": SubResource("Animation_ygcj0"),
+&"RESET": SubResource("Animation_kj77p")
+}
+
+[node name="FightGirl" type="CharacterBody2D" node_paths=PackedStringArray("_animPlayer")]
 collision_mask = 12
 script = ExtResource("1_of7jx")
+_animPlayer = NodePath("AnimationPlayer")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -14.5)
@@ -128,3 +167,8 @@ metadata/_custom_type_script = "uid://l73n6vmcexop"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="UpRightAttackArea"]
 shape = SubResource("RectangleShape2D_h8owd")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_yh24v")
+}

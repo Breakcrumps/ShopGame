@@ -1,4 +1,5 @@
 using Godot;
+using ShopGame.Extensions;
 using ShopGame.Static;
 using ShopGame.Types;
 
@@ -7,6 +8,7 @@ namespace ShopGame.Characters.Fight;
 [GlobalClass]
 internal sealed partial class FightGirl : CharacterBody2D
 {
+  [Export] private AnimationPlayer? _animPlayer;
   [Export] private int _health = 100;
   [Export] private float _speed = 200f;
   [Export] private float _g = 1100f;
@@ -39,6 +41,7 @@ internal sealed partial class FightGirl : CharacterBody2D
   [Export] private float _selfPushbackMagnitude = 10f;
   [Export] private float _pogoMagnitude = 300f;
   [Export] internal float AttackDuration { get; private set; } = .15f;
+  [Export] private float _invulnTime = 2f;
 
   private bool _inJump;
   private bool _doubleJump = true;
@@ -56,15 +59,28 @@ internal sealed partial class FightGirl : CharacterBody2D
   internal bool InAttack { get; set; }
   private Vector2 _pushbackVelocity;
   private float _pushbackTimer;
+  private float _invulnTimer;
 
   public override void _EnterTree()
     => GlobalInstances.FightGirl = this;
 
   public override void _PhysicsProcess(double delta)
   {
+    HandleInvuln((float)delta);
     HandleMovement((float)delta);
 
     _pushbackTimer = Mathf.Max(_pushbackTimer - (float)delta, 0f);
+  }
+
+  private void HandleInvuln(float delta)
+  {
+    if (!_animPlayer.IsValid())
+      return;
+    
+    _invulnTimer = Mathf.Max(_invulnTimer - (float)delta, 0f);
+
+    if (_invulnTimer == 0f && _animPlayer.CurrentAnimation == "Blink")
+      _animPlayer.Stop();
   }
 
   private void HandleMovement(float deltaF)
@@ -91,15 +107,9 @@ internal sealed partial class FightGirl : CharacterBody2D
       ? _turnDecelRate
       : _accelRate
     );
-
-    float xVelocity = Mathf.Lerp(
-      from: Velocity.X,
-      to: xAxis * _speed,
-      weight: 1f - Mathf.Exp(-weight * deltaF)
-    );
     
     Vector2 nextVelocity = new(
-      xVelocity,
+      Velocity.X.ExpLerped(to: xAxis * _speed, rate: weight, deltaF),
       IsOnFloor() ? 0f : Velocity.Y + _g * deltaF
     );
 
@@ -227,9 +237,16 @@ internal sealed partial class FightGirl : CharacterBody2D
 
   internal void ProcessHit(Attack attack)
   {
+    if (_invulnTimer != 0f)
+      return;
+    
     _health -= attack.Strength;
 
     Vector2 pushbackDirection = GlobalPosition - attack.Attacker.GlobalPosition;
     _pushbackVelocity = pushbackDirection.Normalized() * attack.PushbackMagnitude;
+
+    _invulnTimer = _invulnTime;
+
+    _animPlayer?.Play("Blink");
   }
 }
