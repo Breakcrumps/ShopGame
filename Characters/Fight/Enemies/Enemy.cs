@@ -6,7 +6,7 @@ using ShopGame.Utils;
 namespace ShopGame.Characters.Fight.Enemies;
 
 [GlobalClass]
-internal abstract partial class Enemy : CharacterBody2D
+internal abstract partial class Enemy : CharacterBody2D, IHitProcessor
 {
   [Export] private protected HurtArea? HurtArea { get; private set; }
   [Export] private int _health = 100;
@@ -20,7 +20,7 @@ internal abstract partial class Enemy : CharacterBody2D
 
   private protected Vector2 PushbackVelocity { get; set; }
 
-  internal virtual void ProcessHit(Attack attack)
+  public virtual void ProcessHit(Attack attack)
   {
     if (!HurtArea.IsValid() || !HurtArea.Collider.IsValid())
       return;

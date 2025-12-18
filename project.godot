@@ -75,9 +75,10 @@ Attack={
 [layer_names]
 
 2d_physics/layer_1="Girl"
-2d_physics/layer_2="Enemies"
+2d_physics/layer_2="Hittable"
 2d_physics/layer_3="World"
 2d_physics/layer_4="EnemyAttacks"
+2d_physics/layer_5="PlayerAttacks"
 
 [rendering]
 

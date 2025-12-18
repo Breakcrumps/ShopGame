@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://rl0jwir5g87e"]
+[gd_scene load_steps=12 format=3 uid="uid://rl0jwir5g87e"]
 
 [ext_resource type="Texture2D" uid="uid://i71o4hcvb216" path="res://Characters/Girl.png" id="1_4sifx"]
 [ext_resource type="Script" uid="uid://xn6ion4l2dbm" path="res://Characters/Fight/FightGirl.cs" id="1_of7jx"]
@@ -11,17 +11,12 @@ size = Vector2(20, 29)
 size = Vector2(25, 25)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_iyyn2"]
+size = Vector2(40, 20)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_cea3n"]
 size = Vector2(25, 25)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3vjgs"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_fdtw1"]
-size = Vector2(25, 24)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_h8owd"]
-size = Vector2(25, 20)
 
 [sub_resource type="Animation" id="Animation_ygcj0"]
 resource_name = "Blink"
@@ -76,6 +71,7 @@ texture = ExtResource("1_4sifx")
 
 [node name="RightAttackArea" type="Area2D" parent="." node_paths=PackedStringArray("_fightGirl", "_collider")]
 position = Vector2(22.5, -16.5)
+collision_layer = 16
 collision_mask = 2
 script = ExtResource("3_iyyn2")
 _attackDirection = 3
@@ -87,6 +83,7 @@ shape = SubResource("RectangleShape2D_of7jx")
 
 [node name="DownAttackArea" type="Area2D" parent="." node_paths=PackedStringArray("_fightGirl", "_collider")]
 position = Vector2(0, 10)
+collision_layer = 16
 collision_mask = 2
 script = ExtResource("3_iyyn2")
 _attackDirection = 1
@@ -99,6 +96,7 @@ shape = SubResource("RectangleShape2D_iyyn2")
 
 [node name="LeftAttackArea" type="Area2D" parent="." node_paths=PackedStringArray("_fightGirl", "_collider")]
 position = Vector2(-22.5, -16.5)
+collision_layer = 16
 collision_mask = 2
 script = ExtResource("3_iyyn2")
 _attackDirection = 2
@@ -111,6 +109,7 @@ shape = SubResource("RectangleShape2D_cea3n")
 
 [node name="UpAttackArea" type="Area2D" parent="." node_paths=PackedStringArray("_fightGirl", "_collider")]
 position = Vector2(0, -39)
+collision_layer = 16
 collision_mask = 2
 script = ExtResource("3_iyyn2")
 _fightGirl = NodePath("..")
@@ -119,54 +118,6 @@ metadata/_custom_type_script = "uid://l73n6vmcexop"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="UpAttackArea"]
 shape = SubResource("RectangleShape2D_3vjgs")
-
-[node name="DownRightAttackArea" type="Area2D" parent="." node_paths=PackedStringArray("_fightGirl", "_collider")]
-position = Vector2(22.5, 8)
-collision_mask = 2
-script = ExtResource("3_iyyn2")
-_attackDirection = 7
-_fightGirl = NodePath("..")
-_collider = NodePath("CollisionShape2D")
-metadata/_custom_type_script = "uid://l73n6vmcexop"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="DownRightAttackArea"]
-shape = SubResource("RectangleShape2D_fdtw1")
-
-[node name="DownLeftAttackArea" type="Area2D" parent="." node_paths=PackedStringArray("_fightGirl", "_collider")]
-position = Vector2(-22.5, 8)
-collision_mask = 2
-script = ExtResource("3_iyyn2")
-_attackDirection = 6
-_fightGirl = NodePath("..")
-_collider = NodePath("CollisionShape2D")
-metadata/_custom_type_script = "uid://l73n6vmcexop"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="DownLeftAttackArea"]
-shape = SubResource("RectangleShape2D_fdtw1")
-
-[node name="UpLeftAttackArea" type="Area2D" parent="." node_paths=PackedStringArray("_fightGirl", "_collider")]
-position = Vector2(-22.5, -39)
-collision_mask = 2
-script = ExtResource("3_iyyn2")
-_attackDirection = 4
-_fightGirl = NodePath("..")
-_collider = NodePath("CollisionShape2D")
-metadata/_custom_type_script = "uid://l73n6vmcexop"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="UpLeftAttackArea"]
-shape = SubResource("RectangleShape2D_h8owd")
-
-[node name="UpRightAttackArea" type="Area2D" parent="." node_paths=PackedStringArray("_fightGirl", "_collider")]
-position = Vector2(22.5, -39)
-collision_mask = 2
-script = ExtResource("3_iyyn2")
-_attackDirection = 5
-_fightGirl = NodePath("..")
-_collider = NodePath("CollisionShape2D")
-metadata/_custom_type_script = "uid://l73n6vmcexop"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="UpRightAttackArea"]
-shape = SubResource("RectangleShape2D_h8owd")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

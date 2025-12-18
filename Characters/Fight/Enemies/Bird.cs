@@ -13,6 +13,7 @@ internal sealed partial class Bird : Enemy
   private enum MovementMode { Idle, Follow, FlapNearby, Lunge }
   private MovementMode _movementMode = MovementMode.Idle;
 
+  #region Data
   [Export] private AnimationPlayer? _animPlayer;
   [Export] private float _attackRewind = 2f;
 
@@ -49,6 +50,7 @@ internal sealed partial class Bird : Enemy
   private float _hoverHeight;
   private float _flapCooldownTimer = -1f;
   private bool _flapping;
+  #endregion
   
   public override void _PhysicsProcess(double delta)
   {
@@ -276,7 +278,7 @@ internal sealed partial class Bird : Enemy
     => _flapCooldownTimer = -1f;
   #endregion
 
-  internal override void ProcessHit(Attack attack)
+  public override void ProcessHit(Attack attack)
   {
     base.ProcessHit(attack);
     _animPlayer?.Play("Blink");

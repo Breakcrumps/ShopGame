@@ -1,6 +1,5 @@
 using System;
 using Godot;
-using ShopGame.Characters.Fight.Enemies;
 using ShopGame.Static;
 using ShopGame.Types;
 
@@ -9,7 +8,7 @@ namespace ShopGame.Characters.Fight;
 [GlobalClass]
 internal sealed partial class AttackArea : Area2D
 {
-  private enum AttackDirection { Up, Down, Left, Right, UpLeft, UpRight, DownLeft, DownRight }
+  private enum AttackDirection { Up, Down, Left, Right }
   [Export] private AttackDirection _attackDirection;
 
   [Export] private FightGirl? _fightGirl;
@@ -24,45 +23,41 @@ internal sealed partial class AttackArea : Area2D
     
     _collider.Disabled = true;
     
-    BodyEntered += node =>
-    {
-      if (node is not Enemy enemy)
-        return;
-
-      if (!_fightGirl.IsValid())
-        return;
-
-      Attack attack = new()
-      {
-        Strength = _fightGirl.AttackStrength,
-        PushbackMagnitude = _fightGirl.PushbackMagnitude,
-        Attacker = _fightGirl
-      };
-
-      enemy.ProcessHit(attack);
-      
-      Vector2 pushbackDirection = _attackDirection switch
-      {
-        AttackDirection.Up => Vector2.Zero,
-        AttackDirection.Down => Vector2.Up,
-        AttackDirection.Left or AttackDirection.UpLeft => Vector2.Right,
-        AttackDirection.Right or AttackDirection.UpRight => Vector2.Left,
-        AttackDirection.DownLeft => new Vector2(1, -1),
-        AttackDirection.DownRight => Vector2.One,
-        _ => Vector2.Zero
-      };
-
-      bool pogo = (
-        _attackDirection is AttackDirection.Down
-        or AttackDirection.DownLeft
-        or AttackDirection.DownRight
-      );
-
-      _fightGirl.HandlePushback(pushbackDirection, pogo);
-
-      StopAttack();
-    };
+    BodyEntered += TryHit;
+    AreaEntered += TryHit;
   }
+
+  private void TryHit(Node2D node)
+  {
+    if (node is not IHitProcessor hitProcessor)
+      return;
+
+    if (!_fightGirl.IsValid())
+      return;
+
+    Attack attack = new()
+    {
+      Strength = _fightGirl.AttackStrength,
+      PushbackMagnitude = _fightGirl.PushbackMagnitude,
+      Attacker = _fightGirl
+    };
+
+    hitProcessor.ProcessHit(attack);
+    
+    Vector2 pushbackDirection = _attackDirection switch
+    {
+      AttackDirection.Up => Vector2.Zero,
+      AttackDirection.Down => Vector2.Up,
+      AttackDirection.Left => Vector2.Right,
+      AttackDirection.Right => Vector2.Left,
+      _ => Vector2.Zero
+    };
+
+    _fightGirl.HandleOwnAttackPushback(pushbackDirection, pogo: _attackDirection is AttackDirection.Down);
+
+    StopAttack();
+  }
+
 
   public override void _PhysicsProcess(double delta)
   {
@@ -75,7 +70,7 @@ internal sealed partial class AttackArea : Area2D
     if (
       _timeLeftInAttack == 0f
       && Input.IsActionJustPressed("Attack")
-      && IsDirectionPressed()
+      && NeededDirectionPressed()
       && !_fightGirl.InAttack
     )
     {
@@ -97,18 +92,15 @@ internal sealed partial class AttackArea : Area2D
     _timeLeftInAttack -= (float)delta;
   }
 
-  private bool IsDirectionPressed() => _attackDirection switch
+  private bool NeededDirectionPressed() => _attackDirection switch
   {
-    AttackDirection.UpLeft => Input.IsActionPressed("Up") && Input.IsActionPressed("Left"),
-    AttackDirection.UpRight => Input.IsActionPressed("Up") && Input.IsActionPressed("Right"),
-    AttackDirection.DownLeft => Input.IsActionPressed("Down") && Input.IsActionPressed("Left"),
-    AttackDirection.DownRight => Input.IsActionPressed("Down") && Input.IsActionPressed("Right"),
+    AttackDirection.Down => Input.IsActionPressed(Enum.GetName(_attackDirection)!),
     _ => Input.IsActionPressed(Enum.GetName(_attackDirection)!) && NothingElsePressed()
   };
 
   private bool NothingElsePressed()
   {
-    for (int i = 0; i < (int)AttackDirection.UpLeft; i++)
+    for (int i = 0; i <= (int)AttackDirection.Right; i++)
     {
       if (i == (int)_attackDirection)
         continue;

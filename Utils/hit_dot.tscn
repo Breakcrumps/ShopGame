@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://thvmmrfblfeg"]
+
+[ext_resource type="Script" uid="uid://d0wajqb6lnnd4" path="res://Utils/HitDot.cs" id="1_pqu0g"]
+[ext_resource type="Texture2D" uid="uid://dyvidundyj5vl" path="res://Utils/HitDot.png" id="2_6r4so"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8kw0c"]
+size = Vector2(11, 11)
+
+[node name="HitDot" type="Area2D" node_paths=PackedStringArray("_collider", "_sprite")]
+collision_layer = 2
+collision_mask = 16
+script = ExtResource("1_pqu0g")
+_collider = NodePath("CollisionShape2D")
+_sprite = NodePath("Sprite2D")
+metadata/_custom_type_script = "uid://d0wajqb6lnnd4"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_8kw0c")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_6r4so")
