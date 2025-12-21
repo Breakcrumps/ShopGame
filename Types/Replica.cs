@@ -13,6 +13,9 @@ internal sealed class Replica
 
   internal Dictionary<int, float> Waits { get; } = [];
 
+  public string? ShowLeft { get; init; }
+  public string? ShowRight { get; init; }
+
   internal void ComputeLineAndWaits()
   {
     int shift = 0;

@@ -1,5 +1,6 @@
 using Godot;
 using ShopGame.Characters;
+using ShopGame.Characters.Fight;
 using ShopGame.Static;
 using ShopGame.UI.Textbox;
 
@@ -18,6 +19,9 @@ internal sealed partial class DialogueInitArea : Area2D
 
   public override void _Ready()
   {
+    CollisionLayer = 4;
+    CollisionMask = 1;
+    
     if (!GlobalInstances.TextBox.IsValid())
       return;
 
@@ -28,7 +32,7 @@ internal sealed partial class DialogueInitArea : Area2D
 
     BodyEntered += body =>
     {
-      if (body is not (Girl or FieldGirl))
+      if (body is not (Girl or FieldGirl or FightGirl))
         return;
 
       AwaitInput = true;
@@ -36,7 +40,7 @@ internal sealed partial class DialogueInitArea : Area2D
 
     BodyExited += body =>
     {
-      if (body is not (Girl or FieldGirl))
+      if (body is not (Girl or FieldGirl or FightGirl))
         return;
 
       AwaitInput = false;
@@ -68,7 +72,7 @@ internal sealed partial class DialogueInitArea : Area2D
     if (!_parent.IsValid())
       return;
 
-    if (GlobalInstances.TextBox.IfValid() is not TextBox textBox)
+    if (GlobalInstances.TextBox.IfValid() is not Textbox textBox)
       return;
 
     AwaitInput = false;

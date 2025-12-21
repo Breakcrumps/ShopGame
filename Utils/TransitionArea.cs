@@ -14,6 +14,9 @@ internal sealed partial class TransitionArea : Area2D
 
   public override void _Ready()
   {
+    CollisionLayer = 4;
+    CollisionMask = 1;
+    
     BodyEntered += node =>
     {
       if (node is not (Girl or FieldGirl or FightGirl))

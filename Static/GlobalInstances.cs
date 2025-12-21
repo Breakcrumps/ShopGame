@@ -8,7 +8,7 @@ namespace ShopGame.Static;
 
 internal static class GlobalInstances
 {
-  internal static TextBox? TextBox { get; set; }
+  internal static Textbox? TextBox { get; set; }
   internal static ShelfViewportContainer? ShelfViewportContainer { get; set; }
 
   internal static Girl? Girl { get; set; }

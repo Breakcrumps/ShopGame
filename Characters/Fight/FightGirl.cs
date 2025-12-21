@@ -1,4 +1,3 @@
-using System;
 using Godot;
 using ShopGame.Extensions;
 using ShopGame.Static;
@@ -9,6 +8,8 @@ namespace ShopGame.Characters.Fight;
 [GlobalClass]
 internal sealed partial class FightGirl : CharacterBody2D
 {
+  internal bool CanMove { private get; set; } = true;
+  
   [Export] private AnimationPlayer? _animPlayer;
   [Export] private int _health = 100;
   [Export] private float _speed = 200f;
@@ -81,7 +82,7 @@ internal sealed partial class FightGirl : CharacterBody2D
 
   private void HandleMovement(float deltaF)
   {
-    float xAxis = Input.GetAxis("Left", "Right");
+    float xAxis = CanMove ? Input.GetAxis("Left", "Right") : 0f;
 
     if (!Mathf.IsEqualApprox(xAxis, 0f))
       _facingDirection = xAxis < 0 ? Direction.Left : Direction.Right;
@@ -123,6 +124,9 @@ internal sealed partial class FightGirl : CharacterBody2D
 
   private void HandleJump(ref Vector2 nextVelocity)
   {
+    if (!CanMove)
+      return;
+    
     if (IsOnFloor())
     {
       _inJump = false;
@@ -162,6 +166,9 @@ internal sealed partial class FightGirl : CharacterBody2D
 
   private void HandleDash(ref Vector2 nextVelocity, float deltaF)
   {
+    if (!CanMove)
+      return;
+    
     if (IsOnFloor())
       _dashedInAir = false;
 

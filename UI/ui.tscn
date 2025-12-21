@@ -1,78 +1,13 @@
-[gd_scene load_steps=9 format=3 uid="uid://dkv3yol4sh756"]
+[gd_scene load_steps=4 format=3 uid="uid://dkv3yol4sh756"]
 
-[ext_resource type="Texture2D" uid="uid://xcineshn34oc" path="res://UI/Textbox/Textbox.png" id="1_2fwl4"]
-[ext_resource type="PackedScene" uid="uid://bkmehti7hu67t" path="res://UI/Textbox/choicebox.tscn" id="1_nm1m0"]
-[ext_resource type="Script" uid="uid://bgkwk6a1wbnbl" path="res://UI/Textbox/TextBox.cs" id="2_dajm1"]
-[ext_resource type="PackedScene" uid="uid://qhe57e24toic" path="res://Utils/prompt.tscn" id="3_e6gg6"]
-[ext_resource type="Texture2D" uid="uid://b1ui4h2tbwdya" path="res://UI/Textbox/Arrow.png" id="4_hat8c"]
+[ext_resource type="PackedScene" uid="uid://3liwxod2o0b1" path="res://UI/Textbox/textbox.tscn" id="1_e6gg6"]
 [ext_resource type="Script" uid="uid://c7aw088dvker8" path="res://Scenes/ToyShelf/ShelfViewportContainer.cs" id="7_4fiuh"]
-[ext_resource type="Texture2D" uid="uid://b4ptq4qt5fdg8" path="res://UI/Textbox/QuestionPrompt.png" id="7_c7tqi"]
 [ext_resource type="PackedScene" uid="uid://8etiti5kt6jr" path="res://Scenes/ToyShelf/shelf_viewport.tscn" id="7_cbfhl"]
 
 [node name="UI" type="CanvasLayer"]
 process_mode = 3
 
-[node name="ChoiceLow" parent="." instance=ExtResource("1_nm1m0")]
-
-[node name="ChoiceHigh" parent="." instance=ExtResource("1_nm1m0")]
-offset_top = 318.0
-offset_bottom = 372.0
-
-[node name="TextBox" type="TextureRect" parent="." node_paths=PackedStringArray("_label", "_proceedPrompt", "_questionPrompt", "_nextCharTimer", "_waitTimer", "_lowestChoiceBox", "_highestChoiceBox")]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -445.0
-offset_top = 109.0
-offset_right = 445.0
-offset_bottom = 266.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("1_2fwl4")
-expand_mode = 2
-script = ExtResource("2_dajm1")
-_label = NodePath("RichTextLabel")
-_proceedPrompt = NodePath("ProceedPrompt")
-_questionPrompt = NodePath("QuestionPrompt")
-_nextCharTimer = NodePath("../TextBoxTimer")
-_waitTimer = NodePath("../WaitEscapeTimer")
-_lowestChoiceBox = NodePath("../ChoiceLow")
-_highestChoiceBox = NodePath("../ChoiceHigh")
-
-[node name="RichTextLabel" type="RichTextLabel" parent="TextBox"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -412.0
-offset_top = -53.5
-offset_right = 412.0
-offset_bottom = 46.5
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/normal_font_size = 23
-theme_override_font_sizes/bold_font_size = 23
-theme_override_font_sizes/bold_italics_font_size = 23
-theme_override_font_sizes/italics_font_size = 23
-theme_override_font_sizes/mono_font_size = 23
-
-[node name="ProceedPrompt" parent="TextBox" instance=ExtResource("3_e6gg6")]
-position = Vector2(839, 123)
-scale = Vector2(3, 3)
-texture = ExtResource("4_hat8c")
-
-[node name="QuestionPrompt" parent="TextBox" instance=ExtResource("3_e6gg6")]
-position = Vector2(839, 123)
-scale = Vector2(3, 3)
-texture = ExtResource("7_c7tqi")
-
-[node name="TextBoxTimer" type="Timer" parent="."]
-
-[node name="WaitEscapeTimer" type="Timer" parent="."]
+[node name="TextBox" parent="." instance=ExtResource("1_e6gg6")]
 
 [node name="ShelfViewportContainer" type="SubViewportContainer" parent="." node_paths=PackedStringArray("_shelfViewport", "_ui")]
 process_mode = 4

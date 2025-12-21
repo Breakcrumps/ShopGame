@@ -1,0 +1,24 @@
+{
+  "Speaker 1": [
+    {
+      "Who": "MageGirl",
+      "What": "Cocu",
+      "ShowRight": "MageGirl",
+      "ShowLeft": "DialogueGirl"
+    },
+    { "Who": "DialogueGirl", "What": "No, sama sosy!" },
+    { "Who": "MageGirl", "What": "Func you!" },
+    { "Who": "DialogueGirl", "What": "No, sama sosy!" },
+    { "Who": "MageGirl", "What": "Func you!" },
+    { "Who": "DialogueGirl", "What": "No, sama sosy!" },
+    { "Who": "MageGirl", "What": "Func you!" },
+    { "Who": "DialogueGirl", "What": "No, sama sosy!" },
+    { "Who": "MageGirl", "What": "Func you!" },
+    { "Who": "DialogueGirl", "What": "No, sama sosy!" },
+    { "Who": "MageGirl", "What": "Func you!" },
+    { "Who": "DialogueGirl", "What": "No, sama sosy!" },
+    { "Who": "MageGirl", "What": "Func you!" },
+    { "Who": "DialogueGirl", "What": "No, sama sosy!" },
+    { "Who": "MageGirl", "What": "Func you!" }
+  ]
+}

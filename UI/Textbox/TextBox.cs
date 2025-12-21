@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using Godot;
-using ShopGame.Characters;
+using ShopGame.Characters.DialogueSprites;
 using ShopGame.Static;
 using ShopGame.Types;
 using ShopGame.Utils;
@@ -10,7 +10,7 @@ using ShopGame.Utils;
 namespace ShopGame.UI.Textbox;
 
 [GlobalClass]
-internal sealed partial class TextBox : TextureRect
+internal sealed partial class Textbox : TextureRect
 {
   [Export] private float _secBetweenChars = .03f;
   [Export] private RichTextLabel? _label;
@@ -23,9 +23,15 @@ internal sealed partial class TextBox : TextureRect
   [Export] private Timer? _nextCharTimer;
   [Export] private Timer? _waitTimer;
 
-  [ExportGroup("ChoiceBoxes")]
-  [Export] private ChoiceBox? _lowestChoiceBox;
-  [Export] private ChoiceBox? _highestChoiceBox;
+  [ExportGroup("Choiceboxes")]
+  [Export] private Choicebox? _lowestChoicebox;
+  [Export] private Choicebox? _highestChoicebox;
+
+  [ExportGroup("DialogueSprites")]
+  [Export] private DialogueSprite? _leftSprite;
+  [Export] private DialogueAnimPlayer? _leftAnimPlayer;
+  [Export] private DialogueSprite? _rightSprite;
+  [Export] private DialogueAnimPlayer? _rightAnimPlayer;
 
   private IActionHandler? _activatorNode;
   private DialogueInitArea? _dialogueArea;
@@ -50,10 +56,10 @@ internal sealed partial class TextBox : TextureRect
   {
     ReadNewDialogueFile(GetTree().CurrentScene.Name);
     
-    if (!_lowestChoiceBox.IsValid() || !_highestChoiceBox.IsValid())
-      return;
-    
     Visible = false;
+    
+    if (!_lowestChoicebox.IsValid() || !_highestChoicebox.IsValid())
+      return;
 
     if (!_nextCharTimer.IsValid() || !_waitTimer.IsValid())
       return;
@@ -64,8 +70,8 @@ internal sealed partial class TextBox : TextureRect
     _waitTimer.OneShot = true;
     _waitTimer.Timeout += EndWait;
 
-    _lowestChoiceBox.Pressed += () => Choose(in _choiceDestinations.Lowest);
-    _highestChoiceBox.Pressed += () => Choose(in _choiceDestinations.Highest);
+    _lowestChoicebox.Pressed += () => Choose(in _choiceDestinations.Lowest);
+    _highestChoicebox.Pressed += () => Choose(in _choiceDestinations.Highest);
   }
 
   private void Choose(in Choice option)
@@ -137,13 +143,13 @@ internal sealed partial class TextBox : TextureRect
 
     if (choices.Count == 1)
     {
-      _lowestChoiceBox?.Display(choices[0].What);
+      _lowestChoicebox?.Display(choices[0].What);
       _choiceDestinations.Lowest = choices[0];
     }
     else
     {
-      _highestChoiceBox?.Display(choices[0].What);
-      _lowestChoiceBox?.Display(choices[1].What);
+      _highestChoicebox?.Display(choices[0].What);
+      _lowestChoicebox?.Display(choices[1].What);
       _choiceDestinations = (choices[1], choices[0]);
     }
 
@@ -159,8 +165,11 @@ internal sealed partial class TextBox : TextureRect
     if (!_label.IsValid())
       return;
 
-    if (GlobalInstances.Girl.IfValid() is not Girl player)
-      return;
+    if (GlobalInstances.Girl.IsValid())
+      GlobalInstances.Girl.CanMove = false;
+    
+    if (GlobalInstances.FightGirl.IsValid())
+      GlobalInstances.FightGirl.CanMove = false;
 
     if (activator is IActionHandler handler)
       _activatorNode = handler;
@@ -170,7 +179,6 @@ internal sealed partial class TextBox : TextureRect
     ReadDialogueFromFile($"{activator.Name} {variant}");
 
     LoadLine(index: 0);
-    player.CanMove = false;
     _awaitingInput = true;
     _inDialogue = true;
   }
@@ -184,9 +192,6 @@ internal sealed partial class TextBox : TextureRect
       return;
 
     if (!_nextCharTimer.IsValid() || !_label.IsValid())
-      return;
-
-    if (!GlobalInstances.Girl.IsValid())
       return;
 
     if (_inWait)
@@ -223,7 +228,7 @@ internal sealed partial class TextBox : TextureRect
     if (!_label.IsValid())
       return;
 
-    if (!_lowestChoiceBox.IsValid() || !_highestChoiceBox.IsValid())
+    if (!_lowestChoicebox.IsValid() || !_highestChoicebox.IsValid())
       return;
 
     if (index >= _currentReplicas.Count)
@@ -235,6 +240,9 @@ internal sealed partial class TextBox : TextureRect
       return;
     }
 
+    HandleDialogueChar(_currentReplicas[index], side: 0, _leftAnimPlayer);
+    HandleDialogueChar(_currentReplicas[index], side: 1, _rightAnimPlayer);
+
     Visible = true;
     _awaitingInput = true;
     _nextCharTimer?.Start();
@@ -242,8 +250,34 @@ internal sealed partial class TextBox : TextureRect
     _label.VisibleCharacters = 0;
     _proceedPrompt?.Deactivate();
     _questionPrompt?.Deactivate();
-    _lowestChoiceBox.Visible = false;
-    _highestChoiceBox.Visible = false;
+    _lowestChoicebox.Visible = false;
+    _highestChoicebox.Visible = false;
+  }
+
+  private static void HandleDialogueChar(Replica replica, int side, DialogueAnimPlayer? animPlayer)
+  {
+    if (animPlayer is null)
+      return;
+
+    string? charName = side == 1 ? replica.ShowRight : replica.ShowLeft;
+
+    if (charName == "")
+    {
+      animPlayer.TargetStates.Add(DialogueCharState.Hidden);
+      return;
+    }
+
+    if (charName is null)
+    {
+      if (replica.Who == animPlayer.CurrentSprite)
+        animPlayer.TargetStates.Add(DialogueCharState.Focused);
+      else
+        animPlayer.TargetStates.Add(DialogueCharState.Unfocused);
+      
+      return;
+    }
+
+    animPlayer.QueueAppear(charName, replica.Who == charName);
   }
 
   private void ReadSnapshot()
@@ -260,14 +294,19 @@ internal sealed partial class TextBox : TextureRect
     _nextCharTimer?.Stop();
     _label!.Text = "";
     _label.VisibleCharacters = 0;
-    GlobalInstances.Girl!.CanMove = true;
+    if (GlobalInstances.Girl.IsValid())
+      GlobalInstances.Girl.CanMove = true;
+    if (GlobalInstances.FightGirl.IsValid())
+      GlobalInstances.FightGirl.CanMove = true;
+    _leftAnimPlayer?.FinishUp();
+    _rightAnimPlayer?.FinishUp();
     _awaitingInput = false;
     _inDialogue = false;
     _proceedPrompt?.Deactivate();
     _questionPrompt?.Deactivate();
     _currentReplicaIndex = 0;
-    _lowestChoiceBox?.Disable();
-    _highestChoiceBox?.Disable();
+    _lowestChoicebox?.Disable();
+    _highestChoicebox?.Disable();
     _currentReplicas = [];
     _activatorNode = null;
     if (_dialogueArea.IsValid())
