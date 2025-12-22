@@ -23,4 +23,7 @@ internal static class MathExtensions
 
   internal static bool IsEqualApprox(this float a, float b)
     => Mathf.IsEqualApprox(a, b);
+
+  internal static bool IsZeroApprox(this float a)
+    => Mathf.IsZeroApprox(a);
 }
