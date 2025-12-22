@@ -12,9 +12,8 @@ internal sealed partial class FightCamera : Camera2D
   [Export] private Node2D? _cameraPivot;
 
   [Export] private float _xFollowTime = .3f;
-  [Export] private float _xStartFollowRate = 2f;
-  [Export] private float _xFollowRate = 7f;
-  [Export] private float _yFollowTime = .1f;
+  [Export] private float _xStartFollowRate = 10f;
+  [Export] private float _xFollowRate = 12f;
   [Export] private float _yFollowRate = 30f;
   private float _xMoveTimer;
   private float _yMoveTimer;
@@ -56,16 +55,5 @@ internal sealed partial class FightCamera : Camera2D
   }
 
   private void HandleYFollow(ref Vector2 newPos, float deltaF)
-  {
-    if (_fightGirl!.Velocity.Y.IsZeroApprox())
-    {
-      _yMoveTimer = 0f;
-      return;
-    }
-
-    _yMoveTimer += deltaF;
-
-    if (_yMoveTimer >= _yFollowTime)
-      newPos.Y.ExpLerp(to: _cameraPivot!.GlobalPosition.Y, _yFollowRate, deltaF);
-  }
+    => newPos.Y.ExpLerp(to: _cameraPivot!.GlobalPosition.Y, _yFollowRate, deltaF);
 }
