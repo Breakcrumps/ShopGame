@@ -1,12 +1,12 @@
 {
-  "Speaker 1": [
-    {
-      "Who": "MageGirl",
-      "What": "Cocu",
-      "ShowRight": "MageGirl",
-      "ShowLeft": "DialogueGirl"
-    },
-    { "Who": "DialogueGirl", "What": "No, sama sosy!" },
-    { "Who": "MageGirl", "What": "Func you!" }
+  "Speaker1 1": [
+    { "ShowRight": "MageGirl", "ShowLeft": "DialogueGirl", "Who": "MageGirl", "What": "Welcome to my hell!" },
+    { "Who": "DialogueGirl", "What": "Where am I?" },
+    { "Who": "MageGirl", "What": "The tutorial." },
+    { "Who": "MageGirl", "What": "I decided to abbbbobbbabaanfnseofdn;onfo" },
+    { "Who": "DialogueGirl", "What": "..." }
+  ],
+  "Speaker1 2": [
+    { "ShowRight": "MageGirl", "Who": "MageGirl", "What": "..." }
   ]
 }

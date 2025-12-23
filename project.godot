@@ -19,6 +19,10 @@ config/icon="res://icon.svg"
 
 project/assembly_name="ShopGame"
 
+[gui]
+
+theme/custom_font="uid://ce3yr0cy3l7w2"
+
 [input]
 
 Up={

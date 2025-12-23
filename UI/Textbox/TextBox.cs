@@ -269,15 +269,16 @@ internal sealed partial class Textbox : TextureRect
 
     if (charName is null)
     {
-      if (replica.Who == animPlayer.CurrentSprite)
-        animPlayer.TargetStates.Add(DialogueCharState.Focused);
-      else
-        animPlayer.TargetStates.Add(DialogueCharState.Unfocused);
-      
+      if (animPlayer.CurrentSprite != "")
+        animPlayer.TargetStates.Add(
+          replica.Who == animPlayer.CurrentSprite
+          ? DialogueCharState.Focused
+          : DialogueCharState.Unfocused
+        );
       return;
     }
 
-    animPlayer.QueueAppear(charName, replica.Who == charName);
+    animPlayer.QueueAppear(charName, intoFocus: replica.Who == charName);
   }
 
   private void ReadSnapshot()

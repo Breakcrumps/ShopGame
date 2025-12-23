@@ -10,7 +10,7 @@ internal sealed partial class CameraControlArea : Area2D
 {
   [Export] private FightCamera? _camera;
   [Export] private Node2D? _pivot;
-  [Export] private float _targetZoom = 4f;
+  [Export] private Vector2 _targetZoom = new(4f, 4f);
 
   public override void _Ready()
   {
@@ -19,7 +19,7 @@ internal sealed partial class CameraControlArea : Area2D
       if (!_camera.IsValid() || node is not FightGirl girl)
         return;
 
-      _camera.TargetZoom = new Vector2(_targetZoom, _targetZoom);
+      _camera.TargetZoom = _targetZoom;
 
       if (_pivot.IsValid())
         _camera.Pivot = _pivot;

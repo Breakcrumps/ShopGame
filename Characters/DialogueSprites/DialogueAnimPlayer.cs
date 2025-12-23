@@ -14,9 +14,9 @@ internal sealed partial class DialogueAnimPlayer : AnimationPlayer
   internal string CurrentSprite = "";
   private DialogueCharState _charState = DialogueCharState.Hidden;
   
-  internal List<DialogueCharState> TargetStates { get; } = [];
-  private readonly List<string> _queuedImages = [];
-  private readonly List<DialogueCharState> _currentActionQueue = [];
+  internal List<DialogueCharState> TargetStates { get; private set; } = [];
+  private List<string> _queuedImageNames = [];
+  private List<DialogueCharState> _currentActionQueue = [];
 
   public override void _Ready()
     => PlayBackwards("Appear");
@@ -63,9 +63,9 @@ internal sealed partial class DialogueAnimPlayer : AnimationPlayer
 
   private void TransitionFromHidden(DialogueCharState nextState)
   {
-    string imageName = _queuedImages[0];
+    string imageName = _queuedImageNames[0];
     _sprite!.LoadCharacter(imageName);
-    _queuedImages.RemoveAt(0);
+    _queuedImageNames.RemoveAt(0);
     
     switch (nextState)
     {
@@ -138,8 +138,8 @@ internal sealed partial class DialogueAnimPlayer : AnimationPlayer
       return;
     }
     
-    TargetStates.Add(intoFocus ? DialogueCharState.Focused: DialogueCharState.Unfocused);
-    _queuedImages.Add(charName);
+    TargetStates.Add(intoFocus ? DialogueCharState.Focused : DialogueCharState.Unfocused);
+    _queuedImageNames.Add(charName);
   }
 
   internal void FinishUp()
@@ -148,6 +148,10 @@ internal sealed partial class DialogueAnimPlayer : AnimationPlayer
       return;
     
     _charState = DialogueCharState.Hidden;
+    CurrentSprite = "";
+    TargetStates = [];
+    _currentActionQueue = [];
+    _queuedImageNames = [];
     PlayBackwards("Appear");
   }
 }

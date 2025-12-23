@@ -1,9 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://bp20r5kl2e3ya"]
-
-[ext_resource type="FontFile" uid="uid://ce3yr0cy3l7w2" path="res://Fonts/NOTOSANS_CONDENSED-BLACK.TTF" id="1_cmqmr"]
+[gd_scene load_steps=5 format=3 uid="uid://bp20r5kl2e3ya"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_rec43"]
-font = ExtResource("1_cmqmr")
 font_size = 100
 outline_size = 20
 outline_color = Color(0, 0, 0, 1)
