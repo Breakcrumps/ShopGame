@@ -17,7 +17,7 @@ internal static class MathExtensions
   internal static float ExpLerped(this float from, float to, float rate, float param)
     => from.Lerped(to, 1 - Mathf.Exp(-rate * param));
 
-  internal static Vector2 ExpLerp(this Vector2 from, Vector2 to, float rate, float param)
+  internal static Vector2 ExpLerpV(this Vector2 from, Vector2 to, float rate, float param)
     => from.Lerp(to, 1 - Mathf.Exp(-rate * param));
   #endregion
 

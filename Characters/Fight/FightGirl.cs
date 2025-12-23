@@ -22,7 +22,7 @@ internal sealed partial class FightGirl : CharacterBody2D
   [Export] private float _turnDecelRate = 35f;
 
   [ExportGroup("Jump Params")]
-  [Export] private float _jumpVelocity = 270f;
+  [Export] private float _jumpVelocity = 280f;
   [Export] private float _jumpCutoffFactor = .5f;
   [Export] private float _coyoteTime = .15f;
   [Export] private float _jumpBufferTime = .1f;

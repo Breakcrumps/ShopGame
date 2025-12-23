@@ -94,7 +94,7 @@ internal sealed partial class Bird : Enemy
 
       case MovementMode.Lunge:
       {
-        nextVelocity = nextVelocity.ExpLerp(
+        nextVelocity = nextVelocity.ExpLerpV(
           to: _lungeDirection * _lungeSpeed,
           rate: _lungeLerpSpeed,
           param: deltaF
@@ -166,7 +166,7 @@ internal sealed partial class Bird : Enemy
       return;
     }
 
-    nextVelocity = nextVelocity.ExpLerp(
+    nextVelocity = nextVelocity.ExpLerpV(
       to: direction.Normalized() * _followSpeed,
       rate: PushbackTimer > 0f ? PushBackTurnRate : TurnRate,
       param: deltaF
@@ -215,7 +215,7 @@ internal sealed partial class Bird : Enemy
 
     _lungeTimer = _lungeDuration;
 
-    nextVelocity = nextVelocity.ExpLerp(
+    nextVelocity = nextVelocity.ExpLerpV(
       to: _lungeDirection * _lungeSpeed,
       rate: _lungeLerpSpeed,
       param: deltaF

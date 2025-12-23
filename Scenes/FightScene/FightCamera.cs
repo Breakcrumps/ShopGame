@@ -9,7 +9,7 @@ namespace ShopGame.Scenes.FightScene;
 internal sealed partial class FightCamera : Camera2D
 {
   [Export] private FightGirl? _fightGirl;
-  [Export] private Node2D? _cameraPivot;
+  [Export] internal Node2D? InitPivot { get; private set; }
 
   [Export] private float _xFollowTime = .3f;
   [Export] private float _xStartFollowRate = 10f;
@@ -18,17 +18,26 @@ internal sealed partial class FightCamera : Camera2D
   private float _xMoveTimer;
   private float _yMoveTimer;
 
+  [Export] private float _zoomLerpRate = 7f;
+  internal Vector2 InitZoom { get; private set; }
+  internal Vector2 TargetZoom { private get; set; } = new(4f, 4f);
+
+  [Export] private float _lerpToPivotRate = 8f;
+  internal Node2D? Pivot { private get; set; }
+
   public override void _Ready()
   {
-    if (!_cameraPivot.IsValid())
+    if (!InitPivot.IsValid())
       return;
     
-    GlobalPosition = _cameraPivot.GlobalPosition;
+    GlobalPosition = InitPivot.GlobalPosition;
+    InitZoom = Zoom;
+    Pivot = InitPivot;
   }
 
   public override void _PhysicsProcess(double delta)
   {
-    if (!_fightGirl.IsValid() || !_cameraPivot.IsValid())
+    if (!_fightGirl.IsValid() || !Pivot.IsValid())
       return;
 
     Vector2 newPos = GlobalPosition;
@@ -37,11 +46,13 @@ internal sealed partial class FightCamera : Camera2D
     HandleYFollow(ref newPos, (float)delta);
 
     GlobalPosition = newPos;
+
+    Zoom = Zoom.ExpLerpV(to: TargetZoom, _zoomLerpRate, (float)delta);
   }
 
   private void HandleXFollow(ref Vector2 newPos, float deltaF)
   {
-    if (_fightGirl!.Velocity.X.IsZeroApprox())
+    if (_fightGirl!.GetRealVelocity().X.IsZeroApprox())
     {
       _xMoveTimer = 0f;
       return;
@@ -51,9 +62,9 @@ internal sealed partial class FightCamera : Camera2D
 
     float rate = _xMoveTimer >= _xFollowTime ? _xFollowRate : _xStartFollowRate;
 
-    newPos.X.ExpLerp(to: _cameraPivot!.GlobalPosition.X, rate, deltaF);
+    newPos.X.ExpLerp(to: Pivot!.GlobalPosition.X, rate, deltaF);
   }
 
   private void HandleYFollow(ref Vector2 newPos, float deltaF)
-    => newPos.Y.ExpLerp(to: _cameraPivot!.GlobalPosition.Y, _yFollowRate, deltaF);
+    => newPos.Y.ExpLerp(to: Pivot!.GlobalPosition.Y, _yFollowRate, deltaF);
 }
