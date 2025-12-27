@@ -6,13 +6,18 @@ using ShopGame.Types;
 namespace ShopGame.Characters.Fight;
 
 [GlobalClass]
-internal sealed partial class AttackArea : Area2D
+internal sealed partial class GirlAttackArea : Area2D
 {
-  private enum AttackDirection { Up, Down, Left, Right }
+  private enum AttackDirection { Up, Down, Left, Right, UpLeft, UpRight }
   [Export] private AttackDirection _attackDirection;
 
   [Export] private FightGirl? _fightGirl;
   [Export] private CollisionShape2D? _collider;
+
+  [Export] private int _attackStrength = 10;
+  [Export] private float _pushbackMagnitude = 130f;
+  [Export] private float _attackDuration = .1f;
+
 
   private float _timeLeftInAttack;
   
@@ -37,8 +42,8 @@ internal sealed partial class AttackArea : Area2D
 
     Attack attack = new()
     {
-      Strength = _fightGirl.AttackStrength,
-      PushbackMagnitude = _fightGirl.PushbackMagnitude,
+      Strength = _attackStrength,
+      PushbackMagnitude = _pushbackMagnitude,
       Attacker = _fightGirl
     };
 
@@ -50,10 +55,12 @@ internal sealed partial class AttackArea : Area2D
       AttackDirection.Down => Vector2.Up,
       AttackDirection.Left => Vector2.Right,
       AttackDirection.Right => Vector2.Left,
+      AttackDirection.UpLeft => Vector2.One,
+      AttackDirection.UpRight => new(-1f, 1f),
       _ => Vector2.Zero
     };
 
-    _fightGirl.HandleOwnAttackPushback(pushbackDirection, pogo: _attackDirection is AttackDirection.Down);
+    _fightGirl.HandleOwnAttackPushback(pushbackDirection.Normalized(), pogo: _attackDirection is AttackDirection.Down);
 
     StopAttack();
   }
@@ -74,7 +81,7 @@ internal sealed partial class AttackArea : Area2D
       && !_fightGirl.InAttack
     )
     {
-      _timeLeftInAttack = _fightGirl.AttackDuration;
+      _timeLeftInAttack = _attackDuration;
       _fightGirl.InAttack = true;
       _collider.Disabled = false;
       return;
@@ -94,7 +101,9 @@ internal sealed partial class AttackArea : Area2D
 
   private bool NeededDirectionPressed() => _attackDirection switch
   {
-    AttackDirection.Down => Input.IsActionPressed(Enum.GetName(_attackDirection)!),
+    AttackDirection.Down => Input.IsActionPressed("Down"),
+    AttackDirection.UpLeft => Input.IsActionPressed("Up") && Input.IsActionPressed("Left"),
+    AttackDirection.UpRight => Input.IsActionPressed("Up") && Input.IsActionPressed("Right"),
     _ => Input.IsActionPressed(Enum.GetName(_attackDirection)!) && NothingElsePressed()
   };
 

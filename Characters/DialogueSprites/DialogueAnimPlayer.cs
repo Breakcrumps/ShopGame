@@ -66,7 +66,7 @@ internal sealed partial class DialogueAnimPlayer : AnimationPlayer
     string imageName = _queuedImageNames[0];
     _sprite!.LoadCharacter(imageName);
     _queuedImageNames.RemoveAt(0);
-    
+
     switch (nextState)
     {
       case DialogueCharState.Unfocused:

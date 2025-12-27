@@ -47,12 +47,15 @@ internal sealed partial class FightCamera : Camera2D
 
     GlobalPosition = newPos;
 
-    Zoom = Zoom.ExpLerpV(to: TargetZoom, _zoomLerpRate, (float)delta);
+    Zoom = Zoom.ExpLerpedV(to: TargetZoom, _zoomLerpRate, (float)delta);
   }
 
   private void HandleXFollow(ref Vector2 newPos, float deltaF)
   {
-    if (_fightGirl!.GetRealVelocity().X.IsZeroApprox())
+    if (
+      _fightGirl!.GetRealVelocity().X.IsZeroApprox()
+      && GlobalPosition.IsEqualApprox(Pivot!.GlobalPosition)
+    )
     {
       _xMoveTimer = 0f;
       return;
