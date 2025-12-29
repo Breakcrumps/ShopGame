@@ -1,22 +1,27 @@
-[gd_scene load_steps=13 format=3 uid="uid://rl0jwir5g87e"]
+[gd_scene load_steps=18 format=3 uid="uid://rl0jwir5g87e"]
 
 [ext_resource type="Texture2D" uid="uid://i71o4hcvb216" path="res://Characters/Girl.png" id="1_4sifx"]
 [ext_resource type="Script" uid="uid://xn6ion4l2dbm" path="res://Characters/Fight/FightGirl.cs" id="1_of7jx"]
 [ext_resource type="Script" uid="uid://l73n6vmcexop" path="res://Characters/Fight/GirlAttackArea.cs" id="3_iyyn2"]
+[ext_resource type="AudioStream" uid="uid://dqefj64iodbxy" path="res://Characters/Fight/bat_hit.mp3" id="4_kj77p"]
+[ext_resource type="Script" uid="uid://qpjlb24ueh68" path="res://Characters/Fight/HitSoundPlayer.cs" id="4_yh24v"]
+[ext_resource type="AudioStream" uid="uid://bfsoe1lw0w8us" path="res://Characters/Fight/mixkit-game-ball-tap-2073.wav" id="6_jalug"]
+[ext_resource type="AudioStream" uid="uid://cl21kc7t66i52" path="res://Characters/Fight/action_jump.mp3" id="7_kpji5"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dw0i5"]
 size = Vector2(20, 29)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_of7jx"]
-size = Vector2(25, 25)
+size = Vector2(35, 25)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_iyyn2"]
-size = Vector2(40, 20)
+size = Vector2(40, 30)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_cea3n"]
-size = Vector2(25, 25)
+size = Vector2(35, 25)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3vjgs"]
+size = Vector2(30, 30)
 
 [sub_resource type="Animation" id="Animation_ygcj0"]
 resource_name = "Blink"
@@ -57,11 +62,15 @@ _data = {
 }
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ygcj0"]
-size = Vector2(25, 20)
+size = Vector2(30, 30)
 
-[node name="FightGirl" type="CharacterBody2D" node_paths=PackedStringArray("_animPlayer")]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jalug"]
+size = Vector2(30, 30)
+
+[node name="FightGirl" type="CharacterBody2D" node_paths=PackedStringArray("_jumpSoundPlayer", "_animPlayer")]
 collision_mask = 12
 script = ExtResource("1_of7jx")
+_jumpSoundPlayer = NodePath("JumpSoundPlayer")
 _animPlayer = NodePath("AnimationPlayer")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -72,54 +81,62 @@ shape = SubResource("RectangleShape2D_dw0i5")
 position = Vector2(0, -14)
 texture = ExtResource("1_4sifx")
 
-[node name="RightAttackArea" type="Area2D" parent="." node_paths=PackedStringArray("_fightGirl", "_collider")]
+[node name="RightAttackArea" type="Area2D" parent="." node_paths=PackedStringArray("_fightGirl", "_hitSoundPlayer", "_collider")]
 position = Vector2(22.5, -16.5)
 collision_layer = 16
 collision_mask = 2
 script = ExtResource("3_iyyn2")
 _attackDirection = 3
 _fightGirl = NodePath("..")
+_hitSoundPlayer = NodePath("../HitSoundPlayer")
 _collider = NodePath("CollisionShape2D")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RightAttackArea"]
+position = Vector2(-5, 0)
 shape = SubResource("RectangleShape2D_of7jx")
 
-[node name="DownAttackArea" type="Area2D" parent="." node_paths=PackedStringArray("_fightGirl", "_collider")]
+[node name="DownAttackArea" type="Area2D" parent="." node_paths=PackedStringArray("_fightGirl", "_hitSoundPlayer", "_collider")]
 position = Vector2(0, 10)
 collision_layer = 16
 collision_mask = 2
 script = ExtResource("3_iyyn2")
 _attackDirection = 1
 _fightGirl = NodePath("..")
+_hitSoundPlayer = NodePath("../HitSoundPlayer")
 _collider = NodePath("CollisionShape2D")
 metadata/_custom_type_script = "uid://l73n6vmcexop"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DownAttackArea"]
+position = Vector2(0, -5)
 shape = SubResource("RectangleShape2D_iyyn2")
 
-[node name="LeftAttackArea" type="Area2D" parent="." node_paths=PackedStringArray("_fightGirl", "_collider")]
+[node name="LeftAttackArea" type="Area2D" parent="." node_paths=PackedStringArray("_fightGirl", "_hitSoundPlayer", "_collider")]
 position = Vector2(-22.5, -16.5)
 collision_layer = 16
 collision_mask = 2
 script = ExtResource("3_iyyn2")
 _attackDirection = 2
 _fightGirl = NodePath("..")
+_hitSoundPlayer = NodePath("../HitSoundPlayer")
 _collider = NodePath("CollisionShape2D")
 metadata/_custom_type_script = "uid://l73n6vmcexop"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LeftAttackArea"]
+position = Vector2(5, 0)
 shape = SubResource("RectangleShape2D_cea3n")
 
-[node name="UpAttackArea" type="Area2D" parent="." node_paths=PackedStringArray("_fightGirl", "_collider")]
+[node name="UpAttackArea" type="Area2D" parent="." node_paths=PackedStringArray("_fightGirl", "_hitSoundPlayer", "_collider")]
 position = Vector2(0, -39)
 collision_layer = 16
 collision_mask = 2
 script = ExtResource("3_iyyn2")
 _fightGirl = NodePath("..")
+_hitSoundPlayer = NodePath("../HitSoundPlayer")
 _collider = NodePath("CollisionShape2D")
 metadata/_custom_type_script = "uid://l73n6vmcexop"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="UpAttackArea"]
+position = Vector2(0, 5)
 shape = SubResource("RectangleShape2D_3vjgs")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -127,24 +144,36 @@ libraries = {
 &"": SubResource("AnimationLibrary_yh24v")
 }
 
-[node name="AttackArea" type="Area2D" parent="." node_paths=PackedStringArray("_fightGirl", "_collider")]
+[node name="AttackArea" type="Area2D" parent="." node_paths=PackedStringArray("_fightGirl", "_hitSoundPlayer", "_collider")]
 position = Vector2(22.5, -39)
 script = ExtResource("3_iyyn2")
 _attackDirection = 5
 _fightGirl = NodePath("..")
+_hitSoundPlayer = NodePath("../HitSoundPlayer")
 _collider = NodePath("CollisionShape2D")
 metadata/_custom_type_script = "uid://l73n6vmcexop"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
+position = Vector2(-2.5, 5)
 shape = SubResource("RectangleShape2D_ygcj0")
 
-[node name="AttackArea2" type="Area2D" parent="." node_paths=PackedStringArray("_fightGirl", "_collider")]
+[node name="AttackArea2" type="Area2D" parent="." node_paths=PackedStringArray("_fightGirl", "_hitSoundPlayer", "_collider")]
 position = Vector2(-22.5, -39)
 script = ExtResource("3_iyyn2")
 _attackDirection = 4
 _fightGirl = NodePath("..")
+_hitSoundPlayer = NodePath("../HitSoundPlayer")
 _collider = NodePath("CollisionShape2D")
 metadata/_custom_type_script = "uid://l73n6vmcexop"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea2"]
-shape = SubResource("RectangleShape2D_ygcj0")
+position = Vector2(2.5, 5)
+shape = SubResource("RectangleShape2D_jalug")
+
+[node name="HitSoundPlayer" type="AudioStreamPlayer2D" parent="."]
+script = ExtResource("4_yh24v")
+_enemyHitSound = ExtResource("4_kj77p")
+_dotHitSound = ExtResource("6_jalug")
+
+[node name="JumpSoundPlayer" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("7_kpji5")

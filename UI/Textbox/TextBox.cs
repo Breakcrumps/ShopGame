@@ -52,6 +52,9 @@ internal sealed partial class Textbox : TextureRect
   public override void _EnterTree()
     => GlobalInstances.TextBox = this;
 
+  public override void _ExitTree()
+    => GlobalInstances.TextBox = null;
+
   public override void _Ready()
   {
     ReadNewDialogueFile(GetTree().CurrentScene.Name);

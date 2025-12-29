@@ -16,6 +16,9 @@ internal sealed partial class HandSprite : Sprite2D
   public override void _EnterTree()
     => GlobalInstances.HandSprite = this;
 
+  public override void _ExitTree()
+    => GlobalInstances.HandSprite = null;
+
   public override void _Ready()
     => InitScale = Scale;
   

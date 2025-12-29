@@ -16,6 +16,9 @@ internal sealed partial class Girl : CharacterBody2D
   public override void _EnterTree()
     => GlobalInstances.Girl = this;
 
+  public override void _ExitTree()
+    => GlobalInstances.Girl = null;
+
   public override void _PhysicsProcess(double delta)
   {
     if (!CanMove)

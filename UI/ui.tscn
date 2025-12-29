@@ -9,7 +9,7 @@ process_mode = 3
 
 [node name="TextBox" parent="." instance=ExtResource("1_e6gg6")]
 
-[node name="ShelfViewportContainer" type="SubViewportContainer" parent="." node_paths=PackedStringArray("_shelfViewport", "_ui")]
+[node name="ShelfViewportContainer" type="SubViewportContainer" parent="." node_paths=PackedStringArray("_ui")]
 process_mode = 4
 anchors_preset = 8
 anchor_left = 0.5
@@ -23,9 +23,5 @@ offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("7_4fiuh")
-_shelfViewport = NodePath("ShelfViewport")
+_shelfVPScene = ExtResource("7_cbfhl")
 _ui = NodePath("..")
-
-[node name="ShelfViewport" parent="ShelfViewportContainer" instance=ExtResource("7_cbfhl")]
-handle_input_locally = false
-render_target_update_mode = 4

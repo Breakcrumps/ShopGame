@@ -10,6 +10,7 @@ internal sealed partial class FightGirl : CharacterBody2D
 {
   internal bool CanMove { private get; set; } = true;
   
+  [Export] private AudioStreamPlayer2D? _jumpSoundPlayer;
   [Export] private AnimationPlayer? _animPlayer;
   [Export] private int _health = 100;
   [Export] private float _speed = 200f;
@@ -63,18 +64,21 @@ internal sealed partial class FightGirl : CharacterBody2D
   public override void _EnterTree()
     => GlobalInstances.FightGirl = this;
 
+  public override void _ExitTree()
+    => GlobalInstances.FightGirl = null;
+
   public override void _PhysicsProcess(double delta)
   {
     HandleInvuln((float)delta);
     HandleMovement((float)delta);
   }
 
-  private void HandleInvuln(float delta)
+  private void HandleInvuln(float deltaF)
   {
     if (!_animPlayer.IsValid())
       return;
     
-    _invulnTimer = Mathf.Max(_invulnTimer - (float)delta, 0f);
+    _invulnTimer = Mathf.Max(_invulnTimer - deltaF, 0f);
 
     if (_invulnTimer == 0f && _animPlayer.CurrentAnimation == "Blink")
       _animPlayer.Stop();
@@ -145,6 +149,7 @@ internal sealed partial class FightGirl : CharacterBody2D
         _coyoteTimer = 0f;
         _jumpBufferTimer = 0f;
         _inJump = true;
+        _jumpSoundPlayer?.Play(fromPosition: .1f);
         ExitDashState();
       }
       else if (_doubleJump)
@@ -152,6 +157,7 @@ internal sealed partial class FightGirl : CharacterBody2D
         nextVelocity.Y = -_jumpVelocity;
         _doubleJump = false;
         _jumpBufferTimer = 0f;
+        _jumpSoundPlayer?.Play(fromPosition: .1f);
         ExitDashState();
       }
     }
@@ -189,14 +195,10 @@ internal sealed partial class FightGirl : CharacterBody2D
         break;
 
       case DashState.Cooldown:
-      {
         _dashTimer -= deltaF;
-
         if (_dashTimer <= 0f)
           _dashState = DashState.Ready;
-
         break;
-      }
     }
   }
 

@@ -24,6 +24,7 @@ internal sealed partial class CameraControlArea : Area2D
       if (_pivot.IsValid())
         _camera.Pivot = _pivot;
     };
+
     BodyExited += node =>
     {
       if (!_camera.IsValid() || node is not FightGirl girl)

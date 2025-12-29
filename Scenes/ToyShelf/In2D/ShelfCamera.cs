@@ -153,7 +153,7 @@ internal sealed partial class ShelfCamera : Camera3D
       _focusedPosNode = _shelfPosGroup?.ShelfPosDict[hash];
     }
     
-    _focusedToy.GlobalPosition = ToGlobal(TranslatedCursorDirection());
+    _focusedToy.GlobalPosition = ToGlobal(GetTranslatedCursorDirection());
   }
 
   private void HandleRelease()
@@ -189,7 +189,7 @@ internal sealed partial class ShelfCamera : Camera3D
     if (!_raycast.IsValid())
       return;
 
-    Vector3 localDirection = TranslatedCursorDirection();
+    Vector3 localDirection = GetTranslatedCursorDirection();
 
     _raycast.TargetPosition = localDirection * 3f;
 
@@ -212,7 +212,7 @@ internal sealed partial class ShelfCamera : Camera3D
     _focusedToy = item;
   }
 
-  private Vector3 TranslatedCursorDirection()
+  private Vector3 GetTranslatedCursorDirection()
   {
     Vector2 mousePos = GetViewport().GetMousePosition();
     Vector3 rayNormal = ProjectRayNormal(mousePos);

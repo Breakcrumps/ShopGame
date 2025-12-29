@@ -55,7 +55,7 @@ internal sealed partial class DialogueInitArea : Area2D
       return;
     }
 
-    if (_prompt?.IsActive() ?? true)
+    if (!_prompt.IsValid() || _prompt.IsActive())
       return;
 
     _prompt.Activate();

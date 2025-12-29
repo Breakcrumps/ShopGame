@@ -7,6 +7,6 @@ internal static class ToyParamDict
 {
   internal static Dictionary<ToyType, ToyParams> ToyToParams { get; } = new()
   {
-    [ToyType.Mayak] = new() { Cost = 1 }
+    [ToyType.Mayak] = new ToyParams { Cost = 1 }
   };
 }

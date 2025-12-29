@@ -7,13 +7,19 @@ namespace ShopGame.Scenes.ToyShelf;
 [GlobalClass]
 internal sealed partial class ShelfViewportContainer : SubViewportContainer
 {
-  [Export] private ShelfViewport? _shelfViewport;
+  [Export] private Vector2I _subviewportSize = new(990, 540);
+  
+  [Export] private PackedScene? _shelfVPScene;
   [Export] private CanvasLayer? _ui;
 
+  private ShelfViewport? _shelfViewport;
   private Shelf? _currentShelf;
 
   public override void _EnterTree()
     => GlobalInstances.ShelfViewportContainer = this;
+
+  public override void _ExitTree()
+    => GlobalInstances.ShelfViewportContainer = null;
   
   public override void _Ready()
   {
@@ -23,16 +29,15 @@ internal sealed partial class ShelfViewportContainer : SubViewportContainer
 
   internal void Activate(Shelf shelf)
   {
-    if (!_ui.IsValid())
+    if (_shelfVPScene is null || !_ui.IsValid())
       return;
-    
-    Visible = true;
-    _ui.ProcessMode = ProcessModeEnum.Disabled;
-    ProcessMode = ProcessModeEnum.Always;
-    Input.MouseMode = Input.MouseModeEnum.Hidden;
 
     if (!_shelfViewport.IsValid())
-      return;
+    {
+      _shelfViewport = _shelfVPScene.Instantiate<ShelfViewport>();
+      _shelfViewport.Size = _subviewportSize;
+      AddChild(_shelfViewport);
+    }
     
     _shelfViewport.ShelfCamera?.Reset();
     _shelfViewport.ShelfPosGroup?.DiscardItems();
@@ -41,6 +46,17 @@ internal sealed partial class ShelfViewportContainer : SubViewportContainer
     _shelfViewport.SpawnToysInBox();
 
     _currentShelf = shelf;
+
+    Callable.From(FinaliseActivation).CallDeferred();
+
+    void FinaliseActivation()
+    {
+      Visible = true;
+      _ui.ProcessMode = ProcessModeEnum.Disabled;
+      ProcessMode = ProcessModeEnum.Always;
+      Input.MouseMode = Input.MouseModeEnum.Hidden;
+      GrabFocus();
+    }
   }
 
   internal void Deactivate()
@@ -68,7 +84,6 @@ internal sealed partial class ShelfViewportContainer : SubViewportContainer
       return;
 
     Deactivate();
-
     AcceptEvent();
   }
 }

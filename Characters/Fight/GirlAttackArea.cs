@@ -12,6 +12,7 @@ internal sealed partial class GirlAttackArea : Area2D
   [Export] private AttackDirection _attackDirection;
 
   [Export] private FightGirl? _fightGirl;
+  [Export] private HitSoundPlayer? _hitSoundPlayer;
   [Export] private CollisionShape2D? _collider;
 
   [Export] private int _attackStrength = 10;
@@ -61,6 +62,8 @@ internal sealed partial class GirlAttackArea : Area2D
     };
 
     _fightGirl.HandleOwnAttackPushback(pushbackDirection.Normalized(), pogo: _attackDirection is AttackDirection.Down);
+
+    _hitSoundPlayer?.PlayHitSound(hitProcessor);
 
     StopAttack();
   }
