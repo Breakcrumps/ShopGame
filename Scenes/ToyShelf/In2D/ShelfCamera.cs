@@ -158,24 +158,24 @@ internal sealed partial class ShelfCamera : Camera3D
 
   private void HandleRelease()
   {
+    if (!_handSprite.IsValid() || !_shelfPosGroup.IsValid())
+      return;
+
+    if (!_focusedToy.IsValid())
+      return;
+    
     _focusedPosNode?.StopHover();
     _focusedPosNode = null;
-    
-    if (!_handSprite.IsValid())
-      return;
 
-    if (_handSprite!.FocusedShelfPos is not { Pos: not -1 } shelfPos)
+    if (_handSprite.FocusedShelfPos is not { Pos: not -1 } shelfPos)
     {
-      _focusedToy!.ReturnToInitPos = true;
+      _focusedToy.ReturnToInitPos = true;
       return;
     }
-
-    if (!_shelfPosGroup.IsValid())
-      return;
     
     int hash = ShelfPos.HashRowPos(shelfPos);
-    _shelfPosGroup!.ShelfPosDict[hash].PutItem(_focusedToy!);
-    Inventory.RemoveToy(_focusedToy!.ToyType);
+    _shelfPosGroup.ShelfPosDict[hash].PutItem(_focusedToy!);
+    Inventory.RemoveToy(_focusedToy.ToyType);
   }
 
   public override void _Input(InputEvent @event)

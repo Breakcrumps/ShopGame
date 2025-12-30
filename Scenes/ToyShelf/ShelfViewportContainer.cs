@@ -64,16 +64,16 @@ internal sealed partial class ShelfViewportContainer : SubViewportContainer
     if (!_ui.IsValid())
       return;
 
-    Visible = false;
-    _ui.ProcessMode = ProcessModeEnum.Always;
-    ProcessMode = ProcessModeEnum.Disabled;
-    Input.MouseMode = Input.MouseModeEnum.Visible;
-
     if (!_shelfViewport.IsValid() || !_shelfViewport.ShelfPosGroup.IsValid())
       return;
 
     if (!_currentShelf.IsValid())
       return;
+
+    Visible = false;
+    _ui.ProcessMode = ProcessModeEnum.Always;
+    ProcessMode = ProcessModeEnum.Disabled;
+    Input.MouseMode = Input.MouseModeEnum.Visible;
 
     _currentShelf.ItemsOnShelf = _shelfViewport.ShelfPosGroup.GetItems();
   }

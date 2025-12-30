@@ -1,4 +1,5 @@
 using Godot;
+using ShopGame.Extensions;
 using ShopGame.Scenes.ToyShelf.In3D;
 using ShopGame.Static;
 using ShopGame.Types;
@@ -30,7 +31,7 @@ internal sealed partial class Toy : CharacterBody3D
       return;
     }
 
-    GlobalPosition = GlobalPosition.Lerp(to: InitPos, 10f * (float)delta);
+    GlobalPosition = GlobalPosition.ExpLerpedVec3(to: InitPos, rate: 10f, param: (float)delta);
   }
 
   internal void Initialise(ToyType boxItemType, ShelfViewport shelfViewport)

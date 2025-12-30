@@ -167,7 +167,7 @@ internal sealed partial class Bird : Enemy
     }
     else
     {
-      nextVelocity.ExpLerpV(
+      nextVelocity.ExpLerpVec2(
         to: direction.Normalized() * _followSpeed,
         rate: PushbackTimer > 0f ? PushBackTurnRate : TurnRate,
         param: deltaF
@@ -198,7 +198,7 @@ internal sealed partial class Bird : Enemy
 
   private void HandleLunge(ref Vector2 nextVelocity, float deltaF)
   {
-    nextVelocity = nextVelocity.ExpLerpedV(
+    nextVelocity = nextVelocity.ExpLerpedVec2(
       to: _lungeDirection * _lungeSpeed,
       rate: _lungeLerpSpeed,
       param: deltaF
@@ -233,7 +233,7 @@ internal sealed partial class Bird : Enemy
 
     _lungeTimer = _lungeDuration;
 
-    nextVelocity = nextVelocity.ExpLerpedV(
+    nextVelocity = nextVelocity.ExpLerpedVec2(
       to: _lungeDirection * _lungeSpeed,
       rate: _lungeLerpSpeed,
       param: deltaF

@@ -47,7 +47,7 @@ internal sealed partial class FightCamera : Camera2D
 
     GlobalPosition = newPos;
 
-    Zoom = Zoom.ExpLerpedV(to: TargetZoom, _zoomLerpRate, (float)delta);
+    Zoom = Zoom.ExpLerpedVec2(to: TargetZoom, _zoomLerpRate, (float)delta);
   }
 
   private void HandleXFollow(ref Vector2 newPos, float deltaF)
