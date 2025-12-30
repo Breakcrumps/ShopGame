@@ -30,11 +30,18 @@ internal static class MathExtensions
     => from.Lerp(to, 1 - Mathf.Exp(-rate * param));
   #endregion
 
-  #region Equality
   internal static bool IsEqualApprox(this float a, float b)
     => Mathf.IsEqualApprox(a, b);
 
   internal static bool IsZeroApprox(this float a)
     => Mathf.IsZeroApprox(a);
-  #endregion
+
+  internal static float MinAxis(this Vector2 vec)
+    => vec.X <= vec.Y ? vec.X : vec.Y;
+
+  internal static Vector2I FlooredToInt(this Vector2 vec)
+    => new(Mathf.FloorToInt(vec.X), Mathf.FloorToInt(vec.Y));
+
+  internal static Vector2I RoundedToInt(this Vector2 vec)
+    => new(Mathf.RoundToInt(vec.X), Mathf.RoundToInt(vec.Y));
 }

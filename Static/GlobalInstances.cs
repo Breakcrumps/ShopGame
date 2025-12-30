@@ -1,5 +1,6 @@
 using ShopGame.Characters;
 using ShopGame.Characters.Fight;
+using ShopGame.Scenes.FightScene;
 using ShopGame.Scenes.ToyShelf;
 using ShopGame.Scenes.ToyShelf.In2D;
 using ShopGame.UI.Textbox;
@@ -13,6 +14,8 @@ internal static class GlobalInstances
 
   internal static Girl? Girl { get; set; }
   internal static FightGirl? FightGirl { get; set; }
+
+  internal static FightCamera? FightCamera { get; set; }
 
   internal static HandSprite? HandSprite { get; set; }
 }

@@ -20,10 +20,16 @@ internal sealed partial class FightCamera : Camera2D
 
   [Export] private float _zoomLerpRate = 7f;
   internal Vector2 InitZoom { get; private set; }
-  internal Vector2 TargetZoom { private get; set; } = new(4f, 4f);
+  internal Vector2 TargetZoom { private get; set; }
 
   [Export] private float _lerpToPivotRate = 8f;
   internal Node2D? Pivot { private get; set; }
+
+  public override void _EnterTree()
+    => GlobalInstances.FightCamera = this;
+
+  public override void _ExitTree()
+    => GlobalInstances.FightCamera = null;
 
   public override void _Ready()
   {
@@ -32,6 +38,7 @@ internal sealed partial class FightCamera : Camera2D
     
     GlobalPosition = InitPivot.GlobalPosition;
     InitZoom = Zoom;
+    TargetZoom = InitZoom;
     Pivot = InitPivot;
   }
 
