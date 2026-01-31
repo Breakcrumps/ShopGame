@@ -6,5 +6,5 @@ internal readonly struct Attack
 {
   internal required int Strength { get; init; }
   internal required float PushbackMagnitude { get; init; }
-  internal required Node2D Attacker { get; init; }
+  internal required Node3D Attacker { get; init; }
 }

@@ -6,40 +6,40 @@ using ShopGame.Types;
 namespace ShopGame.Characters.Fight;
 
 [GlobalClass]
-internal sealed partial class FightGirl : CharacterBody2D
+internal sealed partial class FightGirl : CharacterBody3D
 {
   internal bool CanMove { private get; set; } = true;
   
-  [Export] private AudioStreamPlayer2D? _jumpSoundPlayer;
+  [Export] private AudioStreamPlayer3D? _jumpSoundPlayer;
   [Export] private AnimationPlayer? _animPlayer;
   [Export] private int _health = 100;
-  [Export] private float _speed = 200f;
-  [Export] private float _g = 1100f;
+  [Export] private float _speed = 8f;
+  [Export] private float _g = 50f;
 
   [ExportGroup("Acceleration Rates")]
-  [Export] private float _accelRate = 10f;
-  [Export] private float _groundDecelRate = 30f;
-  [Export] private float _airDecelRate = 20f;
-  [Export] private float _turnDecelRate = 35f;
+  [Export] private float _accelRate = 20f;
+  [Export] private float _groundDecelRate = 20f;
+  [Export] private float _airDecelRate = 8f;
+  [Export] private float _turnDecelRate = 13f;
 
   [ExportGroup("Jump Params")]
-  [Export] private float _jumpVelocity = 280f;
+  [Export] private float _jumpVelocity = 10f;
   [Export] private float _jumpCutoffFactor = .5f;
   [Export] private float _coyoteTime = .12f;
   [Export] private float _jumpBufferTime = .1f;
 
   [ExportGroup("Dash Params")]
-  [Export] private float _dashStartSpeed = 390f;
+  [Export] private float _dashStartSpeed = 12f;
   [Export] private float _dashDuration = .17f;
   [Export] private float _dashCutoffFactor = .8f;
   [Export] private float _dashCooldown = .4f;
   [Export] private bool _dashCancelsGravity = true;
 
   [ExportGroup("Attack Params")]
-  [Export] private float _selfPushbackMagnitude = 10f;
+  [Export] private float _selfPushbackMagnitude = 2.5f;
   [Export] private float _selfPushbackTime = .1f;
   [Export] private float _selfPushbackLerpRate = 4f;
-  [Export] private float _pogoMagnitude = 300f;
+  [Export] private float _pogoMagnitude = 75f;
   [Export] private float _invulnTime = 2f;
 
   private bool _inJump;
@@ -57,7 +57,7 @@ internal sealed partial class FightGirl : CharacterBody2D
   private bool _dashedInAir;
 
   internal bool InAttack { get; set; }
-  private Vector2 _pushbackVelocity;
+  private Vector3 _pushbackVelocity;
   private float _selfPushbackTimer;
   private float _invulnTimer;
 
@@ -101,9 +101,10 @@ internal sealed partial class FightGirl : CharacterBody2D
       : _accelRate
     );
     
-    Vector2 nextVelocity = new(
-      Velocity.X.ExpLerped(to: xAxis * _speed, rate: weight, param: deltaF),
-      IsOnFloor() ? 0f : Velocity.Y + _g * deltaF
+    Vector3 nextVelocity = new(
+      Velocity.X.ExpLerped(to: xAxis * _speed, weight: weight * deltaF),
+      Velocity.Y - _g * deltaF,
+      0f
     );
 
     _coyoteTimer = IsOnFloor() ? _coyoteTime : Mathf.Max(_coyoteTimer - deltaF, 0f);
@@ -117,10 +118,10 @@ internal sealed partial class FightGirl : CharacterBody2D
     HandleDash(ref nextVelocity, deltaF);
     HandleJump(ref nextVelocity);
 
-    if (_pushbackVelocity != Vector2.Zero)
+    if (_pushbackVelocity != Vector3.Zero)
     {
       nextVelocity = _pushbackVelocity;
-      _pushbackVelocity = Vector2.Zero;
+      _pushbackVelocity = Vector3.Zero;
     }
 
     _selfPushbackTimer = Mathf.Max(_selfPushbackTimer - deltaF, 0f);
@@ -130,7 +131,7 @@ internal sealed partial class FightGirl : CharacterBody2D
     MoveAndSlide();
   }
 
-  private void HandleJump(ref Vector2 nextVelocity)
+  private void HandleJump(ref Vector3 nextVelocity)
   {
     if (!CanMove)
       return;
@@ -145,7 +146,7 @@ internal sealed partial class FightGirl : CharacterBody2D
     {
       if (_coyoteTimer > 0f)
       {
-        nextVelocity.Y = -_jumpVelocity;
+        nextVelocity.Y = _jumpVelocity;
         _coyoteTimer = 0f;
         _jumpBufferTimer = 0f;
         _inJump = true;
@@ -154,7 +155,7 @@ internal sealed partial class FightGirl : CharacterBody2D
       }
       else if (_doubleJump)
       {
-        nextVelocity.Y = -_jumpVelocity;
+        nextVelocity.Y = _jumpVelocity;
         _doubleJump = false;
         _jumpBufferTimer = 0f;
         _jumpSoundPlayer?.Play(fromPosition: .1f);
@@ -164,8 +165,8 @@ internal sealed partial class FightGirl : CharacterBody2D
 
     if (_inJump && Input.IsActionJustReleased("Jump"))
     {
-      if (nextVelocity.Y < -_jumpVelocity * _jumpCutoffFactor)
-        nextVelocity.Y = -_jumpVelocity * _jumpCutoffFactor;
+      if (nextVelocity.Y > _jumpVelocity * _jumpCutoffFactor)
+        nextVelocity.Y = _jumpVelocity * _jumpCutoffFactor;
       
       _inJump = false;
     }
@@ -176,7 +177,7 @@ internal sealed partial class FightGirl : CharacterBody2D
     }
   }
 
-  private void HandleDash(ref Vector2 nextVelocity, float deltaF)
+  private void HandleDash(ref Vector3 nextVelocity, float deltaF)
   {
     if (!CanMove)
       return;
@@ -202,7 +203,7 @@ internal sealed partial class FightGirl : CharacterBody2D
     }
   }
 
-  private void TryStartDash(ref Vector2 nextVelocity)
+  private void TryStartDash(ref Vector3 nextVelocity)
   {
     if (!Input.IsActionJustPressed("Dash"))
       return;
@@ -215,13 +216,14 @@ internal sealed partial class FightGirl : CharacterBody2D
     _dashTimer = _dashDuration;
     _dashedInAir = !IsOnFloor();
 
-    nextVelocity = new Vector2(
+    nextVelocity = new Vector3(
       (int)_dashDirection * _dashStartSpeed,
-      _dashCancelsGravity ? 0f : nextVelocity.Y
+      _dashCancelsGravity ? 0f : nextVelocity.Y,
+      0f
     );
   }
 
-  private void ContinueDash(ref Vector2 nextVelocity, float deltaF)
+  private void ContinueDash(ref Vector3 nextVelocity, float deltaF)
   {
     _dashTimer -= deltaF;
 
@@ -234,9 +236,10 @@ internal sealed partial class FightGirl : CharacterBody2D
     }
     else
     {
-      nextVelocity = new Vector2(
+      nextVelocity = new Vector3(
         (int)_dashDirection * _dashStartSpeed,
-        _dashCancelsGravity ? 0f : nextVelocity.Y
+        _dashCancelsGravity ? 0f : nextVelocity.Y,
+        0f
       );
     }
   }
@@ -250,7 +253,7 @@ internal sealed partial class FightGirl : CharacterBody2D
     _dashTimer = _dashCooldown;
   }
 
-  internal void HandleOwnAttackPushback(Vector2 pushbackDirection, bool pogo)
+  internal void HandleOwnAttackPushback(Vector3 pushbackDirection, bool pogo)
   {
     float magnitude = pogo ? _pogoMagnitude : _selfPushbackMagnitude;
     _pushbackVelocity += pushbackDirection * magnitude;
@@ -266,8 +269,8 @@ internal sealed partial class FightGirl : CharacterBody2D
     
     _health -= attack.Strength;
 
-    Vector2 pushbackDirection = GlobalPosition - attack.Attacker.GlobalPosition;
-    Velocity += pushbackDirection.Normalized() * attack.PushbackMagnitude;
+    Vector3 pushbackDirection = GlobalPosition - attack.Attacker.GlobalPosition;
+    _pushbackVelocity += pushbackDirection.Normalized() * attack.PushbackMagnitude;
 
     _invulnTimer = _invulnTime;
 

@@ -6,14 +6,14 @@ using ShopGame.Types;
 namespace ShopGame.Characters.Fight;
 
 [GlobalClass]
-internal sealed partial class GirlAttackArea : Area2D
+internal sealed partial class GirlAttackArea : Area3D
 {
   private enum AttackDirection { Up, Down, Left, Right, UpLeft, UpRight }
   [Export] private AttackDirection _attackDirection;
 
   [Export] private FightGirl? _fightGirl;
   [Export] private HitSoundPlayer? _hitSoundPlayer;
-  [Export] private CollisionShape2D? _collider;
+  [Export] private CollisionShape3D? _collider;
 
   [Export] private int _attackStrength = 10;
   [Export] private float _pushbackMagnitude = 130f;
@@ -33,7 +33,7 @@ internal sealed partial class GirlAttackArea : Area2D
     AreaEntered += TryHit;
   }
 
-  private void TryHit(Node2D node)
+  private void TryHit(Node3D node)
   {
     if (node is not IHitProcessor hitProcessor)
       return;
@@ -50,15 +50,15 @@ internal sealed partial class GirlAttackArea : Area2D
 
     hitProcessor.ProcessHit(attack);
     
-    Vector2 pushbackDirection = _attackDirection switch
+    Vector3 pushbackDirection = _attackDirection switch
     {
-      AttackDirection.Up => Vector2.Zero,
-      AttackDirection.Down => Vector2.Up,
-      AttackDirection.Left => Vector2.Right,
-      AttackDirection.Right => Vector2.Left,
-      AttackDirection.UpLeft => Vector2.One,
-      AttackDirection.UpRight => new(-1f, 1f),
-      _ => Vector2.Zero
+      AttackDirection.Up => Vector3.Down,
+      AttackDirection.Down => Vector3.Up,
+      AttackDirection.Left => Vector3.Right,
+      AttackDirection.Right => Vector3.Left,
+      AttackDirection.UpLeft => new Vector3(1f, -1f, 0f),
+      AttackDirection.UpRight => new Vector3(-1f, -1f, 0f),
+      _ => Vector3.Zero
     };
 
     _fightGirl.HandleOwnAttackPushback(pushbackDirection.Normalized(), pogo: _attackDirection is AttackDirection.Down);

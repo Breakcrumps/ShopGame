@@ -14,9 +14,9 @@ internal readonly struct ShelfPos
   internal static int HashRowPos(int row, int pos)
     => row >= pos ? row * row + row + pos : row + pos * pos;
 
-  internal static int HashRowPos(ShelfPos shelfPos) => (
-    shelfPos.Row >= shelfPos.Pos
-    ? shelfPos.Row * shelfPos.Row + shelfPos.Row + shelfPos.Pos
-    : shelfPos.Row + shelfPos.Pos * shelfPos.Pos
+  internal int GetHash() => (
+    Row >= Pos
+    ? Row * Row + Row + Pos
+    : Row + Pos * Pos
   );
 }

@@ -6,7 +6,7 @@ using ShopGame.Utils;
 namespace ShopGame.Characters.Fight.Enemies;
 
 [GlobalClass]
-internal abstract partial class Enemy : CharacterBody2D, IHitProcessor
+internal partial class Enemy : CharacterBody3D, IHitProcessor
 {
   [Export] private protected EnemyHitArea? HitArea { get; private set; }
   [Export] private int _health = 100;
@@ -18,7 +18,7 @@ internal abstract partial class Enemy : CharacterBody2D, IHitProcessor
   private protected float PushbackTimer { get; set; }
   private protected float DamagedNoHitTimer { get; set; }
 
-  private protected Vector2 PushbackVelocity { get; set; }
+  private protected Vector3 PushbackVelocity { get; set; }
 
   public virtual void ProcessHit(Attack attack)
   {
@@ -33,7 +33,7 @@ internal abstract partial class Enemy : CharacterBody2D, IHitProcessor
       return;
     }
 
-    Vector2 pushbackDirection = GlobalPosition - attack.Attacker.GlobalPosition;
+    Vector3 pushbackDirection = GlobalPosition - attack.Attacker.GlobalPosition;
     PushbackVelocity = pushbackDirection.Normalized() * attack.PushbackMagnitude;
 
     PushbackTimer = _pushbackTime;
@@ -42,5 +42,9 @@ internal abstract partial class Enemy : CharacterBody2D, IHitProcessor
     HitArea.Collider.SetDeferred("disabled", true);
   }
 
-  private protected abstract void HandleTimers(float deltaF);
+  private protected virtual void HandleTimers(float deltaF)
+  {
+    PushbackTimer = Mathf.Max(PushbackTimer - deltaF, 0f);
+    DamagedNoHitTimer = Mathf.Max(DamagedNoHitTimer - deltaF, 0f);
+  }
 }

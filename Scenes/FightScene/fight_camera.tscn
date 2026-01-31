@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://urfqkiqquhxa"]
+
+[ext_resource type="Script" uid="uid://b4v06cwqb12g8" path="res://Scenes/FightScene/FightCameraRoot.cs" id="1_kgal5"]
+
+[node name="FightCameraRoot" type="Node3D" unique_id=700885048 node_paths=PackedStringArray("_springArm")]
+script = ExtResource("1_kgal5")
+_springArm = NodePath("SpringArm3D")
+
+[node name="SpringArm3D" type="SpringArm3D" parent="." unique_id=1924605734]
+collision_mask = 0
+spring_length = 3.0
+
+[node name="Camera3D" type="Camera3D" parent="SpringArm3D" unique_id=1362670066]

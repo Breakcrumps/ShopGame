@@ -6,10 +6,10 @@ using ShopGame.Types;
 namespace ShopGame.Utils;
 
 [GlobalClass]
-internal sealed partial class HitDot : Area2D, IHitProcessor
+internal sealed partial class HitDot : Area3D, IHitProcessor
 {
-  [Export] private CollisionShape2D? _collider;
-  [Export] private Sprite2D? _sprite;
+  [Export] private CollisionShape3D? _collider;
+  [Export] private Sprite3D? _sprite;
 
   [Export] private float _disabledTime = 3f;
   private float _disabledTimer;

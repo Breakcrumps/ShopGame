@@ -5,7 +5,7 @@ using ShopGame.Utils;
 namespace ShopGame.Characters.Fight;
 
 [GlobalClass]
-internal sealed partial class HitSoundPlayer : AudioStreamPlayer2D
+internal sealed partial class HitSoundPlayer : AudioStreamPlayer3D
 {
   [Export] private AudioStream? _enemyHitSound;
   [Export] private AudioStream? _dotHitSound;

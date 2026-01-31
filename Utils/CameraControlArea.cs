@@ -6,32 +6,28 @@ using ShopGame.Static;
 namespace ShopGame.Utils;
 
 [GlobalClass]
-internal sealed partial class CameraControlArea : Area2D
+internal sealed partial class CameraControlArea : Area3D
 {
-  [Export] private FightCamera? _camera;
-  [Export] private Node2D? _pivot;
-  [Export] private Vector2 _targetZoom = new(4f, 4f);
+  [Export] private FightCameraRoot? _cameraRoot;
+  [Export] private Node3D? _pivot;
+  [Export] private float _targetSpringLength = 3f;
 
   public override void _Ready()
   {
     BodyEntered += node =>
     {
-      if (!_camera.IsValid() || node is not FightGirl girl)
+      if (!_cameraRoot.IsValid() || node is not FightGirl girl)
         return;
 
-      _camera.TargetZoom = _targetZoom;
-
-      if (_pivot.IsValid())
-        _camera.Pivot = _pivot;
+      _cameraRoot.SetTarget(_pivot, _targetSpringLength);
     };
 
     BodyExited += node =>
     {
-      if (!_camera.IsValid() || node is not FightGirl girl)
+      if (!_cameraRoot.IsValid() || node is not FightGirl girl)
         return;
 
-      _camera.TargetZoom = _camera.InitZoom;
-      _camera.Pivot = _camera.InitPivot;
+      _cameraRoot.ResetTarget();
     };
   }
 }

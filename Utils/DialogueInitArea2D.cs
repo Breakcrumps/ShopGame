@@ -1,13 +1,12 @@
 using Godot;
 using ShopGame.Characters;
-using ShopGame.Characters.Fight;
 using ShopGame.Static;
 using ShopGame.UI.Textbox;
 
 namespace ShopGame.Utils;
 
 [GlobalClass]
-internal sealed partial class DialogueInitArea : Area2D
+internal sealed partial class DialogueInitArea2D : Area2D, IDialogueInitArea
 {
   [Export] private Node? _parent;
   [Export] private Prompt? _prompt;
@@ -15,7 +14,7 @@ internal sealed partial class DialogueInitArea : Area2D
   private int _variantCount;
   private int _currentVariant = 1;
 
-  internal bool AwaitInput { private get; set; }
+  public bool AwaitInput { private get; set; }
 
   public override void _Ready()
   {
@@ -32,7 +31,7 @@ internal sealed partial class DialogueInitArea : Area2D
 
     BodyEntered += body =>
     {
-      if (body is not (Girl or FieldGirl or FightGirl))
+      if (body is not (Girl or FieldGirl))
         return;
 
       AwaitInput = true;
@@ -40,7 +39,7 @@ internal sealed partial class DialogueInitArea : Area2D
 
     BodyExited += body =>
     {
-      if (body is not (Girl or FieldGirl or FightGirl))
+      if (body is not (Girl or FieldGirl))
         return;
 
       AwaitInput = false;

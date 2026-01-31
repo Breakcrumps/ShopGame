@@ -1,8 +1,14 @@
-[gd_scene load_steps=4 format=3 uid="uid://dkv3yol4sh756"]
+[gd_scene load_steps=7 format=3 uid="uid://dkv3yol4sh756"]
 
 [ext_resource type="PackedScene" uid="uid://3liwxod2o0b1" path="res://UI/Textbox/textbox.tscn" id="1_e6gg6"]
+[ext_resource type="Shader" uid="uid://c0jv4pdus002o" path="res://Shaders/screen_obscure.gdshader" id="4_hat8c"]
+[ext_resource type="Script" uid="uid://c3deugp2g4ygm" path="res://UI/FightObscure.cs" id="5_3sbvi"]
 [ext_resource type="Script" uid="uid://c7aw088dvker8" path="res://Scenes/ToyShelf/ShelfViewportContainer.cs" id="7_4fiuh"]
 [ext_resource type="PackedScene" uid="uid://8etiti5kt6jr" path="res://Scenes/ToyShelf/shelf_viewport.tscn" id="7_cbfhl"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hat8c"]
+shader = ExtResource("4_hat8c")
+shader_parameter/cur_feather = 2.0
 
 [node name="UI" type="CanvasLayer"]
 process_mode = 3
@@ -25,3 +31,14 @@ grow_vertical = 2
 script = ExtResource("7_4fiuh")
 _shelfVPScene = ExtResource("7_cbfhl")
 _ui = NodePath("..")
+
+[node name="FightObscure" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_hat8c")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 1, 1, 0)
+script = ExtResource("5_3sbvi")

@@ -34,7 +34,7 @@ internal sealed partial class Textbox : TextureRect
   [Export] private DialogueAnimPlayer? _rightAnimPlayer;
 
   private IActionHandler? _activatorNode;
-  private DialogueInitArea? _dialogueArea;
+  private IDialogueInitArea? _dialogueArea;
 
   private Dictionary<string, List<Replica>> _dialogueFile = [];
   private List<Replica> _currentReplicas = [];
@@ -160,7 +160,7 @@ internal sealed partial class Textbox : TextureRect
     _awaitingInput = false;
   }
 
-  internal void Activate(Node activator, DialogueInitArea dialogueArea, int variant)
+  internal void Activate(Node activator, IDialogueInitArea dialogueArea, int variant)
   {
     if (_inDialogue)
       return;
@@ -313,7 +313,7 @@ internal sealed partial class Textbox : TextureRect
     _highestChoicebox?.Disable();
     _currentReplicas = [];
     _activatorNode = null;
-    if (_dialogueArea.IsValid())
+    if (_dialogueArea is not null)
       _dialogueArea!.AwaitInput = true;
     _dialogueArea = null;
   }

@@ -1,9 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://cqm4kfelmm1mc"]
+[gd_scene format=3 uid="uid://cqm4kfelmm1mc"]
 
 [ext_resource type="PackedScene" uid="uid://qhe57e24toic" path="res://Utils/prompt.tscn" id="1_3r3s5"]
 [ext_resource type="Script" uid="uid://b2fds27d0ey7r" path="res://Scenes/Shop/Shelf.cs" id="1_in32s"]
 [ext_resource type="Texture2D" uid="uid://2qhp1hgq3yi3" path="res://Scenes/Shop/Shelf.png" id="1_xcrs6"]
-[ext_resource type="Script" uid="uid://ckslj8bl4uju6" path="res://Utils/DialogueInitArea.cs" id="2_rx6at"]
+[ext_resource type="Script" uid="uid://ckslj8bl4uju6" path="res://Utils/DialogueInitArea2D.cs" id="2_rx6at"]
 [ext_resource type="Texture2D" uid="uid://b5xqcpovlnvc3" path="res://Utils/E.png" id="4_ag8pi"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xcrs6"]

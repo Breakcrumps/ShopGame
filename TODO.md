@@ -5,4 +5,4 @@
 - [x] Funking rename all the shit in UI and organise the folder. Gross.
 - [x] The shelf 3D menu must remember a given shelf's configuration and display box items as they are in the inventory. REDACTED: Possibly to be refined.
 - [x] Clean up namespaces.
-- [ ] NEED parallax graphics!
+- [x] NEED parallax graphics! REDACTED: made my nodes.

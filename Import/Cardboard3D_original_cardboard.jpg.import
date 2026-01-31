@@ -2,20 +2,23 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c41188mjeswuo"
-path="res://.godot/imported/Fox.jpg-6dda46232389e29b7999d1fa7e0743d8.ctex"
+uid="uid://c4q1s43gdtldl"
+path="res://.godot/imported/Cardboard3D_original_cardboard.jpg-d2f7864709f04e8a87f152f66542cf23.ctex"
 metadata={
 "vram_texture": false
+}
+generator_parameters={
+"md5": "beefac3ab637f9de00ad46024d3cf4bb"
 }
 
 [deps]
 
-source_file="res://Scenes/FightScene/Fox.jpg"
-dest_files=["res://.godot/imported/Fox.jpg-6dda46232389e29b7999d1fa7e0743d8.ctex"]
+source_file="res://Import/Cardboard3D_original_cardboard.jpg"
+dest_files=["res://.godot/imported/Cardboard3D_original_cardboard.jpg-d2f7864709f04e8a87f152f66542cf23.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=3
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
@@ -23,7 +26,7 @@ compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
-mipmaps/generate=false
+mipmaps/generate=true
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""
@@ -37,4 +40,4 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=1
+detect_3d/compress_to=0

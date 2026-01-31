@@ -1,13 +1,13 @@
-[gd_scene load_steps=13 format=4 uid="uid://co3c2nkr5h3pb"]
+[gd_scene format=4 uid="uid://co3c2nkr5h3pb"]
 
 [ext_resource type="PackedScene" uid="uid://ckcnudde4mu2m" path="res://Characters/girl.tscn" id="1_gqsku"]
 [ext_resource type="Texture2D" uid="uid://dleae7vh7hrm6" path="res://Scenes/Shop/WoodenFloor.png" id="1_oqg8q"]
 [ext_resource type="PackedScene" uid="uid://cqm4kfelmm1mc" path="res://Scenes/Shop/shelf.tscn" id="2_2nxxu"]
 [ext_resource type="PackedScene" uid="uid://dkv3yol4sh756" path="res://UI/ui.tscn" id="3_dcrsj"]
-[ext_resource type="Script" uid="uid://dda6prs2w18x4" path="res://Utils/TransitionArea.cs" id="4_s7atx"]
+[ext_resource type="Script" uid="uid://dda6prs2w18x4" path="res://Utils/TransitionArea2D.cs" id="4_s7atx"]
 [ext_resource type="PackedScene" uid="uid://qhe57e24toic" path="res://Utils/prompt.tscn" id="5_fi1uk"]
 [ext_resource type="Texture2D" uid="uid://b5xqcpovlnvc3" path="res://Utils/E.png" id="6_ghprd"]
-[ext_resource type="Script" uid="uid://ckslj8bl4uju6" path="res://Utils/DialogueInitArea.cs" id="7_fobo1"]
+[ext_resource type="Script" uid="uid://ckslj8bl4uju6" path="res://Utils/DialogueInitArea2D.cs" id="7_fobo1"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_kcc5r"]
 texture = ExtResource("1_oqg8q")

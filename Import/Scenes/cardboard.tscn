@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://c5ey82nvmrw8w"]
+
+[ext_resource type="PackedScene" uid="uid://caw13oj0nuxmn" path="res://Import/Cardboard3D.glb" id="1_2s526"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hsmrb"]
+size = Vector3(1.9325562, 0.94332886, 18.01413)
+
+[node name="Cardboard" unique_id=1527084831 instance=ExtResource("1_2s526")]
+collision_layer = 4
+collision_mask = 7
+
+[node name="Cardboard" parent="." index="0" unique_id=2019187221]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." index="1" unique_id=2073105712]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0, 0.4759059, 0)
+shape = SubResource("BoxShape3D_hsmrb")

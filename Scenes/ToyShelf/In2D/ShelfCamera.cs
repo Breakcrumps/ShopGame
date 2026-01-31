@@ -4,7 +4,6 @@ using ShopGame.Scenes.ToyShelf.In3D;
 using ShopGame.Scenes.ToyShelf.Toys;
 using ShopGame.Scenes.ToyShelf.UI;
 using ShopGame.Static;
-using ShopGame.Types;
 
 namespace ShopGame.Scenes.ToyShelf.In2D;
 
@@ -24,11 +23,7 @@ internal sealed partial class ShelfCamera : Camera3D
 
   private TurnOrientation _turnOrientation;
 
-  private readonly Dictionary<TurnOrientation, ShelfTurnArea?> _shelfTurnAreas = new()
-  {
-    [TurnOrientation.Up] = null,
-    [TurnOrientation.Down] = null
-  };
+  private readonly ShelfTurnArea?[] _shelfTurnAreas = new ShelfTurnArea?[2];
 
   private HandZone? _boxZone;
   private readonly List<ShelfHandZone> _shelfZones = [];
@@ -48,7 +43,7 @@ internal sealed partial class ShelfCamera : Camera3D
       if (child is not ShelfTurnArea shelfTurnArea)
         continue;
 
-      _shelfTurnAreas[shelfTurnArea.FlickDirection] = shelfTurnArea;
+      _shelfTurnAreas[(int)shelfTurnArea.FlickDirection] = shelfTurnArea;
 
       if (shelfTurnArea.FlickDirection == _turnOrientation)
         shelfTurnArea.MouseFilter = Control.MouseFilterEnum.Ignore;
@@ -90,9 +85,9 @@ internal sealed partial class ShelfCamera : Camera3D
 
   private void UpdateTurnAreas()
   {
-    if (_shelfTurnAreas[_turnOrientation] is ShelfTurnArea usedTurnArea)
+    if (_shelfTurnAreas[(int)_turnOrientation] is ShelfTurnArea usedTurnArea)
       usedTurnArea.MouseFilter = Control.MouseFilterEnum.Ignore;
-    if (_shelfTurnAreas[1 - _turnOrientation] is ShelfTurnArea nextTurnArea)
+    if (_shelfTurnAreas[1 - (int)_turnOrientation] is ShelfTurnArea nextTurnArea)
       nextTurnArea.MouseFilter = Control.MouseFilterEnum.Stop;
   }
 
@@ -148,7 +143,7 @@ internal sealed partial class ShelfCamera : Camera3D
     
     if (_handSprite.FocusedShelfPos is { Row: not -1 } shelfPos)
     {
-      int hash = ShelfPos.HashRowPos(shelfPos);
+      int hash = shelfPos.GetHash();
       _shelfPosGroup?.ShelfPosDict[hash].StartHover();
       _focusedPosNode = _shelfPosGroup?.ShelfPosDict[hash];
     }
@@ -173,8 +168,8 @@ internal sealed partial class ShelfCamera : Camera3D
       return;
     }
     
-    int hash = ShelfPos.HashRowPos(shelfPos);
-    _shelfPosGroup.ShelfPosDict[hash].PutItem(_focusedToy!);
+    int hash = shelfPos.GetHash();
+    _shelfPosGroup.ShelfPosDict[hash].PutItem(_focusedToy);
     Inventory.RemoveToy(_focusedToy.ToyType);
   }
 

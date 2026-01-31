@@ -1,4 +1,3 @@
-using System;
 using Godot;
 using ShopGame.Extensions;
 using ShopGame.Static;
@@ -40,14 +39,14 @@ internal sealed partial class Bird : Enemy
   [Export] private int _lungeDamage = 15;
 
   [ExportGroup("Hover Params")]
-  [Export] private RayCast2D? _raycast;
+  [Export] private RayCast3D? _raycast;
   [Export] private float _heightDeadzone = 13f;
   [Export] private float _flapVelocity = 20f;
   [Export] private float _flapAccelRate = 80f;
   [Export] private float _flapCooldown = .2f;
   [Export] private float _g = 150f;
 
-  private Vector2 _lungeDirection;
+  private Vector3 _lungeDirection;
   private float _lungeTimer;
 
   private float _attackRewindTimer;
@@ -59,7 +58,7 @@ internal sealed partial class Bird : Enemy
   
   public override void _PhysicsProcess(double delta)
   {
-    Vector2 nextVelocity = Velocity;
+    Vector3 nextVelocity = Velocity;
     
     HandleMovement(ref nextVelocity, (float)delta);
     HandleTimers((float)delta);
@@ -71,6 +70,8 @@ internal sealed partial class Bird : Enemy
 
   private protected override void HandleTimers(float deltaF)
   {
+    base.HandleTimers(deltaF);
+    
     if (
       DamagedNoHitTimer == 0
       && _animPlayer.IsValid()
@@ -84,8 +85,6 @@ internal sealed partial class Bird : Enemy
     )
       HitArea.Collider.SetDeferred("disabled", false);
 
-    PushbackTimer = Math.Max(PushbackTimer - deltaF, 0f);
-    DamagedNoHitTimer = Mathf.Max(DamagedNoHitTimer - deltaF, 0f);
     _attackRewindTimer = Mathf.Max(_attackRewindTimer - deltaF, 0f);
   }
 
@@ -99,7 +98,7 @@ internal sealed partial class Bird : Enemy
   }
 
   #region Movement
-  private void HandleMovement(ref Vector2 nextVelocity, float deltaF)
+  private void HandleMovement(ref Vector3 nextVelocity, float deltaF)
   {
     switch (_movementMode)
     {
@@ -120,27 +119,27 @@ internal sealed partial class Bird : Enemy
         break;
     }
 
-    if (PushbackVelocity != Vector2.Zero)
+    if (PushbackVelocity != Vector3.Zero)
     {
       nextVelocity = PushbackVelocity;
-      PushbackVelocity = Vector2.Zero;
+      PushbackVelocity = Vector3.Zero;
     }
   }
   
-  private void HandleIdle(ref Vector2 nextVelocity, float deltaF)
+  private void HandleIdle(ref Vector3 nextVelocity, float deltaF)
   {
     HandleHover(ref nextVelocity, deltaF);
 
     if (GlobalInstances.FightGirl.IfValid() is not FightGirl fightGirl)
       return;
 
-    Vector2 difVector = fightGirl.GlobalPosition - GlobalPosition;
+    Vector3 difVector = fightGirl.GlobalPosition - GlobalPosition;
 
     if (difVector.Length() <= _noticeDistance)
       _movementMode = MovementMode.Follow;
   }
   
-  private void HandleFollow(ref Vector2 nextVelocity, float deltaF)
+  private void HandleFollow(ref Vector3 nextVelocity, float deltaF)
   {
     if (GlobalInstances.FightGirl.IfValid() is not FightGirl fightGirl)
     {
@@ -148,9 +147,9 @@ internal sealed partial class Bird : Enemy
       return;
     }
 
-    Vector2 girlPos = fightGirl.GlobalPosition;
-    girlPos.Y -= _girlHeightOffset;
-    Vector2 direction = girlPos - GlobalPosition;
+    Vector3 girlPos = fightGirl.GlobalPosition;
+    girlPos.Y += _girlHeightOffset;
+    Vector3 direction = girlPos - GlobalPosition;
     float distToGirl = direction.Length();
     
     if (distToGirl <= _lungeDistance && _attackRewindTimer == 0f && DamagedNoHitTimer == 0f)
@@ -167,22 +166,21 @@ internal sealed partial class Bird : Enemy
     }
     else
     {
-      nextVelocity.ExpLerpVec2(
+      nextVelocity.ExpLerpVec3(
         to: direction.Normalized() * _followSpeed,
-        rate: PushbackTimer > 0f ? PushBackTurnRate : TurnRate,
-        param: deltaF
+        weight: (PushbackTimer > 0f ? PushBackTurnRate : TurnRate) * deltaF
       ); 
     }
   }
 
-  private void HandleFlapNearby(ref Vector2 nextVelocity, float deltaF)
+  private void HandleFlapNearby(ref Vector3 nextVelocity, float deltaF)
   {
     HandleHover(ref nextVelocity, deltaF);
 
     if (GlobalInstances.FightGirl.IfValid() is not FightGirl fightGirl)
       return;
 
-    Vector2 difVector = fightGirl.GlobalPosition - GlobalPosition;
+    Vector3 difVector = fightGirl.GlobalPosition - GlobalPosition;
     float distToGirl = difVector.Length();
 
     if (distToGirl >= _refollowDistance)
@@ -196,12 +194,11 @@ internal sealed partial class Bird : Enemy
     }
   }
 
-  private void HandleLunge(ref Vector2 nextVelocity, float deltaF)
+  private void HandleLunge(ref Vector3 nextVelocity, float deltaF)
   {
-    nextVelocity = nextVelocity.ExpLerpedVec2(
+    nextVelocity.ExpLerpVec3(
       to: _lungeDirection * _lungeSpeed,
-      rate: _lungeLerpSpeed,
-      param: deltaF
+      weight: _lungeLerpSpeed * deltaF
     );
 
     _lungeTimer -= deltaF;
@@ -212,31 +209,30 @@ internal sealed partial class Bird : Enemy
   #endregion
 
   #region MovementModeTransitions
-  private void EnterFlapNearby(ref Vector2 nextVelocity, float deltaF)
+  private void EnterFlapNearby(ref Vector3 nextVelocity, float deltaF)
   {
     _movementMode = MovementMode.FlapNearby;
     HandleHover(ref nextVelocity, deltaF);
   }
 
-  private void EnterLunge(ref Vector2 nextVelocity, FightGirl fightGirl, float deltaF)
+  private void EnterLunge(ref Vector3 nextVelocity, FightGirl fightGirl, float deltaF)
   {
     _movementMode = MovementMode.Lunge;
 
     if (_hitArea.IsValid())
       _hitArea.CurrentDamage = _lungeDamage;
 
-    Vector2 girlPos = fightGirl.GlobalPosition;
+    Vector3 girlPos = fightGirl.GlobalPosition;
     girlPos.Y -= _girlHeightOffset;
 
-    Vector2 lungeDirection = girlPos - GlobalPosition;
+    Vector3 lungeDirection = girlPos - GlobalPosition;
     _lungeDirection = lungeDirection.Normalized();
 
     _lungeTimer = _lungeDuration;
 
-    nextVelocity = nextVelocity.ExpLerpedVec2(
+    nextVelocity.ExpLerpVec3(
       to: _lungeDirection * _lungeSpeed,
-      rate: _lungeLerpSpeed,
-      param: deltaF
+      weight: _lungeLerpSpeed * deltaF
     );
   }
 
@@ -252,20 +248,20 @@ internal sealed partial class Bird : Enemy
   #endregion
 
   #region Flap
-  private void HandleHover(ref Vector2 nextVelocity, float deltaF)
+  private void HandleHover(ref Vector3 nextVelocity, float deltaF)
   {
     if (PushbackTimer == 0f)
       nextVelocity.X = 0f;
     
     if (!_flapping)
     {
-      nextVelocity.Y += _g * deltaF;
+      nextVelocity.Y -= _g * deltaF;
     }
     else
     {
-      nextVelocity.Y.ExpLerp(to: -_flapVelocity, rate: _flapAccelRate, param: deltaF);
+      nextVelocity.Y.ExpLerp(to: _flapVelocity, weight: _flapAccelRate * deltaF);
 
-      if (nextVelocity.Y.IsEqualApprox(-_flapVelocity))
+      if (nextVelocity.Y.IsEqualApprox(_flapVelocity))
         _flapping = false;
     }
     
@@ -286,19 +282,19 @@ internal sealed partial class Bird : Enemy
 
     _raycast.ForceRaycastUpdate();
 
-    Vector2 difVector = _raycast.GetCollisionPoint() - GlobalPosition;
+    Vector3 difVector = _raycast.GetCollisionPoint() - GlobalPosition;
 
-    if (GlobalPosition.Y >= _hoverHeight)
+    if (GlobalPosition.Y <= _hoverHeight)
     {
       _flapCooldownTimer = _flapCooldown;
-      nextVelocity.Y.ExpLerp(to: -_flapVelocity, rate: _flapAccelRate, param: deltaF);
+      nextVelocity.Y.ExpLerp(to: _flapVelocity, weight: _flapAccelRate * deltaF);
       _flapping = true;
     }
     else if (_raycast.IsColliding() && difVector.Length() < _birdLegsOffset + _heightDeadzone)
     {
       _hoverHeight += _heightDeadzone;
       _flapCooldownTimer = _flapCooldown;
-      nextVelocity.Y.ExpLerp(to: -_flapVelocity, rate: _flapAccelRate, param: deltaF);
+      nextVelocity.Y.ExpLerp(to: _flapVelocity, weight: _flapAccelRate * deltaF);
       _flapping = true;
     }
   }

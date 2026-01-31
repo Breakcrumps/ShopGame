@@ -5,7 +5,7 @@ using ShopGame.Characters.Fight;
 namespace ShopGame.Utils;
 
 [GlobalClass]
-internal sealed partial class TransitionArea : Area2D
+internal sealed partial class TransitionArea2D : Area2D
 {
   [Export] private string? _destinationPath;
   [Export] private Prompt? _prompt;
@@ -19,7 +19,7 @@ internal sealed partial class TransitionArea : Area2D
     
     BodyEntered += node =>
     {
-      if (node is not (Girl or FieldGirl or FightGirl))
+      if (node is not (Girl or FieldGirl))
         return;
 
       _enabled = true;
@@ -28,7 +28,7 @@ internal sealed partial class TransitionArea : Area2D
 
     BodyExited += node =>
     {
-      if (node is not (Girl or FieldGirl or FightGirl))
+      if (node is not (Girl or FieldGirl))
         return;
 
       _enabled = false;

@@ -5,7 +5,7 @@ using ShopGame.Types;
 namespace ShopGame.Utils;
 
 [GlobalClass]
-internal sealed partial class EnemyHitArea : ColliderArea2D
+internal sealed partial class EnemyHitArea : ColliderArea3D
 {
   [Export] internal int IdleDamage { get; private set; } = 5;
   [Export] private float _pushbackMagnitude = 50f;

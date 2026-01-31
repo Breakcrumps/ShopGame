@@ -15,7 +15,7 @@ internal static class GlobalInstances
   internal static Girl? Girl { get; set; }
   internal static FightGirl? FightGirl { get; set; }
 
-  internal static FightCamera? FightCamera { get; set; }
+  internal static FightCameraRoot? FightCamera { get; set; }
 
   internal static HandSprite? HandSprite { get; set; }
 }

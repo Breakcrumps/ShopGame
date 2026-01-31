@@ -11,27 +11,30 @@ internal static class MathExtensions
   internal static float Lerped(this float from, float to, float weight)
     => Mathf.Lerp(from, to, weight);
 
-  internal static void ExpLerp(this ref float from, float to, float rate, float param)
-    => from.Lerp(to, 1 - Mathf.Exp(-rate * param));
+  internal static void ExpLerp(this ref float from, float to, float weight)
+    => from.Lerp(to, 1 - Mathf.Exp(-weight));
 
-  internal static float ExpLerped(this float from, float to, float rate, float param)
-    => from.Lerped(to, 1 - Mathf.Exp(-rate * param));
+  internal static float ExpLerped(this float from, float to, float weight)
+    => from.Lerped(to, 1 - Mathf.Exp(-weight));
 
-  internal static void ExpLerpVec2(this ref Vector2 from, Vector2 to, float rate, float param)
-    => from = from.Lerp(to, 1 - Mathf.Exp(-rate * param));
+  internal static void ExpLerpVec2(this ref Vector2 from, Vector2 to, float weight)
+    => from = from.Lerp(to, 1 - Mathf.Exp(-weight));
 
-  internal static Vector2 ExpLerpedVec2(this Vector2 from, Vector2 to, float rate, float param)
-    => from.Lerp(to, 1 - Mathf.Exp(-rate * param));
+  internal static Vector2 ExpLerpedVec2(this Vector2 from, Vector2 to, float weight)
+    => from.Lerp(to, 1 - Mathf.Exp(-weight));
 
-  internal static void ExpLerpVec3(this ref Vector3 from, Vector3 to, float rate, float param)
-    => from = from.Lerp(to, 1 - Mathf.Exp(-rate * param));
+  internal static void ExpLerpVec3(this ref Vector3 from, Vector3 to, float weight)
+    => from = from.Lerp(to, 1 - Mathf.Exp(-weight));
 
-  internal static Vector3 ExpLerpedVec3(this Vector3 from, Vector3 to, float rate, float param)
-    => from.Lerp(to, 1 - Mathf.Exp(-rate * param));
+  internal static Vector3 ExpLerpedVec3(this Vector3 from, Vector3 to, float weight)
+    => from.Lerp(to, 1 - Mathf.Exp(-weight));
   #endregion
 
   internal static bool IsEqualApprox(this float a, float b)
     => Mathf.IsEqualApprox(a, b);
+
+  internal static bool IsEqualApprox(this float a, float b, float tolerance)
+    => Mathf.IsEqualApprox(a, b, tolerance);
 
   internal static bool IsZeroApprox(this float a)
     => Mathf.IsZeroApprox(a);

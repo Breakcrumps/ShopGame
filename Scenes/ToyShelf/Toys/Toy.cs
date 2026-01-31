@@ -31,7 +31,7 @@ internal sealed partial class Toy : CharacterBody3D
       return;
     }
 
-    GlobalPosition = GlobalPosition.ExpLerpedVec3(to: InitPos, rate: 10f, param: (float)delta);
+    GlobalPosition = GlobalPosition.ExpLerpedVec3(to: InitPos, weight: 10f * (float)delta);
   }
 
   internal void Initialise(ToyType boxItemType, ShelfViewport shelfViewport)

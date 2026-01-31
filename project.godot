@@ -8,11 +8,15 @@
 
 config_version=5
 
+[animation]
+
+compatibility/default_parent_skeleton_in_mesh_instance_3d=true
+
 [application]
 
 config/name="ShopGame"
-run/main_scene="uid://btlv6fqtyeprk"
-config/features=PackedStringArray("4.5", "C#", "Forward Plus")
+run/main_scene="uid://b1ra5111kds8r"
+config/features=PackedStringArray("4.6", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
 [dotnet]
@@ -79,11 +83,17 @@ Attack={
 [layer_names]
 
 2d_physics/layer_1="Girl"
+3d_physics/layer_1="Girl"
 2d_physics/layer_2="Hittable"
+3d_physics/layer_2="Hittable"
 2d_physics/layer_3="World"
+3d_physics/layer_3="World"
 2d_physics/layer_4="EnemyAttacks"
+3d_physics/layer_4="EnemyAttacks"
 2d_physics/layer_5="PlayerAttacks"
+3d_physics/layer_5="GirlAttacks"
 
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
+rendering_device/driver.windows="d3d12"

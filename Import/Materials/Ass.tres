@@ -1,0 +1,13 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://ckh4ta01md7h8"]
+
+[ext_resource type="Texture2D" uid="uid://c4q1s43gdtldl" path="res://Import/Cardboard3D_original_cardboard.jpg" id="1_5asig"]
+[ext_resource type="Texture2D" uid="uid://b5qp0htq7ctny" path="res://Import/Cardboard3D_vintage-recycled-cardboard-texture-abstract-background-for-design-projects-photo.jpg" id="2_xgmax"]
+
+[resource]
+resource_name = "Ass"
+cull_mode = 2
+albedo_texture = ExtResource("1_5asig")
+normal_enabled = true
+normal_scale = 0.6
+normal_texture = ExtResource("2_xgmax")
+uv1_scale = Vector3(3, 3, 3)

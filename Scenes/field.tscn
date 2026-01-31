@@ -1,7 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://wo1ufhq6ot5e"]
+[gd_scene format=3 uid="uid://wo1ufhq6ot5e"]
 
 [ext_resource type="PackedScene" uid="uid://b6vujm0w71pvy" path="res://Characters/field_girl.tscn" id="1_j7efd"]
-[ext_resource type="Script" uid="uid://dda6prs2w18x4" path="res://Utils/TransitionArea.cs" id="2_s2mji"]
+[ext_resource type="Script" uid="uid://dda6prs2w18x4" path="res://Utils/TransitionArea2D.cs" id="2_s2mji"]
 [ext_resource type="PackedScene" uid="uid://qhe57e24toic" path="res://Utils/prompt.tscn" id="3_s1lr2"]
 [ext_resource type="Texture2D" uid="uid://b5xqcpovlnvc3" path="res://Utils/E.png" id="4_fir65"]
 
