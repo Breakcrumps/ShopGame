@@ -10,8 +10,8 @@ internal sealed partial class FightGirl : CharacterBody3D
 {
   internal bool CanMove { private get; set; } = true;
   
-  [Export] private AudioStreamPlayer3D? _jumpSoundPlayer;
-  [Export] private AnimationPlayer? _animPlayer;
+  [Export] private AudioStreamPlayer3D _jumpSoundPlayer = null!;
+  [Export] private AnimationPlayer _animPlayer = null!;
   [Export] private int _health = 100;
   [Export] private float _speed = 8f;
   [Export] private float _g = 50f;
@@ -64,9 +64,6 @@ internal sealed partial class FightGirl : CharacterBody3D
   public override void _EnterTree()
     => GlobalInstances.FightGirl = this;
 
-  public override void _ExitTree()
-    => GlobalInstances.FightGirl = null;
-
   public override void _PhysicsProcess(double delta)
   {
     HandleInvuln((float)delta);
@@ -75,9 +72,6 @@ internal sealed partial class FightGirl : CharacterBody3D
 
   private void HandleInvuln(float deltaF)
   {
-    if (!_animPlayer.IsValid())
-      return;
-    
     _invulnTimer = Mathf.Max(_invulnTimer - deltaF, 0f);
 
     if (_invulnTimer == 0f && _animPlayer.CurrentAnimation == "Blink")
@@ -274,7 +268,7 @@ internal sealed partial class FightGirl : CharacterBody3D
 
     _invulnTimer = _invulnTime;
 
-    _animPlayer?.Play("Blink");
+    _animPlayer.Play("Blink");
 
     ExitDashState();
   }

@@ -1,6 +1,5 @@
 using Godot;
 using ShopGame.Characters;
-using ShopGame.Characters.Fight;
 
 namespace ShopGame.Utils;
 
@@ -8,7 +7,7 @@ namespace ShopGame.Utils;
 internal sealed partial class TransitionArea2D : Area2D
 {
   [Export] private string? _destinationPath;
-  [Export] private Prompt? _prompt;
+  [Export] private Prompt _prompt = null!;
 
   private bool _enabled;
 
@@ -23,7 +22,7 @@ internal sealed partial class TransitionArea2D : Area2D
         return;
 
       _enabled = true;
-      _prompt?.Activate();
+      _prompt.Activate();
     };
 
     BodyExited += node =>
@@ -32,7 +31,7 @@ internal sealed partial class TransitionArea2D : Area2D
         return;
 
       _enabled = false;
-      _prompt?.Deactivate();
+      _prompt.Deactivate();
     };
   }
 

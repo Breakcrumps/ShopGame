@@ -13,25 +13,25 @@ namespace ShopGame.UI.Textbox;
 internal sealed partial class Textbox : TextureRect
 {
   [Export] private float _secBetweenChars = .03f;
-  [Export] private RichTextLabel? _label;
+  [Export] private RichTextLabel _label = null!;
 
   [ExportGroup("Prompts")]
-  [Export] private Prompt? _proceedPrompt;
-  [Export] private Prompt? _questionPrompt;
+  [Export] private Prompt _proceedPrompt = null!;
+  [Export] private Prompt _questionPrompt = null!;
 
   [ExportGroup("Timers")]
-  [Export] private Timer? _nextCharTimer;
-  [Export] private Timer? _waitTimer;
+  [Export] private Timer _nextCharTimer = null!;
+  [Export] private Timer _waitTimer = null!;
 
   [ExportGroup("Choiceboxes")]
-  [Export] private Choicebox? _lowestChoicebox;
-  [Export] private Choicebox? _highestChoicebox;
+  [Export] private Choicebox _lowestChoicebox = null!;
+  [Export] private Choicebox _highestChoicebox = null!;
 
   [ExportGroup("DialogueSprites")]
-  [Export] private DialogueSprite? _leftSprite;
-  [Export] private DialogueAnimPlayer? _leftAnimPlayer;
-  [Export] private DialogueSprite? _rightSprite;
-  [Export] private DialogueAnimPlayer? _rightAnimPlayer;
+  [Export] private DialogueSprite _leftSprite = null!;
+  [Export] private DialogueAnimPlayer _leftAnimPlayer = null!;
+  [Export] private DialogueSprite _rightSprite = null!;
+  [Export] private DialogueAnimPlayer _rightAnimPlayer = null!;
 
   private IActionHandler? _activatorNode;
   private IDialogueInitArea? _dialogueArea;
@@ -52,20 +52,11 @@ internal sealed partial class Textbox : TextureRect
   public override void _EnterTree()
     => GlobalInstances.TextBox = this;
 
-  public override void _ExitTree()
-    => GlobalInstances.TextBox = null;
-
   public override void _Ready()
   {
     ReadNewDialogueFile(GetTree().CurrentScene.Name);
     
     Visible = false;
-    
-    if (!_lowestChoicebox.IsValid() || !_highestChoicebox.IsValid())
-      return;
-
-    if (!_nextCharTimer.IsValid() || !_waitTimer.IsValid())
-      return;
 
     _nextCharTimer.WaitTime = _secBetweenChars;
     _nextCharTimer.Timeout += AddVisibleCharacter;
@@ -108,9 +99,6 @@ internal sealed partial class Textbox : TextureRect
 
   private void AddVisibleCharacter()
   {
-    if (!_label.IsValid())
-      return;
-
     if (_label.VisibleCharacters < _label.GetTotalCharacterCount())
     {
       if (!_currentReplicas[_currentReplicaIndex].Waits.TryGetValue(_label.VisibleCharacters, out float waitTime))
@@ -122,7 +110,7 @@ internal sealed partial class Textbox : TextureRect
       if (!_waitTimer.IsValid())
         return;
 
-      _nextCharTimer?.Stop();
+      _nextCharTimer.Stop();
       
       if (waitTime == -1)
       {
@@ -136,36 +124,33 @@ internal sealed partial class Textbox : TextureRect
       return;
     }
 
-    _nextCharTimer?.Stop();
+    _nextCharTimer.Stop();
 
     if (_currentReplicas[_currentReplicaIndex].Choices is not List<Choice> choices)
     {
-      _proceedPrompt?.Activate();
+      _proceedPrompt.Activate();
       return;
     }
 
     if (choices.Count == 1)
     {
-      _lowestChoicebox?.Display(choices[0].What);
+      _lowestChoicebox.Display(choices[0].What);
       _choiceDestinations.Lowest = choices[0];
     }
     else
     {
-      _highestChoicebox?.Display(choices[0].What);
-      _lowestChoicebox?.Display(choices[1].What);
+      _highestChoicebox.Display(choices[0].What);
+      _lowestChoicebox.Display(choices[1].What);
       _choiceDestinations = (choices[1], choices[0]);
     }
 
-    _questionPrompt?.Activate();
+    _questionPrompt.Activate();
     _awaitingInput = false;
   }
 
   internal void Activate(Node activator, IDialogueInitArea dialogueArea, int variant)
   {
     if (_inDialogue)
-      return;
-    
-    if (!_label.IsValid())
       return;
 
     if (GlobalInstances.Girl.IsValid())
@@ -194,12 +179,9 @@ internal sealed partial class Textbox : TextureRect
     if (!@event.IsActionPressed("Interact"))
       return;
 
-    if (!_nextCharTimer.IsValid() || !_label.IsValid())
-      return;
-
     if (_inWait)
     {
-      _waitTimer?.Stop();
+      _waitTimer.Stop();
       EndWait();
       return;
     }
@@ -228,12 +210,6 @@ internal sealed partial class Textbox : TextureRect
 
   private void LoadLine(int index)
   {
-    if (!_label.IsValid())
-      return;
-
-    if (!_lowestChoicebox.IsValid() || !_highestChoicebox.IsValid())
-      return;
-
     if (index >= _currentReplicas.Count)
     {
       if (_dialogueSnapshots.Count != 0)
@@ -248,20 +224,17 @@ internal sealed partial class Textbox : TextureRect
 
     Visible = true;
     _awaitingInput = true;
-    _nextCharTimer?.Start();
+    _nextCharTimer.Start();
     _label.Text = _currentReplicas[index].Line;
     _label.VisibleCharacters = 0;
-    _proceedPrompt?.Deactivate();
-    _questionPrompt?.Deactivate();
+    _proceedPrompt.Deactivate();
+    _questionPrompt.Deactivate();
     _lowestChoicebox.Visible = false;
     _highestChoicebox.Visible = false;
   }
 
-  private static void HandleDialogueChar(Replica replica, int side, DialogueAnimPlayer? animPlayer)
+  private static void HandleDialogueChar(Replica replica, int side, DialogueAnimPlayer animPlayer)
   {
-    if (animPlayer is null)
-      return;
-
     string? charName = side == 1 ? replica.ShowRight : replica.ShowLeft;
 
     if (charName == "")
@@ -295,34 +268,30 @@ internal sealed partial class Textbox : TextureRect
   private void EndDialogue()
   {
     Visible = false;
-    _nextCharTimer?.Stop();
-    _label!.Text = "";
+    _nextCharTimer.Stop();
+    _label.Text = "";
     _label.VisibleCharacters = 0;
     if (GlobalInstances.Girl.IsValid())
       GlobalInstances.Girl.CanMove = true;
     if (GlobalInstances.FightGirl.IsValid())
       GlobalInstances.FightGirl.CanMove = true;
-    _leftAnimPlayer?.FinishUp();
-    _rightAnimPlayer?.FinishUp();
+    _leftAnimPlayer.FinishUp();
+    _rightAnimPlayer.FinishUp();
     _awaitingInput = false;
     _inDialogue = false;
-    _proceedPrompt?.Deactivate();
-    _questionPrompt?.Deactivate();
+    _proceedPrompt.Deactivate();
+    _questionPrompt.Deactivate();
     _currentReplicaIndex = 0;
-    _lowestChoicebox?.Disable();
-    _highestChoicebox?.Disable();
+    _lowestChoicebox.Disable();
+    _highestChoicebox.Disable();
     _currentReplicas = [];
     _activatorNode = null;
-    if (_dialogueArea is not null)
-      _dialogueArea!.AwaitInput = true;
+    _dialogueArea?.AwaitInput = true;
     _dialogueArea = null;
   }
 
   private void EndWait()
   {
-    if (!_nextCharTimer.IsValid() || !_label.IsValid())
-        return;
-
     _nextCharTimer.Start();
     _label.VisibleCharacters++;
     _inWait = false;

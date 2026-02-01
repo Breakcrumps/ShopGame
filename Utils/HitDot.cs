@@ -1,6 +1,5 @@
 using Godot;
 using ShopGame.Characters;
-using ShopGame.Static;
 using ShopGame.Types;
 
 namespace ShopGame.Utils;
@@ -8,17 +7,14 @@ namespace ShopGame.Utils;
 [GlobalClass]
 internal sealed partial class HitDot : Area3D, IHitProcessor
 {
-  [Export] private CollisionShape3D? _collider;
-  [Export] private Sprite3D? _sprite;
+  [Export] private CollisionShape3D _collider = null!;
+  [Export] private Sprite3D _sprite = null!;
 
   [Export] private float _disabledTime = 3f;
   private float _disabledTimer;
   
   public void ProcessHit(Attack attack)
   {
-    if (!_collider.IsValid() || !_sprite.IsValid())
-      return;
-
     _collider.SetDeferred("disabled", true);
     _sprite.Visible = false;
     _disabledTimer = _disabledTime;
@@ -27,9 +23,6 @@ internal sealed partial class HitDot : Area3D, IHitProcessor
   public override void _PhysicsProcess(double delta)
   {
     if (_disabledTimer == 0f)
-      return;
-
-    if (!_collider.IsValid() || !_sprite.IsValid())
       return;
 
     _disabledTimer = Mathf.Max(_disabledTimer - (float)delta, 0f);

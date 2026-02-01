@@ -10,11 +10,11 @@ namespace ShopGame.Scenes.ToyShelf.In2D;
 [GlobalClass]
 internal sealed partial class ShelfCamera : Camera3D
 {
-  [Export] private HandSprite? _handSprite;
-  [Export] private ShelfPosGroup? _shelfPosGroup;
-  [Export] private ShelfScreenAreas? _shelfAreas;
-  [Export] private AnimationPlayer? _animPlayer;
-  [Export] private RayCast3D? _raycast;
+  [Export] private HandSprite _handSprite = null!;
+  [Export] private ShelfPosGroup _shelfPosGroup = null!;
+  [Export] private ShelfScreenAreas _shelfAreas = null!;
+  [Export] private AnimationPlayer _animPlayer = null!;
+  [Export] private RayCast3D _raycast = null!;
 
   private Toy? _focusedToy;
   private ShelfPosNode? _focusedPosNode;
@@ -25,20 +25,14 @@ internal sealed partial class ShelfCamera : Camera3D
 
   private readonly ShelfTurnArea?[] _shelfTurnAreas = new ShelfTurnArea?[2];
 
-  private HandZone? _boxZone;
+  private HandZone _boxZone = null!;
   private readonly List<ShelfHandZone> _shelfZones = [];
   
   public override void _Ready()
   {
     _initRotation = GlobalRotation;
-
-    if (!_shelfAreas.IsValid()
-      || _shelfAreas.TurnAreaGroup.IfValid() is not Control turnAreaGroup
-      || _shelfAreas.ZoneGroup.IfValid() is not Control handZoneGroup
-    )
-      return;
     
-    foreach (Node child in turnAreaGroup.GetChildren())
+    foreach (Node child in _shelfAreas.TurnAreaGroup.GetChildren())
     {
       if (child is not ShelfTurnArea shelfTurnArea)
         continue;
@@ -51,7 +45,7 @@ internal sealed partial class ShelfCamera : Camera3D
       shelfTurnArea.RequestingTurn += TryTurn;
     }
 
-    foreach (Node child in handZoneGroup.GetChildren())
+    foreach (Node child in _shelfAreas.ZoneGroup.GetChildren())
     {
       if (child is not HandZone handZone)
         return;
@@ -60,7 +54,7 @@ internal sealed partial class ShelfCamera : Camera3D
       {
         _boxZone = handZone;
         _boxZone.MouseFilter = Control.MouseFilterEnum.Ignore;
-        return;
+        continue;
       }
 
       _shelfZones.Add(shelfZone);
@@ -78,9 +72,9 @@ internal sealed partial class ShelfCamera : Camera3D
     UpdateHandZones();
 
     if (orientation == TurnOrientation.Up)
-      _animPlayer?.PlayBackwards("Turn");
+      _animPlayer.PlayBackwards("Turn");
     if (orientation == TurnOrientation.Down)
-      _animPlayer?.Play("Turn");
+      _animPlayer.Play("Turn");
   }
 
   private void UpdateTurnAreas()
@@ -93,9 +87,6 @@ internal sealed partial class ShelfCamera : Camera3D
 
   private void UpdateHandZones()
   {
-    if (!_boxZone.IsValid())
-      return;
-    
     if (_turnOrientation == TurnOrientation.Up)
     {
       _boxZone.MouseFilter = Control.MouseFilterEnum.Ignore;
@@ -110,7 +101,7 @@ internal sealed partial class ShelfCamera : Camera3D
 
   internal void Reset()
   {
-    _animPlayer?.Stop();
+    _animPlayer.Stop();
     GlobalRotation = _initRotation;
     _turnOrientation = TurnOrientation.Up;
     UpdateTurnAreas();
@@ -144,8 +135,8 @@ internal sealed partial class ShelfCamera : Camera3D
     if (_handSprite.FocusedShelfPos is { Row: not -1 } shelfPos)
     {
       int hash = shelfPos.GetHash();
-      _shelfPosGroup?.ShelfPosDict[hash].StartHover();
-      _focusedPosNode = _shelfPosGroup?.ShelfPosDict[hash];
+      _shelfPosGroup.ShelfPosDict[hash].StartHover();
+      _focusedPosNode = _shelfPosGroup.ShelfPosDict[hash];
     }
     
     _focusedToy.GlobalPosition = ToGlobal(GetTranslatedCursorDirection());

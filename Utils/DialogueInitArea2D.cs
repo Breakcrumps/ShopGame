@@ -1,15 +1,14 @@
 using Godot;
 using ShopGame.Characters;
 using ShopGame.Static;
-using ShopGame.UI.Textbox;
 
 namespace ShopGame.Utils;
 
 [GlobalClass]
 internal sealed partial class DialogueInitArea2D : Area2D, IDialogueInitArea
 {
-  [Export] private Node? _parent;
-  [Export] private Prompt? _prompt;
+  [Export] private Node _parent = null!;
+  [Export] private Prompt _prompt = null!;
 
   private int _variantCount;
   private int _currentVariant = 1;
@@ -20,29 +19,19 @@ internal sealed partial class DialogueInitArea2D : Area2D, IDialogueInitArea
   {
     CollisionLayer = 4;
     CollisionMask = 1;
-    
-    if (!GlobalInstances.TextBox.IsValid())
-      return;
-
-    if (!_parent.IsValid())
-      return;
 
     _variantCount = GlobalInstances.TextBox.CountVariants(_parent);
 
     BodyEntered += body =>
     {
-      if (body is not (Girl or FieldGirl))
-        return;
-
-      AwaitInput = true;
+      if (body is Girl or FieldGirl)
+        AwaitInput = true;
     };
 
     BodyExited += body =>
     {
-      if (body is not (Girl or FieldGirl))
-        return;
-
-      AwaitInput = false;
+      if (body is Girl or FieldGirl)
+        AwaitInput = false;
     };
   }
 
@@ -50,11 +39,11 @@ internal sealed partial class DialogueInitArea2D : Area2D, IDialogueInitArea
   {
     if (!AwaitInput)
     {
-      _prompt?.Deactivate();
+      _prompt.Deactivate();
       return;
     }
 
-    if (!_prompt.IsValid() || _prompt.IsActive())
+    if (_prompt.IsActive())
       return;
 
     _prompt.Activate();
@@ -68,14 +57,8 @@ internal sealed partial class DialogueInitArea2D : Area2D, IDialogueInitArea
     if (!@event.IsActionPressed("Interact"))
       return;
 
-    if (!_parent.IsValid())
-      return;
-
-    if (GlobalInstances.TextBox.IfValid() is not Textbox textBox)
-      return;
-
     AwaitInput = false;
-    textBox.Activate(_parent, this, _currentVariant);
+    GlobalInstances.TextBox.Activate(_parent, this, _currentVariant);
 
     if (_currentVariant < _variantCount)
       _currentVariant++;

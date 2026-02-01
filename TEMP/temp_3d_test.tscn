@@ -1,10 +1,11 @@
 [gd_scene format=3 uid="uid://b1ra5111kds8r"]
 
 [ext_resource type="PackedScene" uid="uid://c5ey82nvmrw8w" path="res://Import/Scenes/cardboard.tscn" id="1_tvmn1"]
-[ext_resource type="PackedScene" uid="uid://rl0jwir5g87e" path="res://Characters/Fight/fight_girl.tscn" id="2_tvmn1"]
+[ext_resource type="PackedScene" uid="uid://rl0jwir5g87e" path="res://Characters/Fight/FightGirl/fight_girl.tscn" id="2_tvmn1"]
 [ext_resource type="PackedScene" uid="uid://urfqkiqquhxa" path="res://Scenes/FightScene/fight_camera.tscn" id="3_7hvj0"]
 [ext_resource type="PackedScene" uid="uid://l2oj84x780yk" path="res://Import/Scenes/obstacle_box.tscn" id="4_0pcd4"]
 [ext_resource type="Script" uid="uid://c80gk15q1qoyt" path="res://Utils/CameraControlArea.cs" id="5_f6sgq"]
+[ext_resource type="PackedScene" uid="uid://dblc44p162scx" path="res://Characters/Fight/BirdEnemy/bird.tscn" id="6_1q8sj"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_1q8sj"]
 size = Vector3(10, 5, 1)
@@ -52,3 +53,7 @@ metadata/_custom_type_script = "uid://c80gk15q1qoyt"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CameraControlArea" unique_id=1498241753]
 shape = SubResource("BoxShape3D_1q8sj")
+
+[node name="Bird" parent="." unique_id=164815217 instance=ExtResource("6_1q8sj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.370656, 0, 0)
+_flapVelocity = 2.0

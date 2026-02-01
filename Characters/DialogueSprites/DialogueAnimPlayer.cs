@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using Godot;
-using ShopGame.Static;
 
 namespace ShopGame.Characters.DialogueSprites;
 
@@ -9,7 +8,7 @@ internal enum DialogueCharState { Hidden, Unfocused, Focused }
 [GlobalClass]
 internal sealed partial class DialogueAnimPlayer : AnimationPlayer
 {
-  [Export] private DialogueSprite? _sprite;
+  [Export] private DialogueSprite _sprite = null!;
   
   internal string CurrentSprite = "";
   private DialogueCharState _charState = DialogueCharState.Hidden;
@@ -24,9 +23,6 @@ internal sealed partial class DialogueAnimPlayer : AnimationPlayer
   public override void _Process(double delta)
   {
     if (IsPlaying())
-      return;
-
-    if (!_sprite.IsValid())
       return;
 
     if (_currentActionQueue.Count != 0)
@@ -144,9 +140,6 @@ internal sealed partial class DialogueAnimPlayer : AnimationPlayer
 
   internal void FinishUp()
   {
-    if (!_sprite.IsValid())
-      return;
-    
     _charState = DialogueCharState.Hidden;
     CurrentSprite = "";
     TargetStates = [];

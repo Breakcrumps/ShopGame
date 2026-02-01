@@ -1,6 +1,6 @@
 [gd_scene format=4 uid="uid://dra8v88lxoaul"]
 
-[ext_resource type="PackedScene" uid="uid://rl0jwir5g87e" path="res://Characters/Fight/fight_girl.tscn" id="1_1vpqj"]
+[ext_resource type="PackedScene" uid="uid://rl0jwir5g87e" path="res://Characters/Fight/FightGirl/fight_girl.tscn" id="1_1vpqj"]
 [ext_resource type="Script" uid="uid://b4v06cwqb12g8" path="res://Scenes/FightScene/FightCameraRoot.cs" id="2_jah34"]
 [ext_resource type="PackedScene" uid="uid://bp20r5kl2e3ya" path="res://Utils/hint.tscn" id="5_wjh70"]
 [ext_resource type="Texture2D" uid="uid://e6lhim1idrsu" path="res://Utils/SpaceKey.png" id="6_bxi6d"]
@@ -14,7 +14,7 @@
 [ext_resource type="Script" uid="uid://ckslj8bl4uju6" path="res://Utils/DialogueInitArea2D.cs" id="11_5c3cj"]
 [ext_resource type="PackedScene" uid="uid://qhe57e24toic" path="res://Utils/prompt.tscn" id="12_ra2tj"]
 [ext_resource type="Texture2D" uid="uid://b5xqcpovlnvc3" path="res://Utils/E.png" id="13_mftsg"]
-[ext_resource type="PackedScene" uid="uid://dblc44p162scx" path="res://Characters/Fight/Enemies/bird.tscn" id="15_erpvg"]
+[ext_resource type="PackedScene" uid="uid://dblc44p162scx" path="res://Characters/Fight/BirdEnemy/bird.tscn" id="15_erpvg"]
 [ext_resource type="Script" uid="uid://cco4hrctsgn82" path="res://Utils/Parallax/Parallax.cs" id="17_v2438"]
 [ext_resource type="Texture2D" uid="uid://dn4vkw2sp10lf" path="res://Scenes/FightScene/Water.png" id="19_vt0qn"]
 

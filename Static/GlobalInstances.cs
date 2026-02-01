@@ -9,13 +9,13 @@ namespace ShopGame.Static;
 
 internal static class GlobalInstances
 {
-  internal static Textbox? TextBox { get; set; }
-  internal static ShelfViewportContainer? ShelfViewportContainer { get; set; }
+  internal static Textbox TextBox { get; set; } = null!;
+  internal static ShelfViewportContainer ShelfViewportContainer { get; set; } = null!;
 
-  internal static Girl? Girl { get; set; }
-  internal static FightGirl? FightGirl { get; set; }
+  internal static Girl Girl { get; set; } = null!;
+  internal static FightGirl FightGirl { get; set; } = null!;
 
-  internal static FightCameraRoot? FightCamera { get; set; }
+  internal static FightCameraRoot FightCamera { get; set; } = null!;
 
-  internal static HandSprite? HandSprite { get; set; }
+  internal static HandSprite HandSprite { get; set; } = null!;
 }

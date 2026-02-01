@@ -1,0 +1,89 @@
+[gd_scene format=3 uid="uid://dblc44p162scx"]
+
+[ext_resource type="Script" uid="uid://jtuvfsn7uvlf" path="res://Characters/Fight/BirdEnemy/Bird.cs" id="1_i8532"]
+[ext_resource type="Script" uid="uid://dmxjwg55xtfju" path="res://Utils/EnemyHitArea.cs" id="2_pe880"]
+[ext_resource type="Texture2D" uid="uid://euiitgmhel5a" path="res://Characters/Fight/BirdEnemy/Bird.png" id="3_5r43v"]
+[ext_resource type="Animation" uid="uid://c3vbypj3swyku" path="res://Animations/Blink.res" id="4_fxjgc"]
+[ext_resource type="Script" uid="uid://cvs4g7l4dov45" path="res://Utils/StateMachine/StateMachine.cs" id="5_8qscd"]
+[ext_resource type="Script" uid="uid://cqmc815apcohn" path="res://Characters/Fight/BirdEnemy/BirdIdle.cs" id="6_xcuqi"]
+[ext_resource type="Script" uid="uid://ttm4na8w21gk" path="res://Characters/Fight/BirdEnemy/BirdFollow.cs" id="7_84pei"]
+[ext_resource type="Script" uid="uid://bqv0tta5nfj4x" path="res://Characters/Fight/BirdEnemy/BirdFlapNearby.cs" id="8_bt527"]
+[ext_resource type="Script" uid="uid://c2g2vinh3vu6t" path="res://Characters/Fight/BirdEnemy/BirdLunge.cs" id="9_m4wh2"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5r43v"]
+size = Vector3(0.425, 0.45, 0.5)
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_fxjgc"]
+_data = {
+&"Blink": ExtResource("4_fxjgc")
+}
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_fxjgc"]
+size = Vector3(0.54, 0.6, 0.5)
+
+[node name="Bird" type="CharacterBody3D" unique_id=164815217 node_paths=PackedStringArray("_animPlayer", "_moveStateMachine", "_raycast", "HitArea")]
+collision_layer = 2
+collision_mask = 6
+axis_lock_linear_z = true
+up_direction = Vector3(0, -1, 0)
+max_slides = 4
+floor_snap_length = 1.0
+safe_margin = 0.08
+script = ExtResource("1_i8532")
+_animPlayer = NodePath("AnimationPlayer")
+_moveStateMachine = NodePath("StateMachine")
+_raycast = NodePath("RayCast3D")
+_flapVelocity = 1.0
+_flapAccelRate = 100.0
+HitArea = NodePath("HitArea")
+metadata/_custom_type_script = "uid://jtuvfsn7uvlf"
+
+[node name="CollisionShape2D" type="CollisionShape3D" parent="." unique_id=1652501019]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.033, 0.225, 0)
+shape = SubResource("BoxShape3D_5r43v")
+
+[node name="Sprite3D" type="Sprite3D" parent="." unique_id=1309425484]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0.28, 0)
+texture_filter = 0
+texture = ExtResource("3_5r43v")
+
+[node name="RayCast3D" type="RayCast3D" parent="." unique_id=1730414565]
+collision_mask = 4
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1818961932]
+root_node = NodePath("../Sprite3D")
+libraries/ = SubResource("AnimationLibrary_fxjgc")
+
+[node name="HitArea" type="Area3D" parent="." unique_id=1404446519 node_paths=PackedStringArray("Collider")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.01, 0.3, 0)
+collision_layer = 8
+script = ExtResource("2_pe880")
+Collider = NodePath("CollisionShape3D")
+metadata/_custom_type_script = "uid://dmxjwg55xtfju"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HitArea" unique_id=101566075]
+shape = SubResource("BoxShape3D_fxjgc")
+
+[node name="StateMachine" type="Node" parent="." unique_id=1643321144 node_paths=PackedStringArray("_initState")]
+script = ExtResource("5_8qscd")
+_initState = NodePath("BirdIdle")
+metadata/_custom_type_script = "uid://cvs4g7l4dov45"
+
+[node name="BirdIdle" type="Node" parent="StateMachine" unique_id=210791374]
+script = ExtResource("6_xcuqi")
+metadata/_custom_type_script = "uid://cqmc815apcohn"
+
+[node name="BirdFollow" type="Node" parent="StateMachine" unique_id=79200682 node_paths=PackedStringArray("_lungeState")]
+script = ExtResource("7_84pei")
+_lungeState = NodePath("../BirdLunge")
+metadata/_custom_type_script = "uid://ttm4na8w21gk"
+
+[node name="BirdFlapNearby" type="Node" parent="StateMachine" unique_id=1610721936 node_paths=PackedStringArray("_lungeState")]
+script = ExtResource("8_bt527")
+_lungeState = NodePath("../BirdLunge")
+metadata/_custom_type_script = "uid://bqv0tta5nfj4x"
+
+[node name="BirdLunge" type="Node" parent="StateMachine" unique_id=1118711115 node_paths=PackedStringArray("_hitArea")]
+script = ExtResource("9_m4wh2")
+_hitArea = NodePath("../../HitArea")
+metadata/_custom_type_script = "uid://c2g2vinh3vu6t"

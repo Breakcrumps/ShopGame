@@ -9,7 +9,7 @@ namespace ShopGame.Scenes.ToyShelf.In3D;
 [GlobalClass]
 internal sealed partial class ShelfPosGroup : Node3D
 {
-  [Export] internal ShelfViewport? ShelfViewport { get; private set; }
+  [Export] internal ShelfViewport ShelfViewport { get; private set; } = null!;
   
   internal Dictionary<int, ShelfPosNode> ShelfPosDict { get; } = [];
   
@@ -26,9 +26,6 @@ internal sealed partial class ShelfPosGroup : Node3D
 
   internal void StockItems(Dictionary<int, ToyType> boxItems)
   {
-    if (!ShelfViewport.IsValid())
-      return;
-
     foreach (var (posHash, itemType) in boxItems)
     {
       if (!ShelfPosDict.ContainsKey(posHash))

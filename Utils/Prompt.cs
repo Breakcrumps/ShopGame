@@ -5,7 +5,7 @@ namespace ShopGame.Utils;
 [GlobalClass]
 internal sealed partial class Prompt : Sprite2D
 {
-  [Export] private AnimationPlayer? _animPlayer;
+  [Export] private AnimationPlayer _animPlayer = null!;
 
   public override void _Ready()
     => Visible = false;
@@ -13,15 +13,15 @@ internal sealed partial class Prompt : Sprite2D
   internal void Activate()
   {
     Visible = true;
-    _animPlayer?.Play("Flash");
+    _animPlayer.Play("Flash");
   }
   
   internal void Deactivate()
   {
     Visible = false;
-    _animPlayer?.Stop();
+    _animPlayer.Stop();
   }
 
   internal bool IsActive()
-    => _animPlayer?.IsPlaying() ?? false;
+    => _animPlayer.IsPlaying();
 }

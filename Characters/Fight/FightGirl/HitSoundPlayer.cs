@@ -7,8 +7,8 @@ namespace ShopGame.Characters.Fight;
 [GlobalClass]
 internal sealed partial class HitSoundPlayer : AudioStreamPlayer3D
 {
-  [Export] private AudioStream? _enemyHitSound;
-  [Export] private AudioStream? _dotHitSound;
+  [Export] private AudioStream _enemyHitSound = null!;
+  [Export] private AudioStream _dotHitSound = null!;
 
   internal void PlayHitSound(IHitProcessor hitProcessor)
   {

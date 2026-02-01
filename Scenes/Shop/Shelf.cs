@@ -14,6 +14,6 @@ internal sealed partial class Shelf : StaticBody2D, IActionHandler
   public void HandleAction(string actionName)
   {
     if (actionName == "OpenShelf")
-      GlobalInstances.ShelfViewportContainer?.Activate(this);
+      GlobalInstances.ShelfViewportContainer.Activate(this);
   }
 }

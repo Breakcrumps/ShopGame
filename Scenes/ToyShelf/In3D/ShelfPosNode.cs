@@ -11,12 +11,12 @@ internal sealed partial class ShelfPosNode : Node3D
   [Export] internal int Row { get; private set; }
   [Export] internal int Pos { get; private set; }
 
-  [Export] private AnimationPlayer? _animPlayer;
-  [Export] private Sprite3D? _hoverSprite;
+  [Export] private AnimationPlayer _animPlayer = null!;
+  [Export] private Sprite3D _hoverSprite = null!;
   
   internal Toy? HeldItem { get; set; }
 
-  private ShelfPosGroup? _posGroup;
+  private ShelfPosGroup _posGroup = null!;
 
   public override void _Ready()
   {
@@ -30,29 +30,23 @@ internal sealed partial class ShelfPosNode : Node3D
 
   internal void StartHover()
   {
-    if (!_hoverSprite.IsValid())
-      return;
-
     _hoverSprite.Visible = true;
     _animPlayer?.Play("Hover");
   }
 
   internal void StopHover()
   {
-    if (!_hoverSprite.IsValid())
-      return;
-    
     _hoverSprite.Visible = false;
     _animPlayer?.Stop();
   }
 
   internal void PutItem(Toy newItem)
   {
-    if (!_posGroup!.ShelfViewport.IsValid())
+    if (!_posGroup.ShelfViewport.IsValid())
       return;
     
     if (HeldItem.IsValid())
-      HeldItem!.ReturnToInitPos = true;
+      HeldItem.ReturnToInitPos = true;
 
     newItem.GlobalPosition = GlobalPosition;
     newItem.Scale = .8f * Vector3.One;
@@ -60,7 +54,7 @@ internal sealed partial class ShelfPosNode : Node3D
 
     HeldItem = newItem;
 
-    _posGroup.ShelfViewport!.Toys.Remove(newItem);
+    _posGroup.ShelfViewport.Toys.Remove(newItem);
   }
 
   internal void DestroyItem()

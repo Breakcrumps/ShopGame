@@ -9,17 +9,14 @@ internal sealed partial class ShelfViewportContainer : SubViewportContainer
 {
   [Export] private Vector2I _subviewportSize = new(990, 540);
   
-  [Export] private PackedScene? _shelfVPScene;
-  [Export] private CanvasLayer? _ui;
+  [Export] private PackedScene _shelfVPScene = null!;
+  [Export] private CanvasLayer _ui = null!;
 
   private ShelfViewport? _shelfViewport;
   private Shelf? _currentShelf;
 
   public override void _EnterTree()
     => GlobalInstances.ShelfViewportContainer = this;
-
-  public override void _ExitTree()
-    => GlobalInstances.ShelfViewportContainer = null;
   
   public override void _Ready()
   {
@@ -39,9 +36,9 @@ internal sealed partial class ShelfViewportContainer : SubViewportContainer
       AddChild(_shelfViewport);
     }
     
-    _shelfViewport.ShelfCamera?.Reset();
-    _shelfViewport.ShelfPosGroup?.DiscardItems();
-    _shelfViewport.ShelfPosGroup?.StockItems(shelf.ItemsOnShelf);
+    _shelfViewport.ShelfCamera.Reset();
+    _shelfViewport.ShelfPosGroup.DiscardItems();
+    _shelfViewport.ShelfPosGroup.StockItems(shelf.ItemsOnShelf);
     _shelfViewport.DespawnToysInBox();
     _shelfViewport.SpawnToysInBox();
 

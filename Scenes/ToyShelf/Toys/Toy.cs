@@ -9,7 +9,7 @@ namespace ShopGame.Scenes.ToyShelf.Toys;
 [GlobalClass]
 internal sealed partial class Toy : CharacterBody3D
 {
-  [Export] private Sprite3D? _spriteNode;
+  [Export] private Sprite3D _spriteNode = null!;
 
   internal ToyType ToyType { get; private set; }
   internal ShelfPosNode? AssociatedPosNode { private get; set; }
@@ -36,9 +36,6 @@ internal sealed partial class Toy : CharacterBody3D
 
   internal void Initialise(ToyType boxItemType, ShelfViewport shelfViewport)
   {
-    if (!_spriteNode.IsValid())
-      return;
-      
     shelfViewport.AddChild(this);
     GlobalPosition = InitPos;
     
