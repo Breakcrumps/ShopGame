@@ -9,9 +9,9 @@ internal sealed partial class BirdFollow : BirdState
 {
   [Export] private BirdLunge _lungeState = null!;
   
-  [Export] private float _followSpeed = 50f;
-  [Export] private float _stopDistance = 60f;
-  [Export] private float _loseDistance = 300f;
+  [Export] private float _followSpeed = 2f;
+  [Export] private float _stopDistance = 2f;
+  [Export] private float _loseDistance = 10f;
   
   internal override void PhysicsProcess(double delta)
   {

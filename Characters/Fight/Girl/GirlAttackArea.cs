@@ -2,7 +2,7 @@ using System;
 using Godot;
 using ShopGame.Types;
 
-namespace ShopGame.Characters.Fight;
+namespace ShopGame.Characters.Fight.Girl;
 
 [GlobalClass]
 internal sealed partial class GirlAttackArea : Area3D
@@ -15,9 +15,8 @@ internal sealed partial class GirlAttackArea : Area3D
   [Export] private CollisionShape3D _collider = null!;
 
   [Export] private int _attackStrength = 10;
-  [Export] private float _pushbackMagnitude = 130f;
+  [Export] private float _pushbackMagnitude = 5f;
   [Export] private float _attackDuration = .1f;
-
 
   private float _timeLeftInAttack;
   
@@ -36,7 +35,7 @@ internal sealed partial class GirlAttackArea : Area3D
 
     Attack attack = new()
     {
-      Strength = _attackStrength,
+      Damage = _attackStrength,
       PushbackMagnitude = _pushbackMagnitude,
       Attacker = _fightGirl
     };

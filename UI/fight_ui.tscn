@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://cmkbcux6ltbg6"]
+
+[ext_resource type="PackedScene" uid="uid://3liwxod2o0b1" path="res://UI/Textbox/textbox.tscn" id="1_k6eck"]
+[ext_resource type="Shader" uid="uid://c0jv4pdus002o" path="res://Shaders/screen_obscure.gdshader" id="4_docqf"]
+[ext_resource type="Script" uid="uid://c3deugp2g4ygm" path="res://UI/FightObscure.cs" id="5_skl0m"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hat8c"]
+shader = ExtResource("4_docqf")
+shader_parameter/cur_feather = 2.0
+
+[node name="UI" type="CanvasLayer" unique_id=203109091]
+process_mode = 3
+
+[node name="TextBox" parent="." unique_id=2047529586 instance=ExtResource("1_k6eck")]
+
+[node name="FightObscure" type="ColorRect" parent="." unique_id=1419437045]
+material = SubResource("ShaderMaterial_hat8c")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 1, 1, 0)
+script = ExtResource("5_skl0m")

@@ -31,7 +31,7 @@ floor_snap_length = 1.0
 safe_margin = 0.08
 script = ExtResource("1_i8532")
 _animPlayer = NodePath("AnimationPlayer")
-_moveStateMachine = NodePath("StateMachine")
+_moveStateMachine = NodePath("MoveStateMachine")
 _raycast = NodePath("RayCast3D")
 _flapVelocity = 1.0
 _flapAccelRate = 100.0
@@ -64,26 +64,27 @@ metadata/_custom_type_script = "uid://dmxjwg55xtfju"
 [node name="CollisionShape3D" type="CollisionShape3D" parent="HitArea" unique_id=101566075]
 shape = SubResource("BoxShape3D_fxjgc")
 
-[node name="StateMachine" type="Node" parent="." unique_id=1643321144 node_paths=PackedStringArray("_initState")]
+[node name="MoveStateMachine" type="Node" parent="." unique_id=1643321144 node_paths=PackedStringArray("_initState")]
 script = ExtResource("5_8qscd")
 _initState = NodePath("BirdIdle")
 metadata/_custom_type_script = "uid://cvs4g7l4dov45"
 
-[node name="BirdIdle" type="Node" parent="StateMachine" unique_id=210791374]
+[node name="BirdIdle" type="Node" parent="MoveStateMachine" unique_id=210791374]
 script = ExtResource("6_xcuqi")
 metadata/_custom_type_script = "uid://cqmc815apcohn"
 
-[node name="BirdFollow" type="Node" parent="StateMachine" unique_id=79200682 node_paths=PackedStringArray("_lungeState")]
+[node name="BirdFollow" type="Node" parent="MoveStateMachine" unique_id=79200682 node_paths=PackedStringArray("_lungeState")]
 script = ExtResource("7_84pei")
 _lungeState = NodePath("../BirdLunge")
 metadata/_custom_type_script = "uid://ttm4na8w21gk"
 
-[node name="BirdFlapNearby" type="Node" parent="StateMachine" unique_id=1610721936 node_paths=PackedStringArray("_lungeState")]
+[node name="BirdFlapNearby" type="Node" parent="MoveStateMachine" unique_id=1610721936 node_paths=PackedStringArray("_lungeState")]
 script = ExtResource("8_bt527")
 _lungeState = NodePath("../BirdLunge")
 metadata/_custom_type_script = "uid://bqv0tta5nfj4x"
 
-[node name="BirdLunge" type="Node" parent="StateMachine" unique_id=1118711115 node_paths=PackedStringArray("_hitArea")]
+[node name="BirdLunge" type="Node" parent="MoveStateMachine" unique_id=1118711115 node_paths=PackedStringArray("_hitArea")]
 script = ExtResource("9_m4wh2")
 _hitArea = NodePath("../../HitArea")
+_lungeSpeed = 10.0
 metadata/_custom_type_script = "uid://c2g2vinh3vu6t"

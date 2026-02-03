@@ -1,5 +1,5 @@
 using Godot;
-using ShopGame.Characters.Fight;
+using ShopGame.Characters.Fight.Girl;
 using ShopGame.Types;
 
 namespace ShopGame.Utils;
@@ -8,7 +8,7 @@ namespace ShopGame.Utils;
 internal sealed partial class EnemyHitArea : ColliderArea3D
 {
   [Export] internal int IdleDamage { get; private set; } = 5;
-  [Export] private float _pushbackMagnitude = 50f;
+  [Export] private float _pushbackMagnitude = 5f;
 
   internal int CurrentDamage { private get; set; }
 
@@ -23,7 +23,7 @@ internal sealed partial class EnemyHitArea : ColliderArea3D
 
       Attack attack = new()
       {
-        Strength = CurrentDamage,
+        Damage = CurrentDamage,
         PushbackMagnitude = _pushbackMagnitude,
         Attacker = this
       };

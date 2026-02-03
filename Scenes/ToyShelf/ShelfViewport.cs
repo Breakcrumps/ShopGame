@@ -40,9 +40,7 @@ internal sealed partial class ShelfViewport : SubViewport
   internal Toy InstantiateItem(ToyType itemType)
   {
     Toy itemToStock = ToyPrefab.Instantiate<Toy>();
-
     itemToStock.Initialise(itemType, this);
-
     return itemToStock;
   }
 }

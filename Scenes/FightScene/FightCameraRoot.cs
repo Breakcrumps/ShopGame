@@ -1,5 +1,5 @@
 using Godot;
-using ShopGame.Characters.Fight;
+using ShopGame.Characters.Fight.Girl;
 using ShopGame.Extensions;
 using ShopGame.Static;
 
@@ -29,7 +29,7 @@ internal sealed partial class FightCameraRoot : Node3D
   [Export] private float _lerpToPivotRate = 8f;
 
   public override void _EnterTree()
-    => GlobalInstances.FightCamera = this;
+    => GlobalInstances.FightCameraRoot = this;
 
   public override void _Ready()
   {

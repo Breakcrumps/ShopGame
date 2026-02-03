@@ -8,7 +8,7 @@ internal sealed partial class BirdFlapNearby : BirdState
 {
   [Export] private BirdLunge _lungeState = null!;
 
-  [Export] private float _refollowDistance = 75f;
+  [Export] private float _refollowDistance = 3f;
   
   internal override void PhysicsProcess(double delta)
   {

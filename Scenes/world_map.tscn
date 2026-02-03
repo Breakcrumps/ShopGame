@@ -1,10 +1,10 @@
-[gd_scene load_steps=2 format=3 uid="uid://btlv6fqtyeprk"]
+[gd_scene format=3 uid="uid://btlv6fqtyeprk"]
 
 [ext_resource type="Script" uid="uid://f2otcrggcuc6" path="res://UI/TransitionButton.cs" id="1_m33sc"]
 
-[node name="WorldMap" type="CanvasLayer"]
+[node name="WorldMap" type="CanvasLayer" unique_id=1716558564]
 
-[node name="TransitionButton" type="Button" parent="."]
+[node name="TransitionButton" type="Button" parent="." unique_id=600784422]
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
@@ -17,7 +17,7 @@ text = "Shop"
 script = ExtResource("1_m33sc")
 _destinationPath = "res://Scenes/Shop/shop.tscn"
 
-[node name="TransitionButton2" type="Button" parent="."]
+[node name="TransitionButton2" type="Button" parent="." unique_id=1964417614]
 offset_left = 92.0
 offset_top = 500.0
 offset_right = 137.0
@@ -27,12 +27,12 @@ script = ExtResource("1_m33sc")
 _destinationPath = "res://Scenes/field.tscn"
 metadata/_custom_type_script = "uid://f2otcrggcuc6"
 
-[node name="TransitionButton3" type="Button" parent="."]
+[node name="TransitionButton3" type="Button" parent="." unique_id=666742901]
 offset_left = 92.0
 offset_top = 542.0
 offset_right = 139.0
 offset_bottom = 573.0
 text = "Fight"
 script = ExtResource("1_m33sc")
-_destinationPath = "res://Scenes/FightScene/fight_scene.tscn"
+_destinationPath = "res://TEMP/temp_3d_test.tscn"
 metadata/_custom_type_script = "uid://f2otcrggcuc6"

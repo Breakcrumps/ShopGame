@@ -9,11 +9,11 @@ namespace ShopGame.Characters.Fight.BirdEnemy;
 internal sealed partial class BirdLunge : BirdState
 {
   [Export] private EnemyHitArea _hitArea = null!;
-  [Export] internal float LungeDistance { get; private set; } = 70f;
-  [Export] private float _lungeSpeed = 300f;
-  [Export] private float _lungeDuration = .5f;
+  [Export] internal float LungeDistance { get; private set; } = 3f;
+  [Export] private float _lungeSpeed = 15f;
+  [Export] private float _lungeDuration = .3f;
   [Export] private float _lungeRewind = 2f;
-  [Export] private float _lungeLerpSpeed = 60f;
+  [Export] private float _lungeLerpSpeed = 20f;
   [Export] private int _lungeDamage = 15;
 
   private Vector3 _lungeDirection;
@@ -33,6 +33,12 @@ internal sealed partial class BirdLunge : BirdState
 
   internal override void PhysicsProcess(double delta)
   {
+    if (Bird.IsOnWall() || Bird.IsOnFloor() || Bird.IsOnCeiling())
+    {
+      StateMachine.Transition<BirdFollow>();
+      return;
+    }
+    
     Bird.Velocity = Bird.Velocity.ExpLerpedVec3(
       to: _lungeDirection * _lungeSpeed,
       weight: _lungeLerpSpeed * (float)delta

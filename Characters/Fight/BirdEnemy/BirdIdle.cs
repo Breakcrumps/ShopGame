@@ -1,4 +1,5 @@
 using Godot;
+using ShopGame.Characters.Fight.Girl;
 using ShopGame.Static;
 
 namespace ShopGame.Characters.Fight.BirdEnemy;
@@ -6,7 +7,7 @@ namespace ShopGame.Characters.Fight.BirdEnemy;
 [GlobalClass]
 internal sealed partial class BirdIdle : BirdState
 {
-  [Export] private float _noticeDistance = 2f;
+  [Export] private float _noticeDistance = 5f;
   
   internal override void PhysicsProcess(double delta)
   {

@@ -1,0 +1,96 @@
+[gd_scene format=3 uid="uid://kvd3x4vtwmn1"]
+
+[ext_resource type="Script" uid="uid://cugu7wnqs67kb" path="res://Characters/Fight/Girl/Projectile.cs" id="1_mjps1"]
+[ext_resource type="Texture2D" uid="uid://dhbqbf77arqxj" path="res://Characters/Fight/Girl/blood-projectile-spritesheet-red.webp" id="2_pidku"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pidku"]
+size = Vector3(0.8, 0.5, 0.5)
+
+[sub_resource type="Animation" id="Animation_2wvgm"]
+resource_name = "Fly"
+length = 0.66667
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.33333334),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [4, 5]
+}
+
+[sub_resource type="Animation" id="Animation_pidku"]
+resource_name = "Init"
+length = 0.40000334
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.06666667, 0.13333334, 0.26666668, 0.33333334),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../AnimationPlayer")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.4),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [&"Fly", -1, 1.0, false],
+"method": &"play"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_7n41w"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_7n41w"]
+_data = {
+&"Fly": SubResource("Animation_2wvgm"),
+&"Init": SubResource("Animation_pidku"),
+&"RESET": SubResource("Animation_7n41w")
+}
+
+[node name="RedProjectile" type="Area3D" unique_id=1860583170 node_paths=PackedStringArray("_sprite", "_animPlayer")]
+collision_layer = 16
+collision_mask = 4
+script = ExtResource("1_mjps1")
+_sprite = NodePath("Sprite3D")
+_animPlayer = NodePath("AnimationPlayer")
+metadata/_custom_type_script = "uid://cugu7wnqs67kb"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1674264614]
+shape = SubResource("BoxShape3D_pidku")
+
+[node name="Sprite3D" type="Sprite3D" parent="." unique_id=409580179]
+texture = ExtResource("2_pidku")
+hframes = 6
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1403820393]
+root_node = NodePath("../Sprite3D")
+libraries/ = SubResource("AnimationLibrary_7n41w")

@@ -2,7 +2,7 @@ using Godot;
 using ShopGame.Characters.Fight.Enemies;
 using ShopGame.Utils;
 
-namespace ShopGame.Characters.Fight;
+namespace ShopGame.Characters.Fight.Girl;
 
 [GlobalClass]
 internal sealed partial class HitSoundPlayer : AudioStreamPlayer3D

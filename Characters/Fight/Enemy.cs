@@ -21,7 +21,7 @@ internal partial class Enemy : CharacterBody3D, IHitProcessor
 
   public virtual void ProcessHit(Attack attack)
   {
-    _health -= attack.Strength;
+    _health -= attack.Damage;
 
     if (_health <= 0)
     {

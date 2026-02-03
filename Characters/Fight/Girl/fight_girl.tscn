@@ -1,11 +1,13 @@
 [gd_scene format=3 uid="uid://rl0jwir5g87e"]
 
-[ext_resource type="Script" uid="uid://xn6ion4l2dbm" path="res://Characters/Fight/FightGirl/FightGirl.cs" id="1_of7jx"]
-[ext_resource type="Script" uid="uid://l73n6vmcexop" path="res://Characters/Fight/FightGirl/GirlAttackArea.cs" id="3_iyyn2"]
-[ext_resource type="AudioStream" uid="uid://dqefj64iodbxy" path="res://Characters/Fight/FightGirl/bat_hit.mp3" id="4_kj77p"]
-[ext_resource type="Script" uid="uid://qpjlb24ueh68" path="res://Characters/Fight/FightGirl/HitSoundPlayer.cs" id="4_yh24v"]
-[ext_resource type="AudioStream" uid="uid://bfsoe1lw0w8us" path="res://Characters/Fight/FightGirl/mixkit-game-ball-tap-2073.wav" id="6_jalug"]
-[ext_resource type="AudioStream" uid="uid://cl21kc7t66i52" path="res://Characters/Fight/FightGirl/action_jump.mp3" id="7_kpji5"]
+[ext_resource type="Script" uid="uid://xn6ion4l2dbm" path="res://Characters/Fight/Girl/FightGirl.cs" id="1_of7jx"]
+[ext_resource type="Script" uid="uid://l73n6vmcexop" path="res://Characters/Fight/Girl/GirlAttackArea.cs" id="3_iyyn2"]
+[ext_resource type="AudioStream" uid="uid://dqefj64iodbxy" path="res://Characters/Fight/Girl/bat_hit.mp3" id="4_kj77p"]
+[ext_resource type="Script" uid="uid://qpjlb24ueh68" path="res://Characters/Fight/Girl/HitSoundPlayer.cs" id="4_yh24v"]
+[ext_resource type="AudioStream" uid="uid://bfsoe1lw0w8us" path="res://Characters/Fight/Girl/mixkit-game-ball-tap-2073.wav" id="6_jalug"]
+[ext_resource type="AudioStream" uid="uid://cl21kc7t66i52" path="res://Characters/Fight/Girl/action_jump.mp3" id="7_kpji5"]
+[ext_resource type="Script" uid="uid://du4iebfg2gt66" path="res://Characters/Fight/Girl/ProjectileShooter.cs" id="7_wly3f"]
+[ext_resource type="PackedScene" uid="uid://kvd3x4vtwmn1" path="res://Characters/Fight/Girl/red_projectile.tscn" id="8_x5ycb"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_kpji5"]
 size = Vector3(0.4, 0.58, 0.5)
@@ -144,6 +146,8 @@ libraries/ = SubResource("AnimationLibrary_yh24v")
 
 [node name="UpRightAttackArea" type="Area3D" parent="." unique_id=1396067474 node_paths=PackedStringArray("_fightGirl", "_hitSoundPlayer", "_collider")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.41234732, 0.78, 0)
+collision_layer = 16
+collision_mask = 2
 script = ExtResource("3_iyyn2")
 _attackDirection = 5
 _fightGirl = NodePath("..")
@@ -156,6 +160,8 @@ shape = SubResource("BoxShape3D_hscvy")
 
 [node name="UpLeftAttackArea" type="Area3D" parent="." unique_id=422908072 node_paths=PackedStringArray("_fightGirl", "_hitSoundPlayer", "_collider")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.412, 0.78, 0)
+collision_layer = 16
+collision_mask = 2
 script = ExtResource("3_iyyn2")
 _attackDirection = 4
 _fightGirl = NodePath("..")
@@ -174,3 +180,10 @@ _dotHitSound = ExtResource("6_jalug")
 [node name="JumpSoundPlayer" type="AudioStreamPlayer3D" parent="." unique_id=1860344499]
 stream = ExtResource("7_kpji5")
 attenuation_model = 3
+
+[node name="ProjectileShooter" type="Node3D" parent="." unique_id=1703027714 node_paths=PackedStringArray("_girl")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.41786724, 0)
+script = ExtResource("7_wly3f")
+_girl = NodePath("..")
+_projectilePacked = ExtResource("8_x5ycb")
+metadata/_custom_type_script = "uid://du4iebfg2gt66"

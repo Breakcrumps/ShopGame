@@ -3,10 +3,12 @@ using ShopGame.Extensions;
 using ShopGame.Static;
 using ShopGame.Types;
 
-namespace ShopGame.Characters.Fight;
+namespace ShopGame.Characters.Fight.Girl;
+
+internal enum FacingDirection { Left = -1, Right = 1 }
 
 [GlobalClass]
-internal sealed partial class FightGirl : CharacterBody3D
+internal sealed partial class FightGirl : CharacterBody3D, IHitProcessor
 {
   internal bool CanMove { private get; set; } = true;
   
@@ -39,7 +41,7 @@ internal sealed partial class FightGirl : CharacterBody3D
   [Export] private float _selfPushbackMagnitude = 2.5f;
   [Export] private float _selfPushbackTime = .1f;
   [Export] private float _selfPushbackLerpRate = 4f;
-  [Export] private float _pogoMagnitude = 75f;
+  [Export] private float _pogoMagnitude = 8f;
   [Export] private float _invulnTime = 2f;
 
   private bool _inJump;
@@ -47,13 +49,12 @@ internal sealed partial class FightGirl : CharacterBody3D
   private float _coyoteTimer;
   private float _jumpBufferTimer;
 
-  private enum Direction { Left = -1, Right = 1 }
-  private Direction _facingDirection = Direction.Right;
+  internal FacingDirection FacingDirection { get; private set; } = FacingDirection.Right;
 
   private enum DashState { Ready, Dashing, Cooldown }
   private DashState _dashState;
   private float _dashTimer;
-  private Direction _dashDirection;
+  private FacingDirection _dashDirection;
   private bool _dashedInAir;
 
   internal bool InAttack { get; set; }
@@ -83,7 +84,7 @@ internal sealed partial class FightGirl : CharacterBody3D
     float xAxis = CanMove ? Input.GetAxis("Left", "Right") : 0f;
 
     if (!Mathf.IsEqualApprox(xAxis, 0f))
-      _facingDirection = xAxis < 0 ? Direction.Left : Direction.Right;
+      FacingDirection = xAxis < 0 ? FacingDirection.Left : FacingDirection.Right;
 
     float weight = (
       _selfPushbackTimer != 0f
@@ -205,7 +206,7 @@ internal sealed partial class FightGirl : CharacterBody3D
     if (!IsOnFloor() && _dashedInAir)
       return;
 
-    _dashDirection = _facingDirection;
+    _dashDirection = FacingDirection;
     _dashState = DashState.Dashing;
     _dashTimer = _dashDuration;
     _dashedInAir = !IsOnFloor();
@@ -256,12 +257,12 @@ internal sealed partial class FightGirl : CharacterBody3D
       _selfPushbackTimer = _selfPushbackTime;
   }
 
-  internal void ProcessHit(Attack attack)
+  public void ProcessHit(Attack attack)
   {
     if (_invulnTimer != 0f)
       return;
     
-    _health -= attack.Strength;
+    _health -= attack.Damage;
 
     Vector3 pushbackDirection = GlobalPosition - attack.Attacker.GlobalPosition;
     _pushbackVelocity += pushbackDirection.Normalized() * attack.PushbackMagnitude;

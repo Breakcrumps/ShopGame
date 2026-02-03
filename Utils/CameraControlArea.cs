@@ -1,5 +1,5 @@
 using Godot;
-using ShopGame.Characters.Fight;
+using ShopGame.Characters.Fight.Girl;
 using ShopGame.Scenes.FightScene;
 
 namespace ShopGame.Utils;

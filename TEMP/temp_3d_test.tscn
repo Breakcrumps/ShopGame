@@ -6,11 +6,13 @@
 [ext_resource type="PackedScene" uid="uid://l2oj84x780yk" path="res://Import/Scenes/obstacle_box.tscn" id="4_0pcd4"]
 [ext_resource type="Script" uid="uid://c80gk15q1qoyt" path="res://Utils/CameraControlArea.cs" id="5_f6sgq"]
 [ext_resource type="PackedScene" uid="uid://dblc44p162scx" path="res://Characters/Fight/BirdEnemy/bird.tscn" id="6_1q8sj"]
+[ext_resource type="PackedScene" uid="uid://thvmmrfblfeg" path="res://Utils/hit_dot.tscn" id="7_8ias7"]
+[ext_resource type="PackedScene" uid="uid://cmkbcux6ltbg6" path="res://UI/fight_ui.tscn" id="8_5i1wx"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_1q8sj"]
 size = Vector3(10, 5, 1)
 
-[node name="TEMP3DTest" type="Node3D" unique_id=45048418]
+[node name="CardboardScene" type="Node3D" unique_id=45048418]
 
 [node name="Cardboard" parent="." unique_id=1527084831 instance=ExtResource("1_tvmn1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
@@ -57,3 +59,8 @@ shape = SubResource("BoxShape3D_1q8sj")
 [node name="Bird" parent="." unique_id=164815217 instance=ExtResource("6_1q8sj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.370656, 0, 0)
 _flapVelocity = 2.0
+
+[node name="HitDot" parent="." unique_id=1922673237 instance=ExtResource("7_8ias7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5035734, 1.5493462, 0)
+
+[node name="UI" parent="." unique_id=203109091 instance=ExtResource("8_5i1wx")]

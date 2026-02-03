@@ -8,11 +8,9 @@ namespace ShopGame.Scenes.ToyShelf;
 internal sealed partial class ShelfViewportContainer : SubViewportContainer
 {
   [Export] private Vector2I _subviewportSize = new(990, 540);
-  
-  [Export] private PackedScene _shelfVPScene = null!;
   [Export] private CanvasLayer _ui = null!;
-
-  private ShelfViewport? _shelfViewport;
+  
+  private ShelfViewport _shelfViewport = null!;
   private Shelf? _currentShelf;
 
   public override void _EnterTree()
@@ -22,20 +20,15 @@ internal sealed partial class ShelfViewportContainer : SubViewportContainer
   {
     Visible = false;
     ProcessMode = ProcessModeEnum.Disabled;
+    _shelfViewport = GetChild<ShelfViewport>(0);
+    _shelfViewport.ProcessMode = ProcessModeEnum.Disabled;
+    _shelfViewport.RenderTargetUpdateMode = SubViewport.UpdateMode.Disabled;
   }
 
   internal void Activate(Shelf shelf)
   {
-    if (_shelfVPScene is null || !_ui.IsValid())
-      return;
-
-    if (!_shelfViewport.IsValid())
-    {
-      _shelfViewport = _shelfVPScene.Instantiate<ShelfViewport>();
-      _shelfViewport.Size = _subviewportSize;
-      AddChild(_shelfViewport);
-    }
-    
+    _shelfViewport.ProcessMode = ProcessModeEnum.Always;
+    _shelfViewport.RenderTargetUpdateMode = SubViewport.UpdateMode.Always;
     _shelfViewport.ShelfCamera.Reset();
     _shelfViewport.ShelfPosGroup.DiscardItems();
     _shelfViewport.ShelfPosGroup.StockItems(shelf.ItemsOnShelf);
@@ -58,12 +51,6 @@ internal sealed partial class ShelfViewportContainer : SubViewportContainer
 
   internal void Deactivate()
   {
-    if (!_ui.IsValid())
-      return;
-
-    if (!_shelfViewport.IsValid() || !_shelfViewport.ShelfPosGroup.IsValid())
-      return;
-
     if (!_currentShelf.IsValid())
       return;
 
@@ -73,6 +60,9 @@ internal sealed partial class ShelfViewportContainer : SubViewportContainer
     Input.MouseMode = Input.MouseModeEnum.Visible;
 
     _currentShelf.ItemsOnShelf = _shelfViewport.ShelfPosGroup.GetItems();
+
+    _shelfViewport.ProcessMode = ProcessModeEnum.Disabled;
+    _shelfViewport.RenderTargetUpdateMode = SubViewport.UpdateMode.Disabled;
   }
 
   public override void _Input(InputEvent @event)
