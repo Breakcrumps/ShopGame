@@ -1,0 +1,43 @@
+[gd_scene format=3 uid="uid://b36e4c6plxnpp"]
+
+[ext_resource type="PackedScene" uid="uid://cy6kkftomrapq" path="res://Import/Scenes/shelf_3d.tscn" id="1_6ahlr"]
+[ext_resource type="Script" uid="uid://b2fds27d0ey7r" path="res://Scenes/Shop/Shelf.cs" id="1_yr5ej"]
+[ext_resource type="PackedScene" uid="uid://bxp2j33tvpaf" path="res://Utils/prompt3d.tscn" id="2_yr5ej"]
+[ext_resource type="Texture2D" uid="uid://b5xqcpovlnvc3" path="res://Utils/E.png" id="3_a84fw"]
+[ext_resource type="Script" uid="uid://cbgtxs20pqppm" path="res://Utils/DialogueInitArea3D.cs" id="4_mxd27"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ywlmu"]
+size = Vector3(1, 1.2425537, 1.0448608)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_6ahlr"]
+size = Vector3(1.4, 2, 0.8)
+
+[node name="Shelf3D" type="StaticBody3D" unique_id=760499217]
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_yr5ej")
+
+[node name="Shelf3D" parent="." unique_id=938049531 instance=ExtResource("1_6ahlr")]
+
+[node name="Prompt3D" parent="." unique_id=482236905 instance=ExtResource("2_yr5ej")]
+transform = Transform3D(7, 0, 0, 0, 7, 0, 0, 0, 7, 0, 2.775502, 0)
+billboard = 1
+texture_filter = 0
+texture = ExtResource("3_a84fw")
+
+[node name="DialogueInitArea3D" type="Area3D" parent="." unique_id=1457720223 node_paths=PackedStringArray("_parent", "_prompt")]
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("4_mxd27")
+_parent = NodePath("..")
+_prompt = NodePath("../Prompt3D")
+DialogueName = "Shelf"
+metadata/_custom_type_script = "uid://cbgtxs20pqppm"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DialogueInitArea3D" unique_id=1655091750]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6207886, 0.8944397)
+shape = SubResource("BoxShape3D_ywlmu")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1986449500]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("BoxShape3D_6ahlr")

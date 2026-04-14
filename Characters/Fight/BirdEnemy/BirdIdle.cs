@@ -15,7 +15,7 @@ internal sealed partial class BirdIdle : BirdState
     
     Bird.HandleHover(ref nextVelocity, (float)delta);
 
-    if (GlobalInstances.FightGirl.IfValid() is not FightGirl fightGirl)
+    if (((Node)GlobalInstances.CurrentGirl3D).IfValid() is not FightGirl fightGirl)
       return;
 
     Vector3 difVector = fightGirl.GlobalPosition - Bird.GlobalPosition;

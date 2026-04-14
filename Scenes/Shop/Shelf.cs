@@ -7,7 +7,7 @@ using ShopGame.Utils;
 namespace ShopGame.Scenes.Shop;
 
 [GlobalClass]
-internal sealed partial class Shelf : StaticBody2D, IActionHandler
+internal sealed partial class Shelf : Node, IActionHandler
 {
   internal Dictionary<int, ToyType> ItemsOnShelf { get; set; } = [];
 

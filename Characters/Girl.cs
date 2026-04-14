@@ -9,12 +9,12 @@ internal sealed partial class Girl : CharacterBody2D
   [Export] private float _speed = 200f;
   [Export] private int _framesToAccelerate = 5;
 
-  internal bool CanMove { private get; set; } = true;
+  public bool CanMove { private get; set; } = true;
 
   private int _runTime;
 
   public override void _EnterTree()
-    => GlobalInstances.Girl = this;
+    => GlobalInstances.CurrentGirl = this;
 
   public override void _PhysicsProcess(double delta)
   {

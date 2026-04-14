@@ -10,8 +10,6 @@ internal sealed partial class Projectile : Area3D
 {
   private bool _isActive;
   
-  private const uint WorldPhysLayer = 4;
-  
   [Export] private Sprite3D _sprite = null!;
   [Export] private AnimationPlayer _animPlayer = null!;
   
@@ -59,7 +57,7 @@ internal sealed partial class Projectile : Area3D
     _sprite.LookAt(GlobalInstances.FightCameraRoot.GlobalPosition);
     _sprite.Rotation = new Vector3(0f, 0f, MathF.Atan2(direction.Y, direction.X));
     _animPlayer.Play("Init");
-    CollisionMask = WorldPhysLayer | (uint)shooter.TargetMask;
+    CollisionMask = (uint)shooter.TargetMask;
   }
 
   private void Deactivate()

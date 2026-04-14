@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.IO;
 using System.Text.Json;
 using Godot;
 using ShopGame.Characters.DialogueSprites;
@@ -16,8 +15,8 @@ internal sealed partial class Textbox : TextureRect
   [Export] private RichTextLabel _label = null!;
 
   [ExportGroup("Prompts")]
-  [Export] private Prompt _proceedPrompt = null!;
-  [Export] private Prompt _questionPrompt = null!;
+  [Export] private Prompt2D _proceedPrompt = null!;
+  [Export] private Prompt2D _questionPrompt = null!;
 
   [ExportGroup("Timers")]
   [Export] private Timer _nextCharTimer = null!;
@@ -46,8 +45,6 @@ internal sealed partial class Textbox : TextureRect
   private bool _inDialogue;
   private bool _awaitingInput;
   private bool _inWait;
-
-  private static readonly JsonSerializerOptions _dialogueDeserOpt = new() { IncludeFields = true };
 
   public override void _EnterTree()
     => GlobalInstances.TextBox = this;
@@ -153,18 +150,18 @@ internal sealed partial class Textbox : TextureRect
     if (_inDialogue)
       return;
 
-    if (GlobalInstances.Girl.IsValid())
-      GlobalInstances.Girl.CanMove = false;
+    if (GlobalInstances.CurrentGirl.IsValid())
+      GlobalInstances.CurrentGirl.CanMove = false;
     
-    if (GlobalInstances.FightGirl.IsValid())
-      GlobalInstances.FightGirl.CanMove = false;
+    if (((Node)GlobalInstances.CurrentGirl3D).IsValid())
+      GlobalInstances.CurrentGirl3D.CanMove = false;
 
     if (activator is IActionHandler handler)
       _activatorNode = handler;
 
     _dialogueArea = dialogueArea;
 
-    ReadDialogueFromFile($"{activator.Name} {variant}");
+    ReadDialogueFromFile($"{dialogueArea.DialogueName} {variant}");
 
     LoadLine(index: 0);
     _awaitingInput = true;
@@ -271,10 +268,10 @@ internal sealed partial class Textbox : TextureRect
     _nextCharTimer.Stop();
     _label.Text = "";
     _label.VisibleCharacters = 0;
-    if (GlobalInstances.Girl.IsValid())
-      GlobalInstances.Girl.CanMove = true;
-    if (GlobalInstances.FightGirl.IsValid())
-      GlobalInstances.FightGirl.CanMove = true;
+    if (GlobalInstances.CurrentGirl.IsValid())
+      GlobalInstances.CurrentGirl.CanMove = true;
+    if (((Node)GlobalInstances.CurrentGirl3D).IsValid())
+      GlobalInstances.CurrentGirl3D.CanMove = true;
     _leftAnimPlayer.FinishUp();
     _rightAnimPlayer.FinishUp();
     _awaitingInput = false;
@@ -299,11 +296,16 @@ internal sealed partial class Textbox : TextureRect
 
   private void ReadNewDialogueFile(string filename)
   {
-    string jsonFile = File.ReadAllText($"Dialogue/{filename}.json");
+    using FileAccess? jsonFile = FileAccess.Open($"res://Dialogue/{filename}.json", FileAccess.ModeFlags.Read);
 
-    _dialogueFile = JsonSerializer.Deserialize<Dictionary<string, List<Replica>>>(
-      jsonFile,
-      options: _dialogueDeserOpt
+    if (jsonFile is null)
+      return;
+    
+    string jsonContent = jsonFile.GetAsText();
+
+    _dialogueFile = JsonSerializer.Deserialize(
+      jsonContent,
+      jsonTypeInfo: DialogueContext.Default.DictionaryStringListReplica
     ) ?? [];
 
     foreach (var (_, replicas) in _dialogueFile)

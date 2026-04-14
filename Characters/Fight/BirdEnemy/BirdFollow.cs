@@ -15,7 +15,7 @@ internal sealed partial class BirdFollow : BirdState
   
   internal override void PhysicsProcess(double delta)
   {
-    Vector3 girlPos = GlobalInstances.FightGirl.GlobalPosition;
+    Vector3 girlPos = GlobalInstances.CurrentGirl3D.GlobalPosition;
     Vector3 direction = girlPos - Bird.GlobalPosition;
     float distToGirl = direction.Length();
 

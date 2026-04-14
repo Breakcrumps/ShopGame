@@ -16,7 +16,7 @@ internal sealed partial class BirdFlapNearby : BirdState
     
     Bird.HandleHover(ref nextVelocity, (float)delta);
 
-    Vector3 difVector = GlobalInstances.FightGirl.GlobalPosition - Bird.GlobalPosition;
+    Vector3 difVector = GlobalInstances.CurrentGirl3D.GlobalPosition - Bird.GlobalPosition;
     float distToGirl = difVector.Length();
 
     if (distToGirl >= _refollowDistance)

@@ -8,9 +8,9 @@ namespace ShopGame.Characters.Fight.Girl;
 internal enum FacingDirection { Left = -1, Right = 1 }
 
 [GlobalClass]
-internal sealed partial class FightGirl : CharacterBody3D, IHitProcessor
+internal sealed partial class FightGirl : CharacterBody3D, IHitProcessor, IGirl3D
 {
-  internal bool CanMove { private get; set; } = true;
+  public bool CanMove { private get; set; } = true;
   
   [Export] private AudioStreamPlayer3D _jumpSoundPlayer = null!;
   [Export] private AnimationPlayer _animPlayer = null!;
@@ -63,7 +63,7 @@ internal sealed partial class FightGirl : CharacterBody3D, IHitProcessor
   private float _invulnTimer;
 
   public override void _EnterTree()
-    => GlobalInstances.FightGirl = this;
+    => GlobalInstances.CurrentGirl3D = this;
 
   public override void _PhysicsProcess(double delta)
   {
@@ -81,7 +81,7 @@ internal sealed partial class FightGirl : CharacterBody3D, IHitProcessor
 
   private void HandleMovement(float deltaF)
   {
-    float xAxis = CanMove ? Input.GetAxis("Left", "Right") : 0f;
+    float xAxis = (Input.IsActionPressed("StayStill") || !CanMove) ? 0f : Input.GetAxis("Left", "Right");
 
     if (!Mathf.IsEqualApprox(xAxis, 0f))
       FacingDirection = xAxis < 0 ? FacingDirection.Left : FacingDirection.Right;

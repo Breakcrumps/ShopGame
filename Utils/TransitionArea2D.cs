@@ -4,10 +4,10 @@ using ShopGame.Characters;
 namespace ShopGame.Utils;
 
 [GlobalClass]
-internal sealed partial class TransitionArea2D : Area2D
+internal sealed partial class TransitionArea2D : Area2D, IActionHandler
 {
   [Export] private string? _destinationPath;
-  [Export] private Prompt _prompt = null!;
+  [Export] private Prompt2D? _prompt;
 
   private bool _enabled;
 
@@ -18,20 +18,20 @@ internal sealed partial class TransitionArea2D : Area2D
     
     BodyEntered += node =>
     {
-      if (node is not (Girl or FieldGirl))
+      if (node is not Girl)
         return;
 
       _enabled = true;
-      _prompt.Activate();
+      _prompt?.Activate();
     };
 
     BodyExited += node =>
     {
-      if (node is not (Girl or FieldGirl))
+      if (node is not Girl)
         return;
 
       _enabled = false;
-      _prompt.Deactivate();
+      _prompt?.Deactivate();
     };
   }
 
@@ -46,6 +46,14 @@ internal sealed partial class TransitionArea2D : Area2D
     if (!@event.IsActionPressed("Interact"))
       return;
 
+    GetTree().CallDeferred("change_scene_to_file", _destinationPath);
+  }
+
+  public void HandleAction(string actionName)
+  {
+    if (_destinationPath is null)
+      return;
+    
     GetTree().CallDeferred("change_scene_to_file", _destinationPath);
   }
 }

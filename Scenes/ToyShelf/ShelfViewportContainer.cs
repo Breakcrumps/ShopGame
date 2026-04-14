@@ -19,10 +19,10 @@ internal sealed partial class ShelfViewportContainer : SubViewportContainer
   public override void _Ready()
   {
     Visible = false;
-    ProcessMode = ProcessModeEnum.Disabled;
     _shelfViewport = GetChild<ShelfViewport>(0);
     _shelfViewport.ProcessMode = ProcessModeEnum.Disabled;
     _shelfViewport.RenderTargetUpdateMode = SubViewport.UpdateMode.Disabled;
+    ProcessMode = ProcessModeEnum.Disabled;
   }
 
   internal void Activate(Shelf shelf)

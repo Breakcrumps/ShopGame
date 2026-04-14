@@ -36,6 +36,7 @@ internal partial class Enemy : CharacterBody3D, IHitProcessor
     DamagedNoHitTimer = _damagedNoHitTime;
 
     HitArea.Collider.SetDeferred("disabled", true);
+    HitArea.EnemyHitThisFrame = true;
   }
 
   private protected virtual void HandleTimers(float deltaF)

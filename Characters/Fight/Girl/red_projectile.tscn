@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://dhbqbf77arqxj" path="res://Characters/Fight/Girl/blood-projectile-spritesheet-red.webp" id="2_pidku"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_pidku"]
-size = Vector3(0.8, 0.5, 0.5)
+size = Vector3(1.4, 1, 0.5)
 
 [sub_resource type="Animation" id="Animation_2wvgm"]
 resource_name = "Fly"
@@ -78,7 +78,7 @@ _data = {
 
 [node name="RedProjectile" type="Area3D" unique_id=1860583170 node_paths=PackedStringArray("_sprite", "_animPlayer")]
 collision_layer = 16
-collision_mask = 4
+collision_mask = 0
 script = ExtResource("1_mjps1")
 _sprite = NodePath("Sprite3D")
 _animPlayer = NodePath("AnimationPlayer")
@@ -94,3 +94,6 @@ hframes = 6
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1403820393]
 root_node = NodePath("../Sprite3D")
 libraries/ = SubResource("AnimationLibrary_7n41w")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=656317241]
+light_color = Color(0.9490196, 0.003921569, 0.007843138, 1)

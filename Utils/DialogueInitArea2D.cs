@@ -8,7 +8,8 @@ namespace ShopGame.Utils;
 internal sealed partial class DialogueInitArea2D : Area2D, IDialogueInitArea
 {
   [Export] private Node _parent = null!;
-  [Export] private Prompt _prompt = null!;
+  [Export] private Prompt2D _prompt = null!;
+  [Export] public string DialogueName { get; private set; } = null!;
 
   private int _variantCount;
   private int _currentVariant = 1;
@@ -17,6 +18,8 @@ internal sealed partial class DialogueInitArea2D : Area2D, IDialogueInitArea
 
   public override void _Ready()
   {
+    DialogueName ??= _parent.Name;
+    
     CollisionLayer = 4;
     CollisionMask = 1;
 
@@ -24,13 +27,13 @@ internal sealed partial class DialogueInitArea2D : Area2D, IDialogueInitArea
 
     BodyEntered += body =>
     {
-      if (body is Girl or FieldGirl)
+      if (body is Girl)
         AwaitInput = true;
     };
 
     BodyExited += body =>
     {
-      if (body is Girl or FieldGirl)
+      if (body is Girl)
         AwaitInput = false;
     };
   }

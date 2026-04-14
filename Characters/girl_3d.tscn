@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://cdn6772ycdjj1"]
+
+[ext_resource type="Script" uid="uid://dgno0ickldu6e" path="res://Characters/Girl3D.cs" id="1_sqwut"]
+[ext_resource type="Texture2D" uid="uid://i71o4hcvb216" path="res://Characters/Girl.png" id="2_men54"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_kpji5"]
+size = Vector3(1.17, 1.7, 1.17)
+
+[node name="Girl" type="CharacterBody3D" unique_id=2104100059 node_paths=PackedStringArray("_sprite")]
+collision_mask = 12
+script = ExtResource("1_sqwut")
+_sprite = NodePath("Sprite3D")
+_speed = 9.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1637615258]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)
+shape = SubResource("BoxShape3D_kpji5")
+
+[node name="Sprite3D" type="Sprite3D" parent="." unique_id=1746277162]
+transform = Transform3D(5.86, 0, 0, 0, 5.86, 0, 0, 0, 5.86, 0, 0, 0)
+cast_shadow = 2
+offset = Vector2(0, 16)
+billboard = 1
+shaded = true
+double_sided = false
+alpha_cut = 1
+texture_filter = 0
+texture = ExtResource("2_men54")

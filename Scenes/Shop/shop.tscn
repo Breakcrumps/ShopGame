@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://cqm4kfelmm1mc" path="res://Scenes/Shop/shelf.tscn" id="2_2nxxu"]
 [ext_resource type="PackedScene" uid="uid://dkv3yol4sh756" path="res://UI/ui.tscn" id="3_dcrsj"]
 [ext_resource type="Script" uid="uid://dda6prs2w18x4" path="res://Utils/TransitionArea2D.cs" id="4_s7atx"]
-[ext_resource type="PackedScene" uid="uid://qhe57e24toic" path="res://Utils/prompt.tscn" id="5_fi1uk"]
+[ext_resource type="PackedScene" uid="uid://qhe57e24toic" path="res://Utils/prompt2d.tscn" id="5_fi1uk"]
 [ext_resource type="Texture2D" uid="uid://b5xqcpovlnvc3" path="res://Utils/E.png" id="6_ghprd"]
 [ext_resource type="Script" uid="uid://ckslj8bl4uju6" path="res://Utils/DialogueInitArea2D.cs" id="7_fobo1"]
 
@@ -22,47 +22,71 @@ sources/0 = SubResource("TileSetAtlasSource_kcc5r")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fobo1"]
 
-[node name="Shop" type="Node2D"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_oqg8q"]
+
+[node name="Shop" type="Node2D" unique_id=1919481678]
 y_sort_enabled = true
 
-[node name="TileMapLayer" type="TileMapLayer" parent="."]
+[node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=2107271896]
 z_index = -1
-scale = Vector2(0.9, 0.9)
+scale = Vector2(0.7, 0.7)
 tile_map_data = PackedByteArray("AAD7//3/AAAAAAAAAAD7//7/AAAAAAAAAAD7////AAAAAAAAAAD7/wAAAAAAAAAAAAD7/wEAAAAAAAAAAAD7/wIAAAAAAAAAAAD8//3/AAAAAAAAAAD8//7/AAAAAAAAAAD8////AAAAAAAAAAD8/wAAAAAAAAAAAAD8/wEAAAAAAAAAAAD8/wIAAAAAAAAAAAD9//3/AAAAAAAAAAD9//7/AAAAAAAAAAD9////AAAAAAAAAAD9/wAAAAAAAAAAAAD9/wEAAAAAAAAAAAD9/wIAAAAAAAAAAAD+//3/AAAAAAAAAAD+//7/AAAAAAAAAAD+////AAAAAAAAAAD+/wAAAAAAAAAAAAD+/wEAAAAAAAAAAAD+/wIAAAAAAAAAAAD///3/AAAAAAAAAAD///7/AAAAAAAAAAD/////AAAAAAAAAAD//wAAAAAAAAAAAAD//wEAAAAAAAAAAAD//wIAAAAAAAAAAAAAAP3/AAAAAAAAAAAAAP7/AAAAAAAAAAAAAP//AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAIAAAAAAAAAAAABAP3/AAAAAAAAAAABAP7/AAAAAAAAAAABAP//AAAAAAAAAAABAAAAAAAAAAAAAAABAAEAAAAAAAAAAAABAAIAAAAAAAAAAAACAP3/AAAAAAAAAAACAP7/AAAAAAAAAAACAP//AAAAAAAAAAACAAAAAAAAAAAAAAACAAEAAAAAAAAAAAACAAIAAAAAAAAAAAADAP3/AAAAAAAAAAADAP7/AAAAAAAAAAADAP//AAAAAAAAAAADAAAAAAAAAAAAAAADAAEAAAAAAAAAAAADAAIAAAAAAAAAAAAEAP3/AAAAAAAAAAAEAP7/AAAAAAAAAAAEAP//AAAAAAAAAAAEAAAAAAAAAAAAAAAEAAEAAAAAAAAAAAAEAAIAAAAAAAAAAAA=")
 tile_set = SubResource("TileSet_xybqi")
 
-[node name="Girl" parent="." instance=ExtResource("1_gqsku")]
+[node name="Girl" parent="." unique_id=2033337545 instance=ExtResource("1_gqsku")]
 
-[node name="Shelf" parent="." instance=ExtResource("2_2nxxu")]
+[node name="Shelf" parent="." unique_id=1157238518 instance=ExtResource("2_2nxxu")]
 position = Vector2(42, -22)
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1358261785]
 zoom = Vector2(5, 5)
 
-[node name="UI" parent="." instance=ExtResource("3_dcrsj")]
+[node name="UI" parent="." unique_id=590502766 instance=ExtResource("3_dcrsj")]
 
-[node name="TransitionArea" type="Area2D" parent="." node_paths=PackedStringArray("_prompt")]
+[node name="TransitionArea" type="Area2D" parent="." unique_id=811109603 node_paths=PackedStringArray("_prompt")]
 position = Vector2(86, -16)
 script = ExtResource("4_s7atx")
 _destinationPath = "res://Scenes/world_map.tscn"
 _prompt = NodePath("Prompt")
 metadata/_custom_type_script = "uid://dda6prs2w18x4"
 
-[node name="Prompt" parent="TransitionArea" instance=ExtResource("5_fi1uk")]
+[node name="Prompt" parent="TransitionArea" unique_id=1552777990 instance=ExtResource("5_fi1uk")]
 texture = ExtResource("6_ghprd")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="TransitionArea"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TransitionArea" unique_id=1326588855]
 shape = SubResource("RectangleShape2D_s7atx")
 
-[node name="Giver" type="Area2D" parent="." node_paths=PackedStringArray("_parent", "_prompt")]
+[node name="Giver" type="Area2D" parent="." unique_id=1185152327 node_paths=PackedStringArray("_parent", "_prompt")]
 position = Vector2(-52, 0)
 script = ExtResource("7_fobo1")
 _parent = NodePath(".")
 _prompt = NodePath("Prompt")
 metadata/_custom_type_script = "uid://ckslj8bl4uju6"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Giver"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Giver" unique_id=1893102147]
 shape = SubResource("RectangleShape2D_fobo1")
 
-[node name="Prompt" parent="Giver" instance=ExtResource("5_fi1uk")]
+[node name="Prompt" parent="Giver" unique_id=1039907889 instance=ExtResource("5_fi1uk")]
 texture = ExtResource("6_ghprd")
+
+[node name="Shelf2" parent="." unique_id=1348433879 instance=ExtResource("2_2nxxu")]
+position = Vector2(-74, -50)
+
+[node name="Bed" type="Area2D" parent="." unique_id=652473989 node_paths=PackedStringArray("_parent", "_prompt")]
+position = Vector2(-92, -3)
+script = ExtResource("7_fobo1")
+_parent = NodePath("TransitionArea2D")
+_prompt = NodePath("Prompt2D")
+DialogueName = "Bed"
+metadata/_custom_type_script = "uid://ckslj8bl4uju6"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Bed" unique_id=1832642239]
+shape = SubResource("RectangleShape2D_oqg8q")
+
+[node name="Prompt2D" parent="Bed" unique_id=1724701464 instance=ExtResource("5_fi1uk")]
+texture = ExtResource("6_ghprd")
+
+[node name="TransitionArea2D" type="Area2D" parent="Bed" unique_id=725416121]
+script = ExtResource("4_s7atx")
+_destinationPath = "res://TEMP/temp_3d_test.tscn"
+metadata/_custom_type_script = "uid://dda6prs2w18x4"

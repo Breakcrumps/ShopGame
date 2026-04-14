@@ -15,18 +15,19 @@ internal sealed partial class FightCameraRoot : Node3D
 
   [Export] private SpringArm3D _springArm = null!;
 
+  [ExportGroup("Follow")]
   [Export] private float _xStartFollowRate = 11f;
   [Export] private float _xFollowRate = 14f;
   [Export] private float _xFollowRateAccel = 50f;
   [Export] private float _yFollowRate = 30f;
+  [Export] private float _lerpToPivotRate = 8f;
   private float _xMoveTimer;
   private float _yMoveTimer;
 
+  [ExportGroup("SpringArm")]
   [Export] private float _springLengthLerpRate = 7f;
-  private float _initSpringLength;
+  [Export] private float _initSpringLength = 3f;
   private float _targetSpringLength;
-
-  [Export] private float _lerpToPivotRate = 8f;
 
   public override void _EnterTree()
     => GlobalInstances.FightCameraRoot = this;
@@ -34,7 +35,7 @@ internal sealed partial class FightCameraRoot : Node3D
   public override void _Ready()
   {
     GlobalPosition = InitPivot.GlobalPosition;
-    _initSpringLength = _springArm.SpringLength;
+    _springArm.SpringLength = _initSpringLength;
     _targetSpringLength = _initSpringLength;
     _pivot = InitPivot;
   }
@@ -66,7 +67,6 @@ internal sealed partial class FightCameraRoot : Node3D
     }
 
     float rate = _xStartFollowRate.ExpLerped(to: _xFollowRate, weight: _xFollowRateAccel * _xMoveTimer);
-
     newPos.X.ExpLerp(to: _pivot.GlobalPosition.X, weight: rate * deltaF);
   }
 
@@ -76,9 +76,7 @@ internal sealed partial class FightCameraRoot : Node3D
   internal void SetTarget(Node3D pivot, float springLen)
   {
     _targetSpringLength = springLen;
-
     _pivot = pivot;
-
     _xMoveTimer = 0;
   }
 

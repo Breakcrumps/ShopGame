@@ -1,8 +1,8 @@
-[gd_scene load_steps=17 format=3 uid="uid://3liwxod2o0b1"]
+[gd_scene format=3 uid="uid://3liwxod2o0b1"]
 
 [ext_resource type="Texture2D" uid="uid://xcineshn34oc" path="res://UI/Textbox/Textbox.png" id="1_jxuek"]
 [ext_resource type="Script" uid="uid://bgkwk6a1wbnbl" path="res://UI/Textbox/Textbox.cs" id="2_wd0e8"]
-[ext_resource type="PackedScene" uid="uid://qhe57e24toic" path="res://Utils/prompt.tscn" id="3_mr4kd"]
+[ext_resource type="PackedScene" uid="uid://qhe57e24toic" path="res://Utils/prompt2d.tscn" id="3_mr4kd"]
 [ext_resource type="Texture2D" uid="uid://b1ui4h2tbwdya" path="res://UI/Textbox/Arrow.png" id="4_s1jws"]
 [ext_resource type="Texture2D" uid="uid://b4ptq4qt5fdg8" path="res://UI/Textbox/QuestionPrompt.png" id="5_fx034"]
 [ext_resource type="PackedScene" uid="uid://bkmehti7hu67t" path="res://UI/Textbox/choicebox.tscn" id="6_hsw4h"]

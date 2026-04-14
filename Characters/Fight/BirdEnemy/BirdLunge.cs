@@ -23,7 +23,7 @@ internal sealed partial class BirdLunge : BirdState
   {
     _hitArea.CurrentDamage = _lungeDamage;
 
-    Vector3 girlPos = GlobalInstances.FightGirl.GlobalPosition;
+    Vector3 girlPos = GlobalInstances.CurrentGirl3D.GlobalPosition;
 
     Vector3 lungeDirection = girlPos - Bird.GlobalPosition;
     _lungeDirection = lungeDirection.Normalized();

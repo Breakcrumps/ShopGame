@@ -1,4 +1,5 @@
 using Godot;
+using ShopGame.Characters;
 using ShopGame.Characters.Fight.Girl;
 using ShopGame.Static;
 
@@ -8,7 +9,8 @@ namespace ShopGame.Utils;
 internal sealed partial class DialogueInitArea3D : Area3D, IDialogueInitArea
 {
   [Export] private Node _parent = null!;
-  [Export] private Prompt _prompt = null!;
+  [Export] private Prompt3D _prompt = null!;
+  [Export] public string DialogueName { get; private set; } = null!;
 
   private int _variantCount;
   private int _currentVariant = 1;
@@ -24,13 +26,13 @@ internal sealed partial class DialogueInitArea3D : Area3D, IDialogueInitArea
 
     BodyEntered += body =>
     {
-      if (body is FightGirl)
+      if (body is FightGirl or Girl3D)
         AwaitInput = true;
     };
 
     BodyExited += body =>
     {
-      if (body is FightGirl)
+      if (body is FightGirl or Girl3D)
         AwaitInput = false;
     };
   }

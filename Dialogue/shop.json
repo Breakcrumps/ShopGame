@@ -35,5 +35,14 @@
         { "What": "Nothing." }
       ]
     }
+  ],
+  "Bed 1": [
+    {
+      "What": "You're feeling sleepy. Lie down for a bit?",
+      "Choices": [
+        { "What": "Yes.", "Action": { "FromObject": true } },
+        { "What": "No." }
+      ]
+    }
   ]
 }
